@@ -1,1 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>321 Sari-Sari Store Dashboard</title>
+  <style>
+    :root {
+      --navy: #102747;
+      --blue: #194775;
+      --yellow: #ffd447;
+      --white: #ffffff;
+      --bg: #f2f5f9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: #243247;
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 24px 18px;
+      border-bottom: 5px solid var(--yellow);
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    header p {
+      margin-bottom: 0;
+      color: #dce7f5;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .muted {
+      color: #718096;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .stats, .menu {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: white;
+      padding: 17px;
+      border-radius: 14px;
+      border: 1px solid #e1e7ef;
+    }
+
+    .label {
+      color: #718096;
+      font-size: 13px;
+    }
+
+    .value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-top: 10px;
+    }
+
+    h2 { margin-bottom: 8px; }
+
+    h3 { margin-top: 26px; }
+
+    .menu button {
+      background: white;
+      border: 1px solid #e1e7ef;
+      border-radius: 14px;
+      padding: 18px 12px;
+      min-height: 90px;
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: bold;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .menu button span {
+      display: block;
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 14px;
+      border-left: 4px solid var(--yellow);
+      border-radius: 8px;
+      background: #fff8dc;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 10px;
+      color: #718096;
+      font-size: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .stats { grid-template-columns: repeat(4, 1fr); }
+      .menu { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">321 SARI-SARI STORE</div>
+    <p>STORE MANAGEMENT DASHBOARD</p>
+  </header>
+
+  <main>
+    <h2>Maayong adlaw, Owner!</h2>
+    <p class="muted">
+      Welcome sa imong store dashboard.
+      Manage your products, orders, and daily operations.
+    </p>
+
+    <h3>Store Overview</h3>
+
+    <section class="stats">
+      <div class="card">
+        <div class="label">Total Products</div>
+        <div class="value">—</div>
+      </div>
+      <div class="card">
+        <div class="label">Today's Orders</div>
+        <div class="value">—</div>
+      </div>
+      <div class="card">
+        <div class="label">Today's Sales</div>
+        <div class="value">₱—</div>
+      </div>
+      <div class="card">
+        <div class="label">Pending Orders</div>
+        <div class="value">—</div>
+      </div>
+    </section>
+
+    <h3>Store Management</h3>
+
+    <section class="menu">
+      <button onclick="showMessage('Product Inventory')">
+        <span>📦</span>Product Inventory
+      </button>
+      <button onclick="showMessage('Product Categories')">
+        <span>🗂️</span>Product Categories
+      </button>
+      <button onclick="showMessage('Customer Orders')">
+        <span>🛒</span>Customer Orders
+      </button>
+      <button onclick="showMessage('Sales Reports')">
+        <span>📊</span>Sales Reports
+      </button>
+      <button onclick="showMessage('Rider Portal')">
+        <span>🛵</span>Rider Portal
+      </button>
+      <button onclick="showMessage('Store Settings')">
+        <span>⚙️</span>Store Settings
+      </button>
+    </section>
+
+    <div class="notice">
+      <strong>Setup in progress</strong><br>
+      This is the initial dashboard design.
+      Firebase login, product data, orders, and sales
+      are not connected yet. No inventory has been
+      uploaded or deleted.
+    </div>
+  </main>
+
+  <footer>
+    321 Sari-Sari Store · Store Dashboard
+  </footer>
+
+  <script>
+    function showMessage(section) {
+      alert(
+        section +
+        ' is not connected yet. We will set it up next.'
+      );
+    }
+  </script>
+</body>
+</html>
 

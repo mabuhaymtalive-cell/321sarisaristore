@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>321 Sari-Sari Store — Safe Firebase Dashboard</title>
+<style>
+:root{--navy:#102b55;--yellow:#ffd447;--bg:#f3f6fb;--ink:#172033;--muted:#65738a;--line:#dce4ef}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--navy);color:white;padding:20px 16px;border-bottom:5px solid var(--yellow)}.wrap{max-width:850px;margin:auto}
+.brand{font-weight:800;font-size:1.25rem}.sub{opacity:.88;font-size:.92rem;margin-top:4px}
+main{max-width:850px;margin:18px auto;padding:0 12px 28px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px #102b550b}
+h1{font-size:1.25rem;margin:0 0 8px}h2{font-size:1.05rem;margin:0 0 10px}p{line-height:1.5}
+label{display:block;font-weight:650;font-size:.9rem;margin:12px 0 6px}input{width:100%;font:inherit;padding:12px;border:1px solid #b8c5d7;border-radius:10px;background:#fff}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 15px;background:var(--yellow);color:#18243a;margin-top:12px;min-height:44px}button.secondary{background:#e8eef7;color:var(--navy);margin-left:6px}
+button:disabled{opacity:.6}.status{padding:12px;border-radius:10px;background:#edf2f8;line-height:1.45;overflow-wrap:anywhere}.status.good{background:#e8f7ef;color:#145c3b}.status.bad{background:#fff0ef;color:#8e2118}
+.small{font-size:.88rem;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.stat{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfcff}
+.stat strong{display:block;font-size:1.35rem;color:var(--navy);margin-top:4px}.product{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.product:last-child{border-bottom:0}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:14px}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">321 Sari-Sari Store</div><div class="sub">Admin dashboard · Safe read-only Firebase connection test</div></div></header>
+<main>
+<section class="card">
+<h1>Owner sign-in</h1>
+<p class="small">Sign in with your store owner Firebase account. This page only reads a small sample from Firestore. It does not upload, edit, or delete products.</p>
+<form id="loginForm">
+<label for="email">Owner email</label><input id="email" type="email" autocomplete="username" required placeholder="Owner email">
+<label for="password">Firebase password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Enter password">
+<button id="signInBtn" type="submit">Sign in safely</button><button id="signOutBtn" class="secondary hidden" type="button">Sign out</button>
+</form>
+<div id="status" class="status" role="status" aria-live="polite" style="margin-top:14px">Not signed in. No data has been changed.</div>
+</section>
+<section class="card"><h2>Firebase connection</h2><div class="grid">
+<div class="stat"><span class="small">Authentication</span><strong id="authStat">Not checked</strong></div>
+<div class="stat"><span class="small">storeProducts read</span><strong id="countStat">—</strong></div></div>
+<p class="small">Only the first 5 documents are read. A count of 0 means this project's storeProducts collection has no readable documents; it does not prove that your local JSON backup or older project has been lost.</p></section>
+<section class="card"><h2>Sample products (read-only)</h2><div id="products" class="small">Sign in to check for up to 5 documents.</div></section>
+<section class="card"><h2>Safety notes</h2><ul><li>This page contains no product upload, edit, or delete actions.</li><li>It does not touch your existing index.html or original inventory backup.</li><li>Do not use any upload button from an older dashboard until the source and destination data are checked.</li></ul></section>
+</main><footer>321 Sari-Sari Store · Mobile/tablet-friendly · Read-only test</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+  authDomain: "sarisaristore321-1f24b.firebaseapp.com",
+  projectId: "sarisaristore321-1f24b",
+  storageBucket: "sarisaristore321-1f24b.firebasestorage.app",
+  messagingSenderId: "367997748364",
+  appId: "1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const form=document.getElementById("loginForm"), email=document.getElementById("email"), password=document.getElementById("password");
+const signInBtn=document.getElementById("signInBtn"), signOutBtn=document.getElementById("signOutBtn"), statusBox=document.getElementById("status");
+const authStat=document.getElementById("authStat"), countStat=document.getElementById("countStat"), productsBox=document.getElementById("products");
+function setStatus(msg,kind=""){statusBox.textContent=msg;statusBox.className="status"+(kind?" "+kind:"")}
+function safeText(v){if(v===null||v===undefined)return "—";if(typeof v==="object")return JSON.stringify(v);return String(v)}
+function renderProducts(docs){
+ productsBox.replaceChildren();
+ if(!docs.length){productsBox.textContent="No readable documents found in storeProducts. No data was changed.";return}
+ for(const snap of docs){const item=document.createElement("div");item.className="product";const data=snap.data()||{};const name=document.createElement("strong");name.textContent=safeText(data.name||data.productName||data.title||snap.id);const details=document.createElement("div");details.className="small";details.textContent="Document ID: "+snap.id+" · "+["price","stock","category","unit"].filter(k=>data[k]!==undefined).map(k=>k+": "+safeText(data[k])).join(" · ");item.append(name,details);productsBox.append(item)}
+}
+async function readSample(){
+ setStatus("Signed in. Reading up to 5 product documents only…");
+ try{const result=await getDocs(query(collection(db,"storeProducts"),limit(5)));countStat.textContent=String(result.size);renderProducts(result.docs);setStatus("Firebase sign-in and read test succeeded. Read "+result.size+" document(s). No data was changed.","good")}
+ catch(err){countStat.textContent="Read error";productsBox.textContent="Could not read storeProducts. Check Firestore rules and permissions.";setStatus("Sign-in succeeded, but Firestore read failed: "+(err.code||err.message)+". No data was changed.","bad")}
+}
+form.addEventListener("submit",async e=>{e.preventDefault();signInBtn.disabled=true;setStatus("Signing in…");try{await signInWithEmailAndPassword(auth,email.value.trim(),password.value);password.value=""}catch(err){setStatus("Sign-in failed: "+(err.code||err.message)+". Check the email/password and Firebase Authentication settings.","bad")}finally{signInBtn.disabled=false}});
+signOutBtn.addEventListener("click",async()=>{try{await signOut(auth);countStat.textContent="—";productsBox.textContent="Sign in to check for up to 5 documents.";setStatus("Signed out. No data has been changed.")}catch(err){setStatus("Could not sign out: "+(err.code||err.message),"bad")}});
+onAuthStateChanged(auth,async user=>{if(user){authStat.textContent="Signed in";signInBtn.classList.add("hidden");signOutBtn.classList.remove("hidden");email.disabled=true;password.disabled=true;await readSample()}else{authStat.textContent="Not signed in";signInBtn.classList.remove("hidden");signOutBtn.classList.add("hidden");email.disabled=false;password.disabled=false}});
+</script>
+</body></html>

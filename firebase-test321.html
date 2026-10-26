@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>321 Sari-Sari Store — Firebase Connection Test</title>
+<style>
+:root{--navy:#102b4e;--yellow:#ffd447;--bg:#f3f6fa;--ink:#182536;--line:#dce4ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink);padding:18px}
+main{max-width:620px;margin:0 auto}header{background:var(--navy);color:white;padding:22px;border-radius:16px 16px 0 0}
+header h1{font-size:22px;margin:0 0 7px}header p{margin:0;color:#e6edf6;font-size:14px;line-height:1.5}
+.card{background:white;padding:20px;border:1px solid var(--line);border-top:4px solid var(--yellow);border-radius:0 0 16px 16px}
+.notice{font-size:14px;line-height:1.55;background:#fff8d9;border:1px solid #f2dc81;padding:12px;border-radius:10px;margin:0 0 18px}
+label{display:block;font-weight:700;font-size:14px;margin:14px 0 7px}input{width:100%;padding:13px;border:1px solid #bac7d7;border-radius:9px;font-size:16px}
+button{width:100%;border:0;border-radius:10px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-top:15px}
+#testBtn{background:var(--yellow);color:var(--navy)}#signOutBtn{background:#e8edf4;color:var(--navy);margin-top:8px}
+#status{white-space:pre-wrap;line-height:1.55;font-size:14px;background:#f7f9fc;border:1px solid var(--line);padding:13px;border-radius:10px;margin-top:16px;min-height:48px}
+small{display:block;color:#66758a;line-height:1.5;margin-top:14px}.hidden{display:none}
+</style></head><body><main><header><h1>321 Sari-Sari Store</h1><p>Firebase connection test · Read-only safety check</p></header>
+<section class="card"><p class="notice"><strong>Safety:</strong> This page only signs in and reads up to 5 documents from <code>storeProducts</code>. It does not upload, edit, or delete products.</p>
+<form id="loginForm"><label for="email">Owner email</label><input id="email" type="email" autocomplete="username" required>
+<label for="password">Firebase owner password</label><input id="password" type="password" autocomplete="current-password" required>
+<button id="testBtn" type="submit">Sign in &amp; Test Connection</button></form>
+<button id="signOutBtn" class="hidden" type="button">Sign out</button>
+<div id="status" role="status" aria-live="polite">Ready. Enter the owner email and password for the new Firebase project.</div>
+<small>Use only the owner account you created for <b>Sarisaristore321</b>. Never put your password in the HTML code or send it in chat.</small></section></main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = {
+ apiKey:"AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+ authDomain:"sarisaristore321-1f24b.firebaseapp.com",
+ projectId:"sarisaristore321-1f24b",
+ storageBucket:"sarisaristore321-1f24b.firebasestorage.app",
+ messagingSenderId:"367997748364",
+ appId:"1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const form=document.getElementById("loginForm"), statusBox=document.getElementById("status");
+const testBtn=document.getElementById("testBtn"), signOutBtn=document.getElementById("signOutBtn");
+function showStatus(message){statusBox.textContent=message}
+form.addEventListener("submit",async(event)=>{
+ event.preventDefault();testBtn.disabled=true;testBtn.textContent="Testing…";
+ showStatus("Signing in to the new Firebase project…");
+ try{
+  const email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+  const credential=await signInWithEmailAndPassword(auth,email,password);
+  showStatus("Owner sign-in successful. Checking read-only access…");
+  const result=await getDocs(query(collection(db,"storeProducts"),limit(5)));
+  if(result.empty){
+   showStatus("SIGN-IN SUCCESSFUL\nFirebase connection works, but storeProducts currently has 0 documents in this project.\nNo data was changed.");
+  }else{
+   const lines=[];result.forEach((docSnap)=>{const data=docSnap.data();lines.push("• "+docSnap.id+" — "+(data.name||data.productName||data.title||"(product name field not found)"))});
+   showStatus("CONNECTION SUCCESSFUL\nSigned in as: "+credential.user.email+"\nRead-only test found "+result.size+" document(s) (maximum 5 shown):\n"+lines.join("\n")+"\n\nNo data was changed.");
+  }
+  signOutBtn.classList.remove("hidden");
+ }catch(error){
+  const messages={
+   "auth/invalid-credential":"Email or password was not accepted. Check that this is the owner account for the NEW project.",
+   "auth/user-not-found":"No matching user was found in this Firebase project's Authentication users.",
+   "auth/wrong-password":"Password was not accepted. Do not send it in chat.",
+   "auth/too-many-requests":"Too many attempts. Wait a while before trying again.",
+   "permission-denied":"Signed in, but Firestore denied the read. Check the Firestore rules for the owner UID.",
+   "unavailable":"Firebase is temporarily unavailable or the internet connection is unstable."
+  };
+  const code=error.code||"";
+  showStatus("TEST FAILED\n"+(messages[code]||(code+(error.message?"\n"+error.message:"\nPlease check the connection and Firebase setup.")))+"\n\nNo upload, edit, or delete operation was attempted.");
+ }finally{testBtn.disabled=false;testBtn.textContent="Sign in & Test Connection"}
+});
+signOutBtn.addEventListener("click",async()=>{
+ try{await signOut(auth);document.getElementById("password").value="";signOutBtn.classList.add("hidden");showStatus("Signed out. No data was changed.")}
+ catch(error){showStatus("Could not sign out: "+(error.code||error.message))}
+});
+</script></body></html>

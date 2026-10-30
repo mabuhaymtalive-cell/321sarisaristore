@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>321 Sari-Sari Store — Master Dashboard Draft</title>
+<style>
+:root{--navy:#102b4e;--yellow:#ffd447;--bg:#f3f6fb;--ink:#172033;--muted:#65738a;--line:#dce4ef;--red:#9f2424;--green:#176b45}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:var(--navy);color:white;padding:18px 16px;border-bottom:5px solid var(--yellow)}
+.wrap{max-width:1100px;margin:auto}.brand{font-weight:800;font-size:1.3rem}.sub{opacity:.88;font-size:.9rem;margin-top:4px}
+main{max-width:1100px;margin:18px auto;padding:0 12px 32px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #102b550b}
+h1,h2,h3{margin:0 0 12px}h1{font-size:1.35rem}h2{font-size:1.1rem}p{line-height:1.5}.muted,small{color:var(--muted)}label{display:block;font-weight:650;font-size:.88rem;margin:10px 0 5px}
+input,select,textarea{width:100%;font:inherit;padding:11px;border:1px solid #b8c5d7;border-radius:9px;background:#fff;color:var(--ink)}button{font:inherit;font-weight:700;border:0;border-radius:9px;padding:11px 14px;background:var(--yellow);color:#18243a;cursor:pointer;min-height:42px}button.secondary{background:#e8eef7;color:var(--navy)}button.danger{background:#fce8e8;color:#8d2020}button:disabled{opacity:.55;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.nav button.active{outline:3px solid #a7c8ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}.stat{border:1px solid var(--line);border-radius:12px;padding:13px;background:#f9fbff}.stat strong{display:block;font-size:1.35rem;color:var(--navy);margin-top:4px}
+.notice{background:#fff8d9;border:1px solid #f2dc81;padding:12px;border-radius:10px;margin:10px 0;line-height:1.5}.status{padding:11px;border-radius:10px;background:#edf2f8;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}.status.good{background:#e8f7ef;color:#145c3b}.status.bad{background:#fff0ef;color:#8e2118}
+.hidden{display:none!important}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:600px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f8fc}
+.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:7px 9px;min-height:34px;font-size:.85rem}.pill{display:inline-block;background:#edf2f8;padding:4px 8px;border-radius:99px;font-size:.8rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:14px}
+@media(min-width:760px){.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two .card{margin-bottom:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">321 Sari-Sari Store</div><div class="sub">Master Dashboard · Firebase-connected owner workspace draft</div></div></header>
+<main>
+<section id="loginCard" class="card">
+<h1>Owner sign-in</h1>
+<p class="muted">Sign in with the store owner account. This draft uses the target Firebase project and does not import or delete existing products automatically.</p>
+<div class="two">
+<div><label for="email">Owner email</label><input id="email" type="email" autocomplete="username" placeholder="Owner email"></div>
+<div><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Firebase password"></div>
+</div>
+<div class="row" style="margin-top:12px"><button id="loginBtn">Sign in</button><button id="logoutBtn" class="secondary hidden">Sign out</button></div>
+<div id="loginStatus" class="status" role="status" style="margin-top:12px">Waiting for Firebase module to start. If this message stays after pressing Sign in, open this page from an HTTPS-hosted site; local Downloads/content:// may prevent Firebase modules from running.</div>
+</section>
+<div id="app" class="hidden">
+<div class="row" style="margin:0 0 12px;padding:10px 12px;background:#eaf2ff;border:1px solid #cbdaf5;border-radius:12px">
+  <span id="ownerSessionStatus" style="align-self:center;font-weight:650">Owner session active</span>
+  <button id="appLogoutBtn" class="secondary" type="button">Sign out</button>
+</div>
+<div class="notice"><strong>Safety:</strong> This dashboard only uses owner-authenticated Firebase access. It does not upload local inventory, delete products, or publish Firestore Rules. Customer-facing checkout and secure server-side delivery PIN verification are not enabled in this draft.</div>
+<nav class="nav" aria-label="Dashboard sections">
+<button class="active" data-tab="overview">Overview</button><button data-tab="products">Products</button><button data-tab="orders">Orders</button><button data-tab="neworder">Manual order</button><button data-tab="settings">Store settings</button>
+</nav>
+<section id="tab-overview" class="tab">
+<div class="grid">
+<div class="stat">Products loaded<strong id="statProducts">0</strong></div>
+<div class="stat">Orders loaded<strong id="statOrders">0</strong></div>
+<div class="stat">Pending orders<strong id="statPending">0</strong></div>
+<div class="stat">Paid orders<strong id="statPaid">0</strong></div>
+</div>
+<div class="card" style="margin-top:14px"><h2>System status</h2><div id="systemStatus" class="status">Signed in; loading records…</div><p class="muted">An empty collection may be normal for a new project. Records are only created when you explicitly save a product, order, or settings.</p></div>
+</section>
+<section id="tab-products" class="tab hidden">
+<div class="two">
+<div class="card"><h2 id="productFormTitle">Add product</h2><input id="productId" type="hidden">
+<label for="pName">Product name</label><input id="pName" maxlength="120" placeholder="e.g. Ganador Rice">
+<div class="row"><div><label for="pCategory">Category</label><input id="pCategory" maxlength="80" placeholder="Rice & Grains"></div><div><label for="pUnit">Unit</label><select id="pUnit"><option>Piece</option><option>Piraso</option><option>Tingi</option><option>Pack</option><option>Pakete</option><option>Kilo</option><option>Sako</option><option>Bottle</option><option>Can</option><option>Box</option></select></div></div>
+<div class="row"><div><label for="pPrice">Selling price (₱)</label><input id="pPrice" type="number" min="0" step=".01" inputmode="decimal"></div><div><label for="pStock">Stock quantity</label><input id="pStock" type="number" min="0" step="1" inputmode="numeric"></div></div>
+<label for="pSku">SKU / code (optional)</label><input id="pSku" maxlength="80" placeholder="Optional product code">
+<div class="row" style="margin-top:12px"><button id="saveProductBtn">Save product</button><button id="resetProductBtn" class="secondary">Clear form</button></div>
+<div class="muted" style="margin-top:8px">Saving creates or updates only the product ID shown in the form. It never deletes other products.</div></div>
+<div class="card"><h2>Product inventory</h2><label for="productSearch">Search products</label><input id="productSearch" placeholder="Search name/category/SKU"><div class="row" style="margin-top:10px"><button id="refreshProductsBtn" class="secondary">Refresh products</button><span id="productCount" class="muted">0 products</span></div><div id="productsList" style="margin-top:12px"></div></div>
+</div>
+</section>
+<section id="tab-orders" class="tab hidden">
+<div class="card"><div class="row"><h2 style="margin:0">Order records</h2><button id="refreshOrdersBtn" class="secondary">Refresh orders</button></div><p class="muted">Owner view only. Payment status is not automatically verified from a customer's claim.</p><div id="ordersList"></div></div>
+</section>
+<section id="tab-neworder" class="tab hidden">
+<div class="card"><h2>Create manual order</h2><p class="muted">For owner-recorded orders only. This is not public customer checkout. Verify payment separately before marking paid.</p>
+<label for="cName">Customer name</label><input id="cName" maxlength="120" placeholder="Customer name">
+<div class="row"><div><label for="cPhone">Phone (optional)</label><input id="cPhone" maxlength="40" placeholder="Phone number"></div><div><label for="oPayment">Payment method</label><select id="oPayment"><option value="COD">COD</option><option value="GCash">GCash</option><option value="Bank Transfer">Bank Transfer</option></select></div></div>
+<label for="oAddress">Delivery address / pickup</label><input id="oAddress" maxlength="300" placeholder="Address or Pickup">
+<label for="oItems">Items and quantities</label><textarea id="oItems" rows="3" maxlength="2000" placeholder="Example: Ganador Rice x 2 — owner must verify price and stock"></textarea>
+<div class="row"><div><label for="oTotal">Order total (₱)</label><input id="oTotal" type="number" min="0" step=".01" inputmode="decimal"></div><div><label for="oDelivery">Delivery fee (₱)</label><input id="oDelivery" type="number" min="0" step=".01" value="30" inputmode="decimal"></div></div>
+<div class="row"><div><label for="oPaymentStatus">Payment status</label><select id="oPaymentStatus"><option value="Unpaid">Unpaid / unverified</option><option value="Pending verification">Pending verification</option><option value="Paid">Paid — verified by owner only</option></select></div><div><label for="oStatus">Order status</label><select id="oStatus"><option>New</option><option>Confirmed</option><option>Cancelled</option></select></div></div>
+<button id="saveOrderBtn" style="margin-top:12px">Save manual order</button>
+</div>
+</section>
+<section id="tab-settings" class="tab hidden">
+<div class="card"><h2>Store settings</h2><p class="muted">Only saves the settings document with ID <code>main</code>. It does not overwrite product data.</p>
+<label for="sName">Store name</label><input id="sName" value="321 Sari-Sari Store" maxlength="120">
+<label for="sPhone">Store contact (optional)</label><input id="sPhone" maxlength="80" placeholder="Phone / Messenger contact">
+<label for="sDelivery">Delivery policy</label><textarea id="sDelivery" rows="3">San Carlos City proper: ₱30 fixed delivery fee. Other areas: fee negotiable. Pickup available.</textarea>
+<label>Accepted payment methods</label><div class="row"><label><input type="checkbox" id="payCOD" checked style="width:auto"> COD</label><label><input type="checkbox" id="payGCash" checked style="width:auto"> GCash</label><label><input type="checkbox" id="payBank" checked style="width:auto"> Bank Transfer</label></div>
+<button id="saveSettingsBtn" style="margin-top:12px">Save settings</button><button id="loadSettingsBtn" class="secondary" style="margin-top:12px">Load settings</button>
+</div>
+</section>
+<div id="globalStatus" class="status" role="status">Waiting for sign-in.</div>
+</div>
+<footer>321 Sari-Sari Store · Draft for controlled testing · No automatic inventory upload or deletion</footer>
+</main>
+<script type="module">
+// Load Firebase modules and attempt sign-in; do not block the button just because the file was opened from Downloads.
+async function startDashboard() {
+try {
+const [appModule, authModule, firestoreModule] = await Promise.all([
+  import("https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js"),
+  import("https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js"),
+  import("https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js")
+]);
+const { initializeApp } = appModule;
+const { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } = authModule;
+const { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, limit, serverTimestamp } = firestoreModule;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+  authDomain: "sarisaristore321-1f24b.firebaseapp.com",
+  projectId: "sarisaristore321-1f24b",
+  storageBucket: "sarisaristore321-1f24b.firebasestorage.app",
+  messagingSenderId: "367997748364",
+  appId: "1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const OWNER_UID = "XCBkfDyQksWLLlabpCTHyh4g5Ev1";
+let app, auth, db;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} catch (e) {
+  const el = document.getElementById("loginStatus");
+  if (el) { el.textContent = "Firebase initialization failed: " + (e.code || "") + " — " + (e.message || e); el.className = "status bad"; }
+  throw e;
+}
+const $ = id => document.getElementById(id);
+let products = [], orders = [], currentUser = null;
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function status(id,msg,type=""){const el=$(id);el.textContent=msg;el.className="status"+(type?" "+type:"");}
+function global(msg,type=""){status("globalStatus",msg,type);}
+function money(n){return "₱"+(Number(n)||0).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function validOwner(){if(!currentUser || currentUser.uid!==OWNER_UID){global("Access denied: signed-in account is not the configured owner.","bad");return false;}return true;}
+window.addEventListener("unhandledrejection", e => {
+  const msg = e.reason?.code ? e.reason.code + " — " + (e.reason.message || "") : String(e.reason || "Unknown async error");
+  status("loginStatus", "Unexpected Firebase/browser error: " + msg, "bad");
+});
+$("loginBtn").addEventListener("click",async()=>{
+  const email=$("email").value.trim(), password=$("password").value;
+  if(!email || !password){status("loginStatus","Ibutang una ang owner email ug password.","bad");return;}
+  const btn=$("loginBtn"); btn.disabled=true; status("loginStatus","Nag-sign in… palihog hulat.");
+  try{
+    // Avoid an endless spinner if the browser/network request never settles.
+    const signInTask = signInWithEmailAndPassword(auth,email,password);
+    let timeoutId;
+    try {
+      await Promise.race([
+        signInTask,
+        new Promise((_, reject) => { timeoutId = setTimeout(() => { const err = new Error("Firebase sign-in did not respond within 20 seconds. Check connection and the exact error details below."); err.code = "dashboard/sign-in-timeout"; reject(err); }, 20000); })
+      ]);
+    } finally { clearTimeout(timeoutId); }
+  }
+  catch(e){
+    let msg="Sign-in failed: "+(e.code||"unknown error")+" — "+(e.message||e);
+    if(e.code==="dashboard/sign-in-timeout") msg="Wala motubag ang Firebase sign-in sulod sa 20 segundos. Dili pa kini pamatuod nga sayop ang password. Susiha ang internet ug ang website address; sulayi pag-usab human ma-stable ang koneksiyon.";
+    if(e.code==="auth/api-key-not-valid") msg="Firebase API key rejected (auth/api-key-not-valid). Ang dashboard nakatawag na sa Firebase, apan gi-reject ang key/config. Wala gi-usab ang data. I-verify ang Web app config ug API key restrictions; ayaw i-reset ang password tungod lang niini.";
+    else if(e.code==="auth/invalid-credential" || e.code==="auth/wrong-password" || e.code==="auth/user-not-found") msg="Dili madawat ang email/password ("+e.code+"). Susiha ang owner account; ayaw ipadala dinhi ang password.";
+    else if(e.code==="auth/unauthorized-domain") msg="Gibabagan ang website domain sa Firebase Authentication (auth/unauthorized-domain).";
+    status("loginStatus",msg,"bad");
+  } finally {btn.disabled=false;}
+});
+$("logoutBtn").addEventListener("click",()=>signOut(auth));
+$("appLogoutBtn").addEventListener("click",async()=>{
+  if (!confirm("Sign out of the owner dashboard?")) return;
+  try { await signOut(auth); status("loginStatus","Signed out. Enter the owner email and password to sign in again.","good"); }
+  catch(e) { global("Sign-out failed: "+(e.code||"")+" — "+(e.message||e),"bad"); }
+});
+onAuthStateChanged(auth,async user=>{try {
+  currentUser=user;
+  const ok=!!user&&user.uid===OWNER_UID;
+  $("loginCard").classList.toggle("hidden",ok);
+  $("app").classList.toggle("hidden",!ok);
+  $("logoutBtn").classList.toggle("hidden",!user);
+  if ($("ownerSessionStatus")) $("ownerSessionStatus").textContent = ok ? "Signed in as store owner" : "Owner session inactive";
+  if(user&&!ok){
+    status("loginStatus","Signed-in account does not match the configured owner. Signing out for safety.","bad");
+    await signOut(auth);
+    return;
+  }
+  if(ok){
+    status("loginStatus","Owner signed in.","good");
+    global("Owner authenticated. Loading Firestore records…");
+    await Promise.all([loadProducts(),loadOrders(),loadSettings()]);
+  }
+} catch(e) { status("loginStatus","Authentication state error: "+(e.code||"")+" — "+(e.message||e),"bad"); } });
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".tab").forEach(x=>x.classList.add("hidden"));$("tab-"+b.dataset.tab).classList.remove("hidden");}));
+async function loadProducts(){if(!validOwner())return;try{const snap=await getDocs(collection(db,"storeProducts"));products=snap.docs.map(d=>({id:d.id,...d.data()}));renderProducts();$("statProducts").textContent=products.length;status("systemStatus",`Connected to ${firebaseConfig.projectId}. Loaded ${products.length} product records. No products were changed.`,"good");}catch(e){status("systemStatus","Could not read storeProducts: "+e.code+" — "+e.message,"bad");global("Products read failed. Check Firestore rules; no data was changed.","bad");}}
+function renderProducts(){const q=$("productSearch").value.trim().toLowerCase();const list=products.filter(p=>[p.name,p.category,p.sku,p.id].some(v=>String(v??"").toLowerCase().includes(q)));$("productCount").textContent=`${list.length} shown / ${products.length} loaded`;$("productsList").innerHTML=list.length?`<div class="tablewrap"><table><thead><tr><th>Product</th><th>Category / Unit</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead><tbody>${list.map(p=>`<tr><td><strong>${esc(p.name||p.productName||"(unnamed)")}</strong><br><small>${esc(p.id)}</small></td><td>${esc(p.category||"—")}<br>${esc(p.unit||"—")}</td><td>${money(p.price??p.sellingPrice)}</td><td>${esc(p.stock??p.quantity??"—")}</td><td><div class="actions"><button class="secondary" data-edit="${esc(p.id)}">Edit</button></div></td></tr>`).join("")}</tbody></table></div>`:"<p class='muted'>No matching products. The collection may be empty; nothing was imported automatically.</p>";document.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>editProduct(b.dataset.edit)));}
+$("productSearch").addEventListener("input",renderProducts);$("refreshProductsBtn").addEventListener("click",loadProducts);
+function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;$("productId").value=p.id;$("pName").value=p.name||p.productName||"";$("pCategory").value=p.category||"";$("pUnit").value=p.unit||"Piece";$("pPrice").value=p.price??p.sellingPrice??"";$("pStock").value=p.stock??p.quantity??"";$("pSku").value=p.sku||"";$("productFormTitle").textContent="Edit product: "+p.id;$("saveProductBtn").textContent="Update this product";window.scrollTo({top:0,behavior:"smooth"});}
+$("resetProductBtn").addEventListener("click",()=>{["productId","pName","pCategory","pPrice","pStock","pSku"].forEach(id=>$(id).value="");$("pUnit").value="Piece";$("productFormTitle").textContent="Add product";$("saveProductBtn").textContent="Save product";});
+$("saveProductBtn").addEventListener("click",async()=>{if(!validOwner())return;const name=$("pName").value.trim(),price=Number($("pPrice").value),stock=Number($("pStock").value),category=$("pCategory").value.trim();if(!name||!Number.isFinite(price)||price<0||!Number.isInteger(stock)||stock<0){global("Enter a product name, non-negative price, and whole-number stock.","bad");return;}const oldId=$("productId").value;const id=oldId||("prod_"+crypto.randomUUID());const data={name,category,unit:$("pUnit").value,price,stock,sku:$("pSku").value.trim(),updatedAt:serverTimestamp()};if(!oldId)data.createdAt=serverTimestamp();try{await setDoc(doc(db,"storeProducts",id),data,{merge:true});global(`Saved product ${name} (${id}). No other product records were deleted.`,"good");$("resetProductBtn").click();await loadProducts();}catch(e){global("Save failed: "+e.code+" — "+e.message,"bad");}});
+async function loadOrders(){if(!validOwner())return;try{let snap;try{snap=await getDocs(query(collection(db,"customerOrders"),orderBy("createdAt","desc"),limit(100)));}catch{snap=await getDocs(query(collection(db,"customerOrders"),limit(100)));}orders=snap.docs.map(d=>({id:d.id,...d.data()}));renderOrders();$("statOrders").textContent=orders.length;$("statPending").textContent=orders.filter(o=>!["Delivered","Cancelled"].includes(o.status)).length;$("statPaid").textContent=orders.filter(o=>o.paymentStatus==="Paid").length;}catch(e){$("ordersList").innerHTML="";global("Orders read failed: "+e.code+" — "+e.message,"bad");}}
+function renderOrders(){$("ordersList").innerHTML=orders.length?`<div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody>${orders.map(o=>`<tr><td><strong>${esc(o.id)}</strong><br><small>${esc(o.createdAt?.toDate?.()?.toLocaleString?.()||"Date not available")}</small></td><td>${esc(o.customerName||o.customer?.name||"—")}<br><small>${esc(o.phone||"")}</small></td><td>${money(o.total)}<br><small>Fee: ${money(o.deliveryFee)}</small></td><td>${esc(o.paymentMethod||"—")}<br><span class="pill">${esc(o.paymentStatus||"Unpaid")}</span></td><td>${esc(o.status||"New")}</td><td><div class="actions"><button class="secondary" data-paid="${esc(o.id)}">Mark paid (verified)</button><button class="secondary" data-confirm="${esc(o.id)}">Confirm</button></div></td></tr>`).join("")}</tbody></table></div>`:"<p class='muted'>No customerOrders records found. Public checkout is not enabled by this owner-only dashboard draft.</p>";document.querySelectorAll("[data-paid]").forEach(b=>b.addEventListener("click",()=>updateOrder(b.dataset.paid,{paymentStatus:"Paid"})));document.querySelectorAll("[data-confirm]").forEach(b=>b.addEventListener("click",()=>updateOrder(b.dataset.confirm,{status:"Confirmed"})));}
+async function updateOrder(id,patch){if(!validOwner())return;if(!confirm("Update order "+id+"? Confirm you have checked the payment/order details."))return;try{await setDoc(doc(db,"customerOrders",id),{...patch,updatedAt:serverTimestamp()},{merge:true});global("Order updated: "+id,"good");await loadOrders();}catch(e){global("Order update failed: "+e.code+" — "+e.message,"bad");}}
+$("refreshOrdersBtn").addEventListener("click",loadOrders);
+$("saveOrderBtn").addEventListener("click",async()=>{if(!validOwner())return;const customerName=$("cName").value.trim(),itemsText=$("oItems").value.trim(),total=Number($("oTotal").value),deliveryFee=Number($("oDelivery").value);if(!customerName||!itemsText||!Number.isFinite(total)||total<0||!Number.isFinite(deliveryFee)||deliveryFee<0){global("Enter customer name, items, valid total, and valid delivery fee.","bad");return;}if($("oPaymentStatus").value==="Paid"&&!confirm("Have you personally verified receipt of this payment?"))return;const id="ord_"+crypto.randomUUID();const data={customerName,phone:$("cPhone").value.trim(),address:$("oAddress").value.trim()||"Pickup",itemsText,total,deliveryFee,grandTotal:total+deliveryFee,paymentMethod:$("oPayment").value,paymentStatus:$("oPaymentStatus").value,status:$("oStatus").value,source:"owner-manual",createdAt:serverTimestamp(),updatedAt:serverTimestamp()};try{await setDoc(doc(db,"customerOrders",id),data);global("Manual order saved: "+id,"good");["cName","cPhone","oAddress","oItems","oTotal"].forEach(x=>$(x).value="");$("oDelivery").value="30";await loadOrders();document.querySelector('[data-tab="orders"]').click();}catch(e){global("Order save failed: "+e.code+" — "+e.message,"bad");}});
+async function loadSettings(){if(!validOwner())return;try{const snap=await getDoc(doc(db,"storeSettings","main"));if(!snap.exists()){global("No storeSettings/main document yet. Nothing created automatically.");return;}const s=snap.data();$("sName").value=s.storeName||s.name||"321 Sari-Sari Store";$("sPhone").value=s.phone||s.contact||"";$("sDelivery").value=s.deliveryPolicy||"San Carlos City proper: ₱30 fixed delivery fee. Other areas: fee negotiable. Pickup available.";const methods=s.paymentMethods||["COD","GCash","Bank Transfer"];$("payCOD").checked=methods.includes("COD");$("payGCash").checked=methods.includes("GCash");$("payBank").checked=methods.includes("Bank Transfer");}catch(e){global("Settings read failed: "+e.code+" — "+e.message,"bad");}}
+$("loadSettingsBtn").addEventListener("click",loadSettings);
+$("saveSettingsBtn").addEventListener("click",async()=>{if(!validOwner())return;const data={storeName:$("sName").value.trim()||"321 Sari-Sari Store",phone:$("sPhone").value.trim(),deliveryPolicy:$("sDelivery").value.trim(),paymentMethods:[...($("payCOD").checked?["COD"]:[]),...($("payGCash").checked?["GCash"]:[]),...($("payBank").checked?["Bank Transfer"]:[])],updatedAt:serverTimestamp()};if(!data.paymentMethods.length){global("Select at least one payment method.","bad");return;}if(!confirm("Save only storeSettings/main? This will not modify products or orders."))return;try{await setDoc(doc(db,"storeSettings","main"),data,{merge:true});global("Store settings saved. Product and order documents were not changed.","good");}catch(e){global("Settings save failed: "+e.code+" — "+e.message,"bad");}});
+
+} catch (e) {
+  const el = document.getElementById("loginStatus");
+  if (el) {
+    const detail = (e && (e.message || e.code)) ? (e.code ? e.code + " — " : "") + (e.message || "") : String(e);
+    el.textContent = "Firebase module/startup failed. " + detail + " Check internet connection and the page origin. The exact startup error is shown above.";
+    el.className = "status bad";
+  }
+  const btn = document.getElementById("loginBtn"); if (btn) btn.disabled = false;
+}
+}
+startDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "storeName": "321 Sari-Sari Store",
+  "generatedAt": "2026-10-31T07:55:31.151Z",
+  "source": "M9 local backup — public fields only",
+  "products": [
+    {
+      "id": "p_1793230199357",
+      "name": "Test Product",
+      "price": 10.0,
+      "inStock": true,
+      "category": "Beverages",
+      "unit": "pcs"
+    }
+  ]
+}

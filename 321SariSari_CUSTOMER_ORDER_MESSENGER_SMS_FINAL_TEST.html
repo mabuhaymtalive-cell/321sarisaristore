@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>321 Sari-Sari Store — Customer Ordering</title><style>
+:root{--n:#10284b;--y:#ffd43b;--bg:#f3f6fa;--line:#dbe3ec}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,Arial;color:#182230}button,input,select,textarea{font:inherit}button{padding:11px 13px;border:0;border-radius:10px;font-weight:700}.primary{background:var(--y)}.dark{background:var(--n);color:white}.top{background:var(--n);color:white;padding:20px;border-bottom:6px solid var(--y)}.wrap{max-width:850px;margin:auto;padding:14px}.panel,.notice,.product{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}.notice{background:#fff8d9;font-size:13px;line-height:1.5}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.product h3{margin:8px 0}.field{margin:10px 0}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px}.muted{font-size:13px;color:#64748b}.row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}.qty{width:75px;padding:8px;border:1px solid #cbd5e1;border-radius:8px}.hidden{display:none}
+</style></head><body><div style="background:#7f1d1d;color:white;text-align:center;padding:9px;font-weight:800">CUSTOMER ORDERING — TEST COPY</div><header class="top"><h1>321 Sari-Sari Store</h1><p>Customer Ordering · Messenger / SMS</p></header><main class="wrap">
+<div class="notice"><b>Order by Messenger or SMS:</b> Choose products, enter delivery details, then send the prepared order to the store. The customer must press Send. The store will confirm availability and the final order. Product stock and prices are a published catalog snapshot and may change before confirmation.</div>
+<section class="panel"><h2>Products</h2><input id="search" placeholder="Search products..." style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px" oninput="renderProducts()"><div id="products" class="grid"></div><div class="field"><label>Load catalog file for local preview (store owner only)</label><input id="catalogFile" type="file" accept="application/json,.json"></div><p id="catalogStatus" class="muted">Loading published catalog…</p><p id="empty" class="muted">Customer catalog not loaded yet. The store must publish catalog.json beside this page, or select the catalog file below for a local preview.</p></section>
+<section class="panel"><h2>Your Cart</h2><div id="cart" class="muted">No items yet.</div><div class="row"><b>Subtotal</b><b id="subtotal">₱0.00</b></div></section>
+<section class="panel"><h2>Checkout</h2><form id="checkout">
+<div class="field"><label>Full name *</label><input name="customer" required maxlength="100"></div><div class="field"><label>Mobile number *</label><input name="phone" required type="tel" maxlength="30"></div>
+<div class="field"><label>Delivery area *</label><select name="area" id="area"><option>San Carlos City Proper</option><option>Vallehermoso</option><option>Canlaon City</option><option>Don Salvador Benedicto (DSB)</option><option>Calatrava</option><option>Toboso</option><option>Store Pickup</option></select></div><div class="notice" id="feeInfo"></div>
+<div class="field"><label>Payment method *</label><select name="payment" required><option value="COD">COD</option><option value="GCash">GCash</option><option value="Bank Transfer">Bank Transfer</option></select><small class="muted">COD: payment is collected on delivery. GCash / Bank Transfer: payment remains For verification until the store owner confirms it.</small></div><div class="field"><label>Notes / landmark</label><textarea name="notes" maxlength="500"></textarea></div>
+<div class="row"><span>Subtotal</span><b id="sub2">₱0.00</b></div><div class="row"><span>Delivery fee</span><b id="delivery">₱0.00</b></div><div class="row"><b>Total</b><b id="grand">₱0.00</b></div><button class="primary" type="submit" style="width:100%;margin-top:12px">Prepare Order Message</button></form>
+<div id="result" class="notice hidden"></div>
+<div id="sendOptions" class="panel hidden">
+ <h3>Send your order to 321 Sari-Sari Store</h3>
+ <p class="muted">Copy the prepared order first. Then choose Messenger or SMS. You must press Send in the messaging app.</p>
+ <button type="button" class="dark" id="copyOrder" style="width:100%">Copy Order Details</button>
+ <a id="openMessenger" class="primary" href="https://m.me/321SariSariStore" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;padding:12px;border-radius:10px;margin-top:10px;font-weight:700;color:#10284b">Open Store Messenger</a>
+ <a id="openSms" class="primary" href="#" style="display:block;text-align:center;text-decoration:none;padding:12px;border-radius:10px;margin-top:10px;font-weight:700;color:#10284b">Open SMS to 09669011211</a>
+ <p class="muted">Messenger: copy the order, open the store chat, paste, then Send. SMS: opens a prepared text to the store number; check it and press Send.</p><textarea id="preparedMessagePreview" readonly rows="8" style="width:100%;margin-top:8px;padding:10px;border:1px solid #cbd5e1;border-radius:9px"></textarea>
+</div></section></main>
+<script>
+let products=[],cart={},preparedOrderText='';
+const money=n=>'₱'+(Number(n)||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){
+ const status=document.getElementById('catalogStatus');
+ try{
+  const response=await fetch('./catalog.json',{cache:'no-store'});
+  if(!response.ok)throw new Error('catalog.json not found');
+  const data=await response.json();
+  applyCatalog(data);
+  status.textContent=`Published catalog loaded: ${products.length} available products. Last updated: ${data.generatedAt?new Date(data.generatedAt).toLocaleString():'date not provided'}.`;
+ }catch(e){
+  products=[];
+  renderProducts();renderCart();updateFee();
+  status.textContent='Published catalog is not available yet. Store owner: export catalog.json from M9 and publish it beside this customer page. For local preview, select the catalog file below.';
+ }
+}
+function applyCatalog(data){
+ const rows=Array.isArray(data)?data:(Array.isArray(data?.products)?data.products:[]);
+ products=rows.filter(p=>p&&p.id&&String(p.name||'').trim()&&Number.isFinite(Number(p.price))&&Number(p.price)>=0&&(p.inStock===true||Number(p.stock)>0))
+  .map(p=>({id:String(p.id),name:String(p.name).trim(),price:Number(p.price),category:String(p.category||'Other'),unit:String(p.unit||'pcs')}));
+ cart={};renderProducts();renderCart();updateFee();
+}
+document.getElementById('catalogFile').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  const data=JSON.parse(await file.text());applyCatalog(data);
+  document.getElementById('catalogStatus').textContent=`Local preview catalog loaded: ${products.length} available products. This does not publish it to customers.`;
+ }catch(err){document.getElementById('catalogStatus').textContent='Catalog file could not be read. Please select the catalog.json exported from M9.'}
+});
+function renderProducts(){
+ let q=document.getElementById('search').value.toLowerCase(),a=products.filter(p=>String(p.name).toLowerCase().includes(q));
+ document.getElementById('products').innerHTML=a.map(p=>`<article class="product"><div class="muted">${esc(p.category||'Other')} · ${esc(p.unit||'pcs')} · Available at last catalog update</div><h3>${esc(p.name)}</h3><b>${money(p.price)}</b><p><input class="qty" id="q-${esc(p.id)}" type="number" min=".01" step=".01" value="1"> <button class="dark addProductBtn" type="button" data-id="${esc(p.id)}">Add</button></p></article>`).join('');
+ document.querySelectorAll('.addProductBtn').forEach(btn=>btn.addEventListener('click',()=>add(btn.dataset.id)));
+ document.getElementById('empty').classList.toggle('hidden',a.length>0);
+}
+function add(id){let p=products.find(x=>x.id===id);if(!p)return;let q=Number(document.getElementById('q-'+CSS.escape(id)).value);if(!Number.isFinite(q)||q<=0){alert('Enter a valid quantity. The store will confirm actual stock before accepting the order.');return}cart[id]=(cart[id]||0)+q;renderCart()}
+function removeItem(id){delete cart[id];renderCart()}
+function subtotal(){return Object.entries(cart).reduce((n,[id,q])=>n+(Number(products.find(p=>p.id===id)?.price)||0)*q,0)}
+function renderCart(){
+ let a=Object.entries(cart);
+ document.getElementById('cart').innerHTML=a.length?a.map(([id,q])=>{let p=products.find(x=>x.id===id);return `<div class="row"><span>${esc(p.name)} × ${q} <button type="button" class="removeItemBtn" data-id="${esc(id)}">Remove</button></span><b>${money(p.price*q)}</b></div>`}).join(''):'No items yet.';
+ document.querySelectorAll('.removeItemBtn').forEach(btn=>btn.addEventListener('click',()=>removeItem(btn.dataset.id)));
+ document.getElementById('subtotal').textContent=money(subtotal());document.getElementById('sub2').textContent=money(subtotal());updateFee();
+}
+function calc(){let a=document.getElementById('area').value,s=subtotal();if(a==='Store Pickup')return{fee:0,info:'Pickup: ₱0 delivery fee.'};if(a==='San Carlos City Proper')return{fee:s>=500?30:50,info:`San Carlos Proper: ${s>=500?'₱500 and above = ₱30':'Below ₱500 = ₱50'}; 50% rider / 50% store.`};return{fee:null,info:'Outside San Carlos Proper: negotiable fee, to be confirmed by store. Rider receives fixed ₱15; store gets the balance.'}}
+function updateFee(){let d=calc();document.getElementById('feeInfo').textContent=d.info;document.getElementById('delivery').textContent=d.fee===null?'To be confirmed':money(d.fee);document.getElementById('grand').textContent=d.fee===null?'Subtotal + fee to be confirmed':money(subtotal()+d.fee)}
+document.getElementById('area').addEventListener('change',updateFee);
+document.getElementById('checkout').onsubmit=e=>{
+ e.preventDefault();
+ const items=Object.entries(cart).map(([id,qty])=>({productId:id,qty:Number(qty)}));
+ if(!items.length){alert('Please add at least one product.');return}
+ for(const it of items){
+  const p=products.find(x=>x.id===it.productId);
+  if(!p||!Number.isFinite(it.qty)||it.qty<=0){
+   alert('Invalid quantity. Please check your cart.');return;
+  }
+ }
+ const form=e.target,f=new FormData(form),payment=String(f.get('payment')||'');
+ if(!['COD','GCash','Bank Transfer'].includes(payment)){alert('Choose a valid payment method.');return}
+ const customer=String(f.get('customer')||'').trim(),phone=String(f.get('phone')||'').trim();
+ if(!customer||!phone){alert('Enter customer name and mobile number.');return}
+ const area=String(f.get('area')),notes=String(f.get('notes')||'').trim();
+ const d=calc(),sub=subtotal(),total=d.fee===null?null:sub+d.fee;
+ const ref='321-'+Date.now().toString(36).toUpperCase();
+ const lines=items.map(it=>{
+  const p=products.find(x=>x.id===it.productId);
+  return `• ${p.name} × ${it.qty} ${p.unit||'pcs'} — ${money(Number(p.price)*it.qty)}`;
+ });
+ preparedOrderText=[
+  'ORDER REQUEST — 321 Sari-Sari Store',
+  `Reference: ${ref}`,
+  `Customer: ${customer}`,
+  `Mobile: ${phone}`,
+  `Delivery area: ${area}`,
+  `Payment method: ${payment}`,
+  '',
+  'ITEMS:',
+  ...lines,
+  '',
+  `Subtotal: ${money(sub)}`,
+  `Delivery fee: ${d.fee===null?'To be confirmed by store':money(d.fee)}`,
+  `Estimated total: ${total===null?'Subtotal + delivery fee to be confirmed':money(total)}`,
+  `Payment status on request: ${payment==='COD'?'Pending collection':'For verification'}`,
+  `Notes / landmark: ${notes||'None'}`,
+  '',
+  'Please confirm product availability, final fee (if negotiable), and acceptance of this order.'
+ ].join('\n');
+ const result=document.getElementById('result');
+ result.classList.remove('hidden');
+ result.textContent=`Order message prepared (${ref}). Review the details, copy them, then send through Messenger or SMS. This is an order request only—not yet accepted by the store.`;
+ const send=document.getElementById('sendOptions');send.classList.remove('hidden');document.getElementById('preparedMessagePreview').value=preparedOrderText;
+ const smsUrl='sms:09669011211?body='+encodeURIComponent(preparedOrderText);
+ document.getElementById('openSms').href=smsUrl;
+ document.getElementById('copyOrder').onclick=async()=>{
+  try{
+   await navigator.clipboard.writeText(preparedOrderText);
+   result.textContent='Order details copied. Now open Messenger or SMS, paste if needed, then press Send.';
+  }catch(err){
+   const box=document.createElement('textarea');box.value=preparedOrderText;box.readOnly=true;
+   box.style.position='fixed';box.style.opacity='0';document.body.appendChild(box);box.select();
+   let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+   box.remove();
+   result.textContent=ok?'Order details copied. Open Messenger or SMS and press Send.':'Copy the order details manually from the prepared message below.';
+  }
+ };
+ window.scrollTo({top:send.offsetTop-20,behavior:'smooth'});
+};
+
+load();
+</script></body></html>

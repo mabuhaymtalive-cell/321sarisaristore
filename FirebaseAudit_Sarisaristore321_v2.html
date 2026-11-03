@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sarisaristore321 — Read-only Firebase Audit</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#14233b;background:#f3f6fb}
+body{margin:0;padding:18px}.wrap{max-width:760px;margin:auto}.card{background:#fff;border:1px solid #dce4ef;border-radius:16px;padding:18px;margin:12px 0;box-shadow:0 4px 18px #172b4d0a}
+h1{font-size:1.35rem;margin:0 0 6px}.muted{color:#53657e;font-size:.92rem}.project{font-weight:700;color:#123d73;overflow-wrap:anywhere}
+input{box-sizing:border-box;width:100%;padding:12px;margin:6px 0 12px;border:1px solid #c7d2e2;border-radius:10px;font-size:16px}
+button{padding:12px 16px;border:0;border-radius:10px;background:#123d73;color:white;font-weight:700;font-size:15px;margin:4px 6px 4px 0}
+button:disabled{opacity:.5}.secondary{background:#52647d}.status{padding:10px;border-radius:10px;background:#eef3fa;white-space:pre-wrap;overflow-wrap:anywhere}
+.ok{background:#e8f6ee;color:#155c34}.bad{background:#fff0ef;color:#8c2620}
+.item{padding:10px 0;border-bottom:1px solid #e7edf4}.item:last-child{border:0}.tag{font-weight:700}.small{font-size:.86rem}
+</style></head>
+<body><main class="wrap">
+<div class="card">
+<h1>Sarisaristore321 — Firebase Read-only Audit</h1>
+<div class="muted">This page only reads documents. It does not create, update, delete, import, or deploy anything.</div>
+<p class="project">Target project: sarisaristore321-1f24b</p>
+<div class="status bad"><b>Safety:</b> Do not use this page for the old project. No password is saved or transmitted anywhere except Firebase Authentication sign-in.</div>
+</div>
+<div class="card">
+<h2>Owner sign-in</h2>
+<label>Email</label><input id="email" type="email" autocomplete="username">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="login">Sign in</button><button id="logout" class="secondary" disabled>Sign out</button>
+<div id="auth" class="status">Not signed in.</div>
+</div>
+<div class="card">
+<h2>Run read-only checks</h2>
+<p class="muted">Checks setup documents and counts products without changing any data.</p>
+<button id="audit" disabled>Run read-only audit</button>
+<div id="result" class="status">Waiting for owner sign-in.</div>
+<div id="details"></div>
+</div>
+<div class="card small">
+<b>Documents checked:</b> <code>systemConfig/schema</code>, <code>storeSettings/main</code>, and 12 expected <code>storeCategories</code> IDs. It also requests a read-only product count and up to 5 product samples.
+<br><br><b>Important:</b> A missing document or permission-denied response is only an audit finding. This page will not repair it. Share the final result/screenshot for review.
+</div>
+</main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,collection,getCountFromServer,getDocs,limit,query} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+const cfg={
+ apiKey:"AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+ authDomain:"sarisaristore321-1f24b.firebaseapp.com",
+ projectId:"sarisaristore321-1f24b",
+ storageBucket:"sarisaristore321-1f24b.firebasestorage.app",
+ messagingSenderId:"367997748364",
+ appId:"1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const OWNER_UID="XCBkfDyQksWLLlabpCTHyh4g5Ev1";
+const cats=[
+ ["rice-grains","Rice & Grains"],["canned-goods","Canned Goods"],["noodles-pasta","Noodles & Pasta"],
+ ["beverages","Beverages"],["coffee-milk","Coffee & Milk"],["laundry-cleaning","Laundry & Cleaning"],
+ ["personal-care","Personal Care"],["cooking-essentials","Cooking Essentials"],["frozen-foods","Frozen Foods"],
+ ["eggs","Eggs"],["snacks-sweets","Snacks & Sweets"],["other-household-items","Other household items"]
+];
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let owner=null;
+function status(id,msg,kind=""){const el=$(id);el.textContent=msg;el.className="status "+kind}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+$("login").onclick=async()=>{
+ const email=$("email").value.trim(),password=$("password").value;
+ if(!email||!password){status("auth","Enter your owner email and password.","bad");return}
+ $("login").disabled=true;status("auth","Signing in…");
+ try{const c=await signInWithEmailAndPassword(auth,email,password);
+  if(c.user.uid!==OWNER_UID){await signOut(auth);throw new Error("UID mismatch: signed-in account is not the configured owner.");}
+  owner=c.user;$("audit").disabled=false;$("logout").disabled=false;status("auth","Authenticated owner UID confirmed. Correct project selected.","ok");
+ }catch(e){status("auth",(e.code||"error")+" — "+(e.message||e),"bad");}
+ finally{$("login").disabled=false}
+};
+$("logout").onclick=async()=>{await signOut(auth);owner=null;$("audit").disabled=true;$("logout").disabled=true;status("auth","Signed out.");status("result","Waiting for owner sign-in.");$("details").innerHTML="";};
+onAuthStateChanged(auth,u=>{if(!u){owner=null;$("audit").disabled=true;$("logout").disabled=true}});
+$("audit").onclick=async()=>{
+ if(!owner||owner.uid!==OWNER_UID){status("result","Owner authentication required.","bad");return}
+ $("audit").disabled=true;status("result","Reading setup documents…");
+ const rows=[];let errors=0;
+ async function readDoc(col,id,label){
+  try{const s=await getDoc(doc(db,col,id));rows.push({label,path:col+"/"+id,exists:s.exists(),data:s.exists()?s.data():null});if(!s.exists())errors++;}
+  catch(e){rows.push({label,path:col+"/"+id,error:(e.code||"error")+" — "+(e.message||e)});errors++;}
+ }
+ await readDoc("systemConfig","schema","Schema manifest");
+ await readDoc("storeSettings","main","Store settings");
+ for(const [id,name] of cats)await readDoc("storeCategories",id,"Category: "+name);
+ let productCount="Unavailable",samples=[];
+ try{const c=await getCountFromServer(collection(db,"storeProducts"));productCount=c.data().count;}
+ catch(e){productCount=(e.code||"error")+" — "+(e.message||e);errors++;}
+ try{const snap=await getDocs(query(collection(db,"storeProducts"),limit(5)));samples=snap.docs.map(d=>({id:d.id,name:d.data().name||d.data().productName||"(no name)"}));}
+ catch(e){samples=[{error:(e.code||"error")+" — "+(e.message||e)}];errors++;}
+ const present=rows.filter(x=>x.exists).length;
+ let lines=`Audit completed — ${new Date().toLocaleString()}\nProject: ${cfg.projectId}\nOwner UID verified: ${owner.uid}\nSetup docs present: ${present}/14\nMissing/failed document checks: ${errors}\nstoreProducts count: ${productCount}\nProduct samples read: ${samples.length}\n\nREAD ONLY — no writes or deletes performed.`;
+ status("result",lines,errors?"bad":"ok");
+ $("details").innerHTML="<h3>Document results</h3>"+rows.map(r=>`<div class="item"><div class="tag">${esc(r.label)} — ${r.error?"ERROR":r.exists?"PRESENT":"MISSING"}</div><div class="muted small">${esc(r.path)}</div>${r.data&&r.label==="Schema manifest"?`<div class="small">schemaVersion: ${esc(r.data.schemaVersion)} | projectId: ${esc(r.data.projectId)}</div>`:""}${r.data&&r.label==="Store settings"?`<div class="small">setupStatus: ${esc(r.data.setupStatus||"(not set)")}</div>`:""}${r.error?`<div class="small">${esc(r.error)}</div>`:""}</div>`).join("")+
+ "<h3>Product sample (maximum 5)</h3>"+samples.map(x=>`<div class="item small">${esc(x.id||"")} — ${esc(x.name||x.error||"")}</div>`).join("");
+ $("audit").disabled=false;
+};
+</script></body></html>

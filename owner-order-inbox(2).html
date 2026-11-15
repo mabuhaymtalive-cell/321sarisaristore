@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10284b">
+<title>321 Sari-Sari Store — Owner Order Inbox (Test Lab)</title>
+<style>
+:root{--navy:#10284b;--blue:#173f7a;--yellow:#ffd43b;--bg:#f3f6fa;--ink:#182230;--muted:#64748b;--line:#dbe3ec;--white:#fff;--green:#147a4b;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
+header{background:var(--navy);color:#fff;padding:18px 16px;border-bottom:6px solid var(--yellow)}
+.head{max-width:1000px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-size:clamp(20px,4vw,28px);margin:0}header p{margin:5px 0 0;color:#dbeafe;font-size:13px}
+main{max-width:1000px;margin:auto;padding:14px;display:grid;gap:14px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 24px #10284b0a;min-width:0}
+h2{font-size:19px;margin:0 0 12px}.notice{background:#fff8d9;border:1px solid #f2dc87;border-radius:12px;padding:12px;font-size:13px;line-height:1.5;margin:14px auto;max-width:1000px}
+.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:13px;font-weight:750}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit;background:#fff;min-height:45px}
+textarea{min-height:70px;resize:vertical}
+button{font:inherit;font-weight:800;border:0;border-radius:11px;padding:11px 14px;background:var(--yellow);color:var(--navy);cursor:pointer;min-height:43px}
+button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:#edf2f8;color:var(--navy)}.danger{background:#fff0ef;color:var(--red)}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row .fit{flex:0 0 auto}
+.small{font-size:12px;color:var(--muted);line-height:1.5}.status{padding:12px;border-radius:11px;background:#edf4ff;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;margin-top:12px}.status.good{background:#eaf7ef;color:#145c38}.status.bad{background:#fff0ef;color:var(--red)}
+.order{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#fff}
+.orderhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.order h3{margin:0;font-size:17px}.meta{font-size:13px;color:var(--muted);line-height:1.55;margin-top:5px}
+.pill{display:inline-block;border-radius:999px;padding:5px 9px;background:#edf2f8;font-size:12px;font-weight:800}
+.items{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 0;margin:10px 0;font-size:14px}
+.itemrow{display:flex;justify-content:space-between;gap:10px;padding:4px 0}
+.actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;margin-top:10px}
+.actions .wide{grid-column:1/-1}
+.hidden{display:none!important}
+@media(max-width:600px){.actions{grid-template-columns:1fr}.actions .wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div class="head"><div><h1>321 Sari-Sari Store</h1><p>Owner Order Inbox · isolated Firebase Test Lab</p></div><span class="small" style="color:#fff">TEST BUILD</span></div></header>
+<div class="notice"><b>TEST ONLY — NOT THE LIVE STORE.</b> This inbox connects only to <b>sarisari-test-lab</b>. It is designed for the one-product customer-ordering test and the parent <code>customerOrders/{orderId}</code> plus <code>items/{lineId}</code> subcollection format. It does not connect to production Firebase, deduct stock, verify GCash, or send customer messages. Test Lab Rules and Firebase Auth must be configured and emulator-tested before use.</div>
+<main>
+<section class="panel" id="loginPanel">
+<h2>Owner sign in</h2>
+<form id="loginForm">
+<div class="field"><label for="email">Owner email</label><input id="email" type="email" autocomplete="username" required></div>
+<div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+<button class="wide" type="submit" id="loginBtn">Sign in to Test Lab</button>
+</form>
+<div id="loginMsg" class="status" role="status">Use the Test Lab owner account only. Never enter your production credentials here.</div>
+</section>
+
+<section class="panel hidden" id="inboxPanel">
+<div class="row">
+<div><h2 style="margin:0">Customer orders</h2><div class="small" id="ownerInfo"></div></div>
+<button class="secondary fit" id="refreshBtn" type="button">Refresh</button>
+<button class="secondary fit" id="logoutBtn" type="button">Sign out</button>
+</div>
+<div class="row" style="margin-top:12px">
+<div class="field" style="margin:0"><label for="filter">Filter orders</label><select id="filter"><option value="all">All orders</option><option value="Pending">Pending</option><option value="Accepted">Accepted</option><option value="Preparing">Preparing</option><option value="Ready">Ready</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select></div>
+<div class="field" style="margin:0"><label for="search">Search name / phone / order ID</label><input id="search" type="search" placeholder="Search orders"></div>
+</div>
+<div id="inboxMsg" class="status">Sign in to load Test Lab orders.</div>
+<div id="orders"></div>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy, limit, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCR0DT3NMWJEMqZN1_Y-C2LD90dbqOjNWY",
+  authDomain: "sarisari-test-lab.firebaseapp.com",
+  projectId: "sarisari-test-lab",
+  storageBucket: "sarisari-test-lab.firebasestorage.app",
+  messagingSenderId: "482422272994",
+  appId: "1:482422272994:web:16cb240a3dc4a9451fbfbb"
+};
+const TEST_OWNER_UID = "lEwOcUJiyKe65BULuaPGLeOS6Il1";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let loadedOrders = [];
+let loading = false;
+
+function message(id, text, type="") {
+  $(id).textContent = text;
+  $(id).className = "status" + (type ? " " + type : "");
+}
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function dateText(ts) {
+  if (!ts || typeof ts.toDate !== "function") return "Date pending";
+  return ts.toDate().toLocaleString();
+}
+function statusOf(order) { return order.ownerStatus || "Pending"; }
+
+async function loadOrders() {
+  if (!auth.currentUser || auth.currentUser.uid !== TEST_OWNER_UID) return;
+  if (loading) return;
+  loading = true;
+  message("inboxMsg", "Loading latest 50 orders…");
+  $("orders").innerHTML = "";
+  try {
+    const q = query(collection(db, "customerOrders"), orderBy("createdAt", "desc"), limit(50));
+    const snap = await getDocs(q);
+    const rows = await Promise.all(snap.docs.map(async orderSnap => {
+      const order = {id: orderSnap.id, ...orderSnap.data()};
+      const itemSnap = await getDocs(collection(db, "customerOrders", orderSnap.id, "items"));
+      order.items = itemSnap.docs.map(d => ({id:d.id, ...d.data()}));
+      return order;
+    }));
+    loadedOrders = rows;
+    renderOrders();
+    message("inboxMsg", rows.length ? `${rows.length} order(s) loaded. Showing up to the latest 50.` : "No customer orders found yet.", "good");
+  } catch (e) {
+    message("inboxMsg", `Could not load orders: ${e.code || "error"} — ${e.message}`, "bad");
+  } finally { loading = false; }
+}
+function renderOrders() {
+  const filter = $("filter").value;
+  const term = $("search").value.trim().toLowerCase();
+  const rows = loadedOrders.filter(o => {
+    const s = statusOf(o);
+    const hay = `${o.id} ${o.customerName||""} ${o.phone||""}`.toLowerCase();
+    return (filter === "all" || s === filter) && (!term || hay.includes(term));
+  });
+  $("orders").innerHTML = rows.map(o => {
+    const items = o.items || [];
+    const itemHtml = items.length ? items.map(i =>
+      `<div class="itemrow"><span>Product ID: ${safeText(i.productId)}</span><b>Qty: ${safeText(i.qty)}</b></div>`
+    ).join("") : `<div class="small">No item lines found.</div>`;
+    const current = statusOf(o);
+    return `<article class="order" data-id="${safeText(o.id)}">
+      <div class="orderhead"><div><h3>${safeText(o.customerName || "Customer")}</h3><div class="meta">Order ID: ${safeText(o.id)}<br>${safeText(o.phone || "No phone")}<br>${safeText(dateText(o.createdAt))}</div></div><span class="pill">${safeText(current)}</span></div>
+      <div class="meta"><b>Delivery:</b> ${safeText(o.deliveryArea)} · ${safeText(o.address || "No address")}<br><b>Payment:</b> ${safeText(o.paymentMethod)}<br><b>Notes:</b> ${safeText(o.notes || "None")}</div>
+      <div class="items">${itemHtml}</div>
+      <div class="actions">
+        <div class="field" style="margin:0"><label>Status</label><select class="statusSelect">
+          ${["Pending","Accepted","Preparing","Ready","Completed","Cancelled"].map(s=>`<option value="${s}" ${s===current?"selected":""}>${s}</option>`).join("")}
+        </select></div>
+        <div class="field" style="margin:0"><label>Owner note</label><input class="ownerNote" maxlength="300" value="${safeText(o.ownerNote || "")}" placeholder="Internal note"></div>
+        <button type="button" class="saveBtn wide">Save status / note</button>
+      </div>
+    </article>`;
+  }).join("");
+  if (!rows.length) $("orders").innerHTML = `<p class="small">No orders match this filter.</p>`;
+  $("orders").querySelectorAll(".saveBtn").forEach(btn => btn.addEventListener("click", async () => {
+    const card = btn.closest(".order");
+    const id = card.dataset.id;
+    const status = card.querySelector(".statusSelect").value;
+    const ownerNote = card.querySelector(".ownerNote").value.trim();
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      await updateDoc(doc(db, "customerOrders", id), {
+        ownerStatus: status,
+        ownerNote,
+        updatedAt: serverTimestamp()
+      });
+      const found = loadedOrders.find(x => x.id === id);
+      if (found) { found.ownerStatus = status; found.ownerNote = ownerNote; }
+      renderOrders();
+      message("inboxMsg", `Order ${id} updated in Test Lab.`, "good");
+    } catch (e) {
+      btn.disabled = false; btn.textContent = "Save status / note";
+      message("inboxMsg", `Update failed: ${e.code || "error"} — ${e.message}`, "bad");
+    }
+  }));
+}
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  $("loginBtn").disabled = true;
+  message("loginMsg", "Signing in…");
+  try {
+    const cred = await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
+    if (cred.user.uid !== TEST_OWNER_UID) {
+      await signOut(auth);
+      message("loginMsg", "Access denied: this account is not the authorized Test Lab owner.", "bad");
+    }
+  } catch (e) {
+    message("loginMsg", `Sign-in failed: ${e.code || "error"} — ${e.message}`, "bad");
+  } finally { $("loginBtn").disabled = false; }
+});
+$("refreshBtn").addEventListener("click", loadOrders);
+$("logoutBtn").addEventListener("click", () => signOut(auth));
+$("filter").addEventListener("change", renderOrders);
+$("search").addEventListener("input", renderOrders);
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    $("loginPanel").classList.remove("hidden");
+    $("inboxPanel").classList.add("hidden");
+    loadedOrders = [];
+    return;
+  }
+  if (user.uid !== TEST_OWNER_UID) {
+    signOut(auth);
+    message("loginMsg", "Access denied: signed-in account is not the authorized Test Lab owner.", "bad");
+    return;
+  }
+  $("loginPanel").classList.add("hidden");
+  $("inboxPanel").classList.remove("hidden");
+  $("ownerInfo").textContent = `Authorized Test Lab owner · ${user.email || user.uid}`;
+  loadOrders();
+});
+</script>
+</body>
+</html>

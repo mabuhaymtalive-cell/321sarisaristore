@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10284b">
+<title>321 Sari-Sari Store — Public Catalog Publisher</title>
+<style>
+:root{--navy:#10284b;--yellow:#ffd43b;--bg:#f3f6fa;--line:#dbe3ec;--ink:#182230}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,Arial,sans-serif;color:var(--ink)}
+header{background:var(--navy);color:white;padding:20px;border-bottom:6px solid var(--yellow)}
+main{max-width:780px;margin:auto;padding:14px}.panel,.notice{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.notice{background:#fff8d9;font-size:14px;line-height:1.55}.muted{color:#64748b;font-size:13px}
+button{font:inherit;font-weight:750;border:0;border-radius:10px;padding:13px 16px;background:var(--yellow);color:var(--navy);width:100%;margin-top:10px}
+button:disabled{opacity:.45}input{font:inherit;width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;margin-top:8px}
+.good{color:#16794b;font-weight:750}.bad{color:#b42318;font-weight:750}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}.scroll{overflow:auto}
+</style>
+</head>
+<body>
+<header><h1>321 Sari-Sari Store</h1><p>Public Catalog Publisher · Spark Free preparation</p></header>
+<main>
+<section class="notice"><b>TEST / PREPARATION ONLY.</b> This page reads a fresh JSON backup selected from this tablet and creates a separate public-only <b>catalog.json</b>. It does not connect to Firebase, change Firestore, upload inventory, or delete products. Do not use a sample backup as real store inventory. Do not upload this catalog to the live website until the owner checks the preview.</section>
+<section class="panel">
+<h2>1. Select the latest M9 backup</h2>
+<p>On your M9 dashboard, export a fresh JSON backup. Select that exact file here.</p>
+<input id="backupFile" type="file" accept=".json,application/json">
+<div id="status" class="muted" role="status" aria-live="polite">No backup selected.</div>
+</section>
+<section class="panel">
+<h2>2. Review public products</h2>
+<p class="muted">Only product ID, name, selling price, category, unit and an in-stock yes/no flag are exported. Exact stock counts, cost prices, SKU/barcodes, customer data, orders, riders, sales and settings are excluded.</p>
+<div id="preview" class="muted">The product preview will appear here after a valid backup is selected.</div>
+<button id="download" type="button" disabled>Download public catalog.json</button>
+</section>
+</main>
+<script>
+'use strict';
+let publicCatalog=null;
+const fileInput=document.getElementById('backupFile');
+const statusEl=document.getElementById('status');
+const previewEl=document.getElementById('preview');
+const downloadBtn=document.getElementById('download');
+function firstValue(obj,keys){for(const key of keys){if(obj[key]!==undefined&&obj[key]!==null&&obj[key]!=='')return obj[key]}return undefined}
+function getProducts(data){
+  if(Array.isArray(data.products))return data.products;
+  if(data.products&&typeof data.products==='object')return Object.entries(data.products).map(([id,p])=>({id,...p}));
+  throw new Error('Walay products list sa file. Export ang fresh JSON backup gikan sa M9 dashboard.');
+}
+function safeText(v,fallback){return String(v??fallback).trim().slice(0,120)}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+fileInput.addEventListener('change',async()=>{
+  publicCatalog=null;downloadBtn.disabled=true;previewEl.textContent='';statusEl.textContent='Gisusi ang backup…';
+  const file=fileInput.files&&fileInput.files[0];if(!file){statusEl.textContent='Walay napiling file.';return}
+  try{
+    if(file.size>20*1024*1024)throw new Error('Labaw sa 20 MB ang file. Palihog gamita ang fresh M9 JSON backup.');
+    const parsed=JSON.parse(await file.text());
+    const data=parsed&&parsed.data&&typeof parsed.data==='object'?parsed.data:parsed;
+    const raw=getProducts(data);
+    const output=[];
+    const seen=new Set();
+    for(const p of raw){
+      if(!p||typeof p!=='object')continue;
+      const id=firstValue(p,['id','productId','docId']);
+      const name=firstValue(p,['name','productName','title']);
+      const priceRaw=firstValue(p,['sellingPrice','price','unitPrice']);
+      const stockRaw=firstValue(p,['stock','quantity','qty','stockQty']);
+      const active=firstValue(p,['active','isActive','enabled']);
+      const price=Number(priceRaw),stock=Number(stockRaw);
+      if(id===undefined||!String(name??'').trim()||!Number.isFinite(price)||price<0||!Number.isFinite(stock)||stock<0)continue;
+      if(active===false||active===0||String(active).toLowerCase()==='false')continue;
+      const productId=String(id).trim();
+      if(!productId||seen.has(productId))continue;
+      seen.add(productId);
+      output.push({
+        id:productId,
+        name:safeText(name,''),
+        price,
+        inStock:stock>0,
+        category:safeText(firstValue(p,['categoryName','category','categoryId']),'Other'),
+        unit:safeText(firstValue(p,['unit','unitName']),'pcs')
+      });
+    }
+    if(output.length===0)throw new Error('Walay valid products nga na-convert. Susiha kung ang backup mao ba ang latest M9 export ug adunay name, sellingPrice/price ug stock/quantity.');
+    if(output.length===1&&/test|sample/i.test(output[0].name))throw new Error('Sample/test product ra ang naa sa file. Dili nato himuong public catalog ang sample data. Pilia ang tinuod nga M9 backup.');
+    output.sort((a,b)=>a.category.localeCompare(b.category)||a.name.localeCompare(b.name));
+    publicCatalog={storeName:'321 Sari-Sari Store',generatedAt:new Date().toISOString(),source:'M9 backup · public fields only',products:output};
+    const inStock=output.filter(p=>p.inStock).length;
+    statusEl.innerHTML='<span class="good">Backup valid.</span> '+output.length+' products found; '+inStock+' in stock.';
+    const rows=output.slice(0,30).map(p=>'<tr><td>'+escapeHtml(p.name)+'</td><td>₱'+p.price.toFixed(2)+'</td><td>'+escapeHtml(p.category)+'</td><td>'+(p.inStock?'Available':'Out of stock')+'</td></tr>').join('');
+    previewEl.innerHTML='<p><b>'+output.length+' products ready</b> · showing first '+Math.min(30,output.length)+'.</p><div class="scroll"><table><thead><tr><th>Product</th><th>Price</th><th>Category</th><th>Stock</th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="muted">Selected file: '+escapeHtml(file.name)+'. Please verify the names and prices before publishing.</p>';
+    downloadBtn.disabled=false;
+  }catch(err){
+    statusEl.innerHTML='<span class="bad">Dili pa mahimo:</span> '+escapeHtml(err&&err.message?err.message:String(err));
+    previewEl.textContent='Walay catalog nga gihimo. Wala giusab ang imong inventory.';
+  }
+});
+downloadBtn.addEventListener('click',()=>{
+  if(!publicCatalog)return;
+  const blob=new Blob([JSON.stringify(publicCatalog,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='catalog.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  statusEl.innerHTML='<span class="good">catalog.json na-download.</span> Wala pa kini gi-publish sa live store. I-review una ang file.';
+});
+</script>
+</body>
+</html>

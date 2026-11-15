@@ -1,0 +1,113 @@
+// 321 Sari-Sari Store — SPARK / TEST LAB Firestore Rules
+// Project: sarisari-test-lab ONLY
+// Format: customerOrders/{orderId} + items/{lineId} subcollection
+// Test owner UID: lEwOcUJiyKe65BULuaPGLeOS6Il1
+//
+// STATUS: REVIEW DRAFT — NOT EMULATOR-TESTED — DO NOT PUBLISH YET.
+// Do not copy these rules to production project sarisaristore321-1f24b.
+//
+// Scope is deliberately restricted to one sample product and two delivery options.
+// No stock deduction, payment verification, rate limiting, or anti-spam protection.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isTestOwner() {
+      return request.auth != null
+        && request.auth.uid == 'lEwOcUJiyKe65BULuaPGLeOS6Il1';
+    }
+
+    function isAnonymousCustomer() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
+    function validTestOrderParent(orderId) {
+      let d = request.resource.data;
+      return d.keys().hasAll([
+          'customerName', 'phone', 'deliveryArea', 'address',
+          'paymentMethod', 'notes', 'source', 'createdAt'
+        ])
+        && d.keys().hasOnly([
+          'customerName', 'phone', 'deliveryArea', 'address',
+          'paymentMethod', 'notes', 'source', 'createdAt'
+        ])
+        && d.customerName is string
+        && d.customerName.size() >= 2
+        && d.customerName.size() <= 100
+        && d.phone is string
+        && d.phone.size() >= 7
+        && d.phone.size() <= 30
+        && d.deliveryArea in [
+          'San Carlos City Proper',
+          'Store Pickup'
+        ]
+        && d.address is string
+        && d.address.size() <= 300
+        && (
+          d.deliveryArea == 'Store Pickup'
+          || d.address.size() >= 3
+        )
+        && d.paymentMethod in ['COD', 'GCash']
+        && d.notes is string
+        && d.notes.size() <= 500
+        && d.source == 'spark-customer-web'
+        && d.createdAt == request.time
+        // Require the first item line in the same atomic batch.
+        && existsAfter(
+          /databases/$(database)/documents/customerOrders/$(orderId)/items/1
+        );
+    }
+
+    function validTestItemLine(orderId, lineId) {
+      let d = request.resource.data;
+      let parentPath =
+        /databases/$(database)/documents/customerOrders/$(orderId);
+      let catalogPath =
+        /databases/$(database)/documents/publicCatalog/p_1793230199357;
+      let parent = getAfter(parentPath).data;
+      let catalogItem = get(catalogPath).data;
+
+      return lineId == '1'
+        && d.keys().hasAll(['productId', 'qty', 'createdAt'])
+        && d.keys().hasOnly(['productId', 'qty', 'createdAt'])
+        && d.productId == 'p_1793230199357'
+        && d.qty is int
+        && d.qty >= 1
+        && d.qty <= 99
+        && d.createdAt == request.time
+        // Parent and item must be created together.
+        && !exists(parentPath)
+        && existsAfter(parentPath)
+        && parent.source == 'spark-customer-web'
+        && parent.createdAt == request.time
+        // The single sample catalog item must be active and in stock.
+        && catalogItem.active == true
+        && catalogItem.inStock == true;
+    }
+
+    match /publicCatalog/{productId} {
+      allow get, list: if resource.data.active == true;
+      allow create, update, delete: if isTestOwner();
+    }
+
+    match /customerOrders/{orderId} {
+      allow create: if isAnonymousCustomer()
+        && validTestOrderParent(orderId);
+      allow get, list, update, delete: if isTestOwner();
+
+      match /items/{lineId} {
+        allow create: if isAnonymousCustomer()
+          && validTestItemLine(orderId, lineId);
+        allow get, list, update, delete: if isTestOwner();
+      }
+    }
+
+    // Deny every collection not explicitly allowed above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

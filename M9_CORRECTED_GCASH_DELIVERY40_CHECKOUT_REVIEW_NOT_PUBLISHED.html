@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>321 Sari-Sari Store | M9 Firebase Integration — GitHub Deployment Candidate</title>
+<style>
+:root{--navy:#10284b;--navy2:#183b68;--yellow:#ffd43b;--bg:#f3f6fa;--ink:#182230;--muted:#64748b;--line:#dbe3ec;--white:#fff;--red:#b42318;--green:#16794b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}button{border:0;border-radius:12px;padding:12px 14px;font-weight:750;cursor:pointer}button:focus,input:focus,select:focus,textarea:focus{outline:3px solid #8db7ff;outline-offset:1px}.primary{background:var(--yellow);color:#172033}.dark{background:var(--navy);color:white}.light{background:#e8eef6;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}.top{background:var(--navy);color:#fff;padding:18px 16px 15px;border-bottom:6px solid var(--yellow)}.top h1{margin:0;font-size:23px}.top p{margin:5px 0 0;color:#dce7f5;font-size:13px}.safe{margin:14px 14px 0;padding:13px;border:1px solid #ead77b;background:#fff8d6;border-radius:14px;font-size:13px;line-height:1.5}.wrap{padding:14px;max-width:1000px;margin:auto}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0}.nav button{background:white;border:1px solid var(--line);text-align:left;min-height:62px;color:var(--navy)}.nav button.active{background:var(--navy);color:white;border-color:var(--navy)}.nav small{display:block;font-size:11px;opacity:.75;font-weight:500;margin-top:4px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.stat{background:white;border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}.stat span{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:21px;overflow-wrap:anywhere}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}.panel h2{font-size:19px;margin:0 0 12px}.panel h3{font-size:15px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.5}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row .fixed{flex:0 0 auto}.field{margin:10px 0}.field label{display:block;font-size:12px;font-weight:750;color:#475569;margin-bottom:5px}.field input,.field select,.field textarea,.search{width:100%;border:1px solid #cbd5e1;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}.field textarea{min-height:70px}.searchrow{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}.cards{display:grid;grid-template-columns:1fr;gap:10px}.item{display:flex;gap:12px;border:1px solid var(--line);border-radius:14px;padding:11px;background:white;min-width:0}.photo{width:68px;height:68px;flex:0 0 68px;border-radius:11px;background:#edf1f6;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:27px}.photo img{width:100%;height:100%;object-fit:cover}.itemmain{min-width:0;flex:1}.itemmain h3{margin:0 0 4px;font-size:15px;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);line-height:1.5}.actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.actions button{font-size:12px;padding:8px 10px}.pill{display:inline-block;background:#fff0ad;color:#735b00;font-size:10px;font-weight:800;padding:3px 7px;border-radius:99px}.hidden{display:none!important}.empty{text-align:center;padding:26px;color:var(--muted)}.section-title{display:flex;align-items:center;justify-content:space-between;gap:8px}.section-title h2{margin:0}.footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}.modal{position:fixed;inset:0;background:#0b1728a8;z-index:10;display:none;overflow:auto;padding:16px}.modal.open{display:block}.dialog{background:white;border-radius:18px;padding:16px;max-width:560px;margin:4vh auto;box-shadow:0 20px 60px #0003}.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:10px}.dialoghead h2{font-size:19px;margin:0}.dialoghead button{padding:7px 10px}.check{display:flex;align-items:center;gap:8px;font-size:13px}.check input{width:18px;height:18px}.notice{border-left:4px solid var(--yellow);padding:10px 12px;background:#fff9dc;border-radius:8px;font-size:12px;line-height:1.5}.inline-photo{width:80px;height:80px;object-fit:cover;border-radius:12px;display:block;margin-top:8px;background:#edf1f6}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;border-bottom:1px solid var(--line);padding:9px 5px;vertical-align:top}.table th{color:var(--muted);font-size:11px}.badge{background:#e7f7ed;color:var(--green);padding:3px 7px;border-radius:99px;font-size:10px;font-weight:800}
+@media(min-width:650px){.nav{grid-template-columns:repeat(3,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.searchrow{grid-template-columns:2fr 1fr}.wrap{padding:20px}.top{padding-left:max(18px,calc((100% - 960px)/2))}}
+</style>
+</head>
+<body>
+<div style="margin:10px;padding:14px;border:3px solid #183b68;border-radius:10px;background:#eef5ff;color:#10284b;font-weight:800">M9 CORRECTED CUSTOMER CHECKOUT REVIEW COPY — NOT PUBLISHED. GCash details + estimated ₱40 delivery display added; Firebase order still stores deliveryFee=0 per published Rules V2 until owner confirmation. Original M9 candidate is preserved. Does not publish or modify Firebase Rules or cloud data.</div>
+<div style="position:sticky;top:0;z-index:99999;background:#7f1d1d;color:#fff;padding:10px 12px;text-align:center;font-weight:800;border-bottom:3px solid #facc15">M9 CORRECTED CUSTOMER CHECKOUT REVIEW COPY — NOT PUBLISHED. Do not deploy until owner approval and checkout tests. This HTML does not change Firebase Rules.</div>
+<div style="margin:10px;padding:12px;border:2px solid #16794b;border-radius:10px;background:#effcf5;color:#14532d;font-weight:700">CORRECTED M9 BUILD — customer cart capped at 5 product lines; Rules reference matches published Corrected Rules V2. Owner-managed Rider/Salesman profiles, approval, attendance, incentive-rate preview and order assignment are included. PIN security is a later phase. This file is not yet live on GitHub Pages.</div>
+<!-- ISOLATED RIDER PIN DELIVERY TEST: demo-only; does not touch inventory or real orders -->
+<section id="pinDemo" style="display:none;max-width:900px;margin:20px auto;padding:18px;background:#fff;border:2px solid #eab308;border-radius:16px;color:#172033">
+ <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 style="margin:0">Rider Delivery PIN — TEST ONLY</h2><button type="button" onclick="closePinDemo()">Close test</button></div>
+ <p style="background:#fff7cc;padding:12px;border-radius:8px"><b>Demo only:</b> This screen uses sample data and a sample PIN. It does not send SMS, verify a real customer, sync with a rider phone, or change real inventory/sales.</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+  <div style="border:1px solid #ddd;border-radius:12px;padding:14px"><h3>Sample order</h3><p><b>Order:</b> DEMO-1001</p><p><b>Customer:</b> Test Customer</p><p><b>Items:</b> Ganador Rice — 1 sack</p><p><b>Assigned rider:</b> Rider 1</p><p><b>Status:</b> <span id="demoStatus">Out for Delivery</span></p><button type="button" onclick="showDemoPin()">Show customer-side sample PIN</button><p id="demoCustomerPin" style="display:none">Sample PIN: <b>482731</b><br><small>In a real system, only the customer receives this PIN.</small></p></div>
+  <div style="border:1px solid #ddd;border-radius:12px;padding:14px"><h3>Rider enters PIN</h3><label for="demoPinInput">Customer PIN</label><input id="demoPinInput" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6-digit PIN" style="display:block;width:100%;padding:12px;margin:8px 0;border:1px solid #aaa;border-radius:8px;font-size:18px;box-sizing:border-box"><button id="demoVerifyBtn" type="button" onclick="verifyDemoPin()">Verify PIN (demo)</button><p id="demoResult" role="status" aria-live="polite"></p></div>
+ </div><p><b>Real system still needs:</b> secure online verification, assigned-rider authentication, SMS provider, attempt limiting, audit log, and server-side one-time completion/stock transaction. Do not use this demo for real deliveries.</p>
+</section>
+
+<header class="top"><h1>321 Sari-Sari Store</h1><p>Bag-ong sistema · Inventory · Rider/Salesman · Customer Orders</p></header>
+<div class="safe"><b>M9 + ONLINE ORDERING INTEGRATION CANDIDATE:</b> Gipabilin ang M9 dashboard, inventory, owner-managed Rider/Salesman, attendance, assignments, sales, orders ug QA modules. Ang Firebase diagnostic check read-only ra; customer checkout ug owner order controls mosulat lamang sa customerOrders. Walay inventory upload/delete o Rules change.</div>
+
+<div class="notice" style="margin:12px 20px;padding:12px 14px;border:1px solid #e0b83e;border-radius:12px;background:#fff8d9;color:#26364a">
+  <b>MASTER M8 — CONSOLIDATED TEST BUILD:</b> Ang PIN demo sa ubos bulag ra sa aktuwal nga orders ug stock. Ang local test order mahimong adunay local-only PIN; ang Firebase online orders walay secure delivery PIN verification. Local test ra gihapon kini.
+  <div style="margin-top:10px"><button type="button" class="primary" onclick="openPinDemo()">Open isolated PIN demo (no stock changes)</button></div>
+</div>
+<div class="notice" style="margin:12px 20px;padding:12px 14px;border:2px solid #16794b;border-radius:12px;background:#effcf5;color:#26364a"><b>BUILD ID: MASTER-M9-PHASE1-ONLINE-ORDER-FLOW-CANDIDATE-2026-11-16</b><br>Kung makita nimo ang MASTER M1 o MASTER M2 sa ibabaw, dili kini ang bag-ong diagnostic file.</div>
+<section style="margin:12px 20px;padding:14px;border:2px solid #b91c1c;border-radius:12px;background:#fff7f7;color:#26364a"><h2 style="margin-top:0">Production Release Gate — NOT YET CLEARED</h2><p>Phase 1 deployment candidate. Customer checkout uses Firebase anonymous authentication; owner order actions require the configured owner UID. Corrected Firestore Rules V2 has been published in the Sarisaristore321 project. Owner-managed Rider/Salesman profiles, approval, attendance, incentive-rate preview and online order assignment are included; rider records remain local to the designated owner tablet. Secure rider login and delivery PIN are follow-up work. Before accepting live customer orders, verify the deployed GitHub Pages flow and confirm active publicCatalog documents are present. This phase does not implement automatic stock deduction, automatic GCash verification, or automatic payroll. GCash is manually verified by the owner with a transaction reference. No inventory upload/delete is included.</p></section>
+<div class="wrap">
+
+
+<section id="m9FirebaseBridge" class="panel" style="border:2px solid #183b68">
+ <h2>M9 Phase 1 — Firebase Diagnostic (Read-only)</h2>
+ <p class="muted"><b>Production project:</b> sarisaristore321-1f24b · <b>Plan:</b> Spark Free. Kini nga diagnostic panel pang-check ra sa connection ug existing counts. Ang lahi nga Online Store/Owner Orders module adunay customerOrders writes. Walay inventory write, sync, import, o Firestore Rules change dinhi.</p>
+ <div class="notice" style="margin:10px 0">Rider/Salesman is included as an owner-managed module: create/edit profiles, approve/reject, active/inactive status, attendance, editable incentive-rate preview, and assignment to online orders. Rider profiles, attendance and incentive settings are stored locally on the designated owner tablet and are not synchronized to a rider device or another owner device. Secure rider self-login and delivery PIN are later phases. Customer checkout/cloud order integration is included. Rules V2 is published; the deployed GitHub Pages page still needs separate-device customer-to-owner verification.</div>
+ <div class="field"><label>Owner email</label><input id="m9CloudEmail" type="email" autocomplete="username" placeholder="Owner email"></div>
+ <div class="field"><label>Owner password</label><input id="m9CloudPassword" type="password" autocomplete="current-password" placeholder="Owner password"></div>
+ <div class="row"><button class="primary" id="m9CloudLogin" type="button">Connect & Read Counts</button><button class="light" id="m9CloudLogout" type="button" disabled>Sign out</button></div>
+ <p id="m9CloudStatus" class="notice" role="status">Not connected. No Firebase data has been changed.</p>
+ <pre id="m9CloudCounts" style="white-space:pre-wrap;background:#f3f6fa;padding:10px;border-radius:10px;font-size:12px">Read-only cloud collection counts appear after owner sign-in.</pre>
+ <p class="muted"><b>Rider/Salesman scope:</b> Owner-managed profiles, approval, attendance, editable incentive-rate preview and rider assignment are included on the designated owner tablet. These rider records are local-only in this phase, not cloud-synchronized. <b>To follow:</b> secure rider self-login and server-verified delivery PIN. Cloud customer orders are separate Phase 1 functions; verify the deployed GitHub Pages customer-to-owner flow and ensure active publicCatalog documents exist before accepting real customer orders.</p>
+<div class="panel" style="border:2px solid #b45309"><h3>Published Firestore Rules V2 — reference copy</h3><p class="muted">This block is synchronized with the Corrected Rules V2 published in Firebase on 17 Nov 2026. It is displayed for reference only. Editing or deploying this HTML does not publish or change Firestore Rules.</p><pre style="white-space:pre-wrap;font-size:11px;overflow-wrap:anywhere">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner() {
+      return request.auth != null
+        &amp;&amp; request.auth.uid == 'XCBkfDyQksWLLlabpCTHyh4g5Ev1';
+    }
+
+    function isAnonCustomer() {
+      return request.auth != null
+        &amp;&amp; request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
+    function validCustomer() {
+      return request.resource.data.customer is map
+        &amp;&amp; request.resource.data.customer.keys().hasOnly(['name', 'phone', 'address', 'area'])
+        &amp;&amp; request.resource.data.customer.keys().hasAll(['name', 'phone', 'address', 'area'])
+        &amp;&amp; request.resource.data.customer.name is string
+        &amp;&amp; request.resource.data.customer.name.size() &gt; 0
+        &amp;&amp; request.resource.data.customer.name.size() &lt;= 100
+        &amp;&amp; request.resource.data.customer.phone is string
+        &amp;&amp; request.resource.data.customer.phone.size() &gt; 0
+        &amp;&amp; request.resource.data.customer.phone.size() &lt;= 30
+        &amp;&amp; request.resource.data.customer.address is string
+        &amp;&amp; request.resource.data.customer.address.size() &lt;= 300
+        &amp;&amp; (request.resource.data.customer.area == 'Store Pickup'
+            || request.resource.data.customer.address.size() &gt; 0)
+        &amp;&amp; request.resource.data.customer.area in [
+          'San Carlos City Proper',
+          'Vallehermoso',
+          'Canlaon City',
+          'Don Salvador Benedicto (DSB)',
+          'Calatrava',
+          'Toboso',
+          'Store Pickup'
+        ];
+    }
+
+    function validItem(i) {
+      return i is map
+        &amp;&amp; i.keys().hasOnly(['productId', 'name', 'unit', 'quantity', 'unitPrice', 'lineTotal'])
+        &amp;&amp; i.keys().hasAll(['productId', 'name', 'unit', 'quantity', 'unitPrice', 'lineTotal'])
+        &amp;&amp; i.productId is string
+        &amp;&amp; i.productId.size() &gt; 0
+        &amp;&amp; i.productId.size() &lt;= 128
+        &amp;&amp; i.name is string
+        &amp;&amp; i.name.size() &gt; 0
+        &amp;&amp; i.name.size() &lt;= 150
+        &amp;&amp; i.unit is string
+        &amp;&amp; i.unit.size() &gt; 0
+        &amp;&amp; i.unit.size() &lt;= 30
+        &amp;&amp; i.quantity is int
+        &amp;&amp; i.quantity &gt;= 1
+        &amp;&amp; i.quantity &lt;= 99
+        &amp;&amp; i.unitPrice is number
+        &amp;&amp; i.unitPrice &gt;= 0
+        &amp;&amp; i.lineTotal is number
+        &amp;&amp; i.lineTotal &gt;= (i.unitPrice * i.quantity) - 0.000001
+        &amp;&amp; i.lineTotal &lt;= (i.unitPrice * i.quantity) + 0.000001
+        &amp;&amp; exists(/databases/$(database)/documents/publicCatalog/$(i.productId))
+        &amp;&amp; get(/databases/$(database)/documents/publicCatalog/$(i.productId)).data.active == true
+        &amp;&amp; get(/databases/$(database)/documents/publicCatalog/$(i.productId)).data.price == i.unitPrice
+        &amp;&amp; get(/databases/$(database)/documents/publicCatalog/$(i.productId)).data.name == i.name
+        &amp;&amp; get(/databases/$(database)/documents/publicCatalog/$(i.productId)).data.unit == i.unit;
+    }
+
+    function validItems() {
+      return request.resource.data.items is list
+        &amp;&amp; request.resource.data.items.size() &gt;= 1
+        &amp;&amp; request.resource.data.items.size() &lt;= 5
+        &amp;&amp; validItem(request.resource.data.items[0])
+        &amp;&amp; (request.resource.data.items.size() &lt; 2 || validItem(request.resource.data.items[1]))
+        &amp;&amp; (request.resource.data.items.size() &lt; 3 || validItem(request.resource.data.items[2]))
+        &amp;&amp; (request.resource.data.items.size() &lt; 4 || validItem(request.resource.data.items[3]))
+        &amp;&amp; (request.resource.data.items.size() &lt; 5 || validItem(request.resource.data.items[4]));
+    }
+
+    function validSubtotal() {
+      let items = request.resource.data.items;
+      let expected = items[0].lineTotal
+        + (items.size() &gt; 1 ? items[1].lineTotal : 0)
+        + (items.size() &gt; 2 ? items[2].lineTotal : 0)
+        + (items.size() &gt; 3 ? items[3].lineTotal : 0)
+        + (items.size() &gt; 4 ? items[4].lineTotal : 0);
+      return request.resource.data.subtotal is number
+        &amp;&amp; request.resource.data.subtotal &gt;= 0
+        &amp;&amp; request.resource.data.subtotal &gt;= expected - 0.000001
+        &amp;&amp; request.resource.data.subtotal &lt;= expected + 0.000001;
+    }
+
+    function validOrderCreate() {
+      return isAnonCustomer()
+        &amp;&amp; request.resource.data.keys().hasOnly([
+          'customerUid', 'customer', 'items', 'subtotal', 'paymentMethod',
+          'paymentStatus', 'notes', 'deliveryFee', 'status', 'riderId',
+          'riderName', 'salesAttributionStatus', 'createdAt', 'source'
+        ])
+        &amp;&amp; request.resource.data.keys().hasAll([
+          'customerUid', 'customer', 'items', 'subtotal', 'paymentMethod',
+          'paymentStatus', 'notes', 'deliveryFee', 'status', 'riderId',
+          'riderName', 'salesAttributionStatus', 'createdAt', 'source'
+        ])
+        &amp;&amp; request.resource.data.customerUid == request.auth.uid
+        &amp;&amp; request.resource.data.source == 'online'
+        &amp;&amp; request.resource.data.status == 'New'
+        &amp;&amp; request.resource.data.paymentStatus == 'Pending'
+        &amp;&amp; request.resource.data.paymentMethod in ['COD', 'GCash']
+        &amp;&amp; validCustomer()
+        &amp;&amp; validItems()
+        &amp;&amp; validSubtotal()
+        &amp;&amp; request.resource.data.deliveryFee is number
+        &amp;&amp; request.resource.data.deliveryFee == 0
+        &amp;&amp; request.resource.data.notes is string
+        &amp;&amp; request.resource.data.notes.size() &lt;= 500
+        &amp;&amp; request.resource.data.riderId == ''
+        &amp;&amp; request.resource.data.riderName == ''
+        &amp;&amp; request.resource.data.salesAttributionStatus == 'Pending owner review'
+        &amp;&amp; request.resource.data.createdAt == request.time;
+    }
+
+    match /publicCatalog/{productId} {
+      allow read: if isAnonCustomer() &amp;&amp; resource.data.active == true;
+      allow create, update, delete: if isOwner();
+    }
+
+    match /customerOrders/{orderId} {
+      allow create: if validOrderCreate();
+      allow read: if isOwner()
+        || (request.auth != null &amp;&amp; resource.data.customerUid == request.auth.uid);
+      // REVIEW NOTE: owner-only update/delete remains intentionally broad in this draft.
+      // The owner UI currently sends several different patch shapes. Do not treat UI
+      // restrictions as a substitute for Rules-level field/state-transition controls.
+      allow update, delete: if isOwner();
+    }
+
+    match /{document=**} {
+      allow read, write: if isOwner();
+    }
+  }
+}</pre><p class="muted">Reference note: the displayed Rules block is the published Corrected Rules V2. Owner order updates/deletes remain owner-only but broad at the Rules level; do not expose owner credentials. Product availability and payment still require owner verification. This Phase 1 build does not provide server-side delivery PIN verification, automatic stock deduction, rider self-login, automatic GCash verification, or automatic payroll. owner approval and backup.</p></div>
+</section>
+
+<section id="finalQaPanel" class="panel" style="border:2px solid #183b68">
+ <h2>FINAL TEST PANEL — Customer Orders</h2>
+ <p class="muted">Pislita ang RUN ALL TESTS. Kini nga 5 ka checks kay local dashboard/code checks lamang; dili pa Firebase, laing cellphone, o live order testing.</p>
+ <button type="button" class="primary" id="runFinalQa">▶ RUN ALL TESTS</button>
+ <div id="finalQaSummary" class="notice" style="margin-top:10px">Wala pa gi-run. Pislita ang RUN ALL TESTS.</div>
+ <div id="finalQaResults" style="margin-top:10px"></div>
+</section>
+
+<nav class="nav" id="nav">
+<button class="active" data-page="home">🏠 Dashboard<small>Store overview</small></button>
+<button data-page="inventory">📦 Product Inventory<small>Add, edit, stock, photos</small></button>
+<button data-page="riders">🛵 Rider / Salesman<small>Profiles and assignments</small></button>
+<button data-page="sales">🧾 Sales Records<small>Record completed sales</small></button>
+<button data-page="orders">🛒 Customer Orders<small>Order tracking starter</small></button>
+<button data-page="online">🛍️ Online Store<small>Customer checkout</small></button>
+<button data-page="settings">⚙️ Settings & Backup<small>Export/import local data</small></button>
+</nav>
+<main>
+<section id="page-home">
+<div class="panel" style="border:2px solid #d6b53a"><h2>M9 Product Add/Edit + Sale UI Handler Check</h2><p class="muted">Uses actual local product form and sale form submit handlers with temporary QA data. It restores this M8 test storage afterward; no production/Firebase access.</p><button type="button" class="primary" onclick="runProductSalesUiChecks()">Run product + sale UI checks</button><div id="productSalesUiTestResult" class="notice" style="margin-top:10px">Wala pa gi-run ang product/sale UI checks.</div></div><div class="panel" style="border:2px solid #d6b53a"><h2>M9 Persistence + Duplicate-Submit Check</h2><p class="muted">Uses actual local sale submit handler with temporary QA data. Checks storage round-trip and second submit lock. Does not prove multi-tab/Firebase concurrency.</p><button type="button" class="primary" onclick="runM8PersistenceDuplicateChecks()">Run persistence + duplicate-submit checks</button><div id="m8PersistenceDuplicateResult" class="notice" style="margin-top:10px">M8 persistence/duplicate checks not yet run.</div></div><div class="panel" style="border:2px solid #d6b53a"><h2>M9 — Actual Chrome Refresh Persistence Check</h2><p class="muted">This is a real page-reload check, not a JSON round-trip. First create a clearly named TEST product and one TEST completed sale in this M9 copy. Then press Arm refresh check, refresh Chrome once, and the page will compare the exact saved M9 localStorage snapshot before/after reload. Test-only data only; no Firebase access.</p><button type="button" class="primary" onclick="armM9RefreshCheck()">Arm actual refresh check</button><div id="m9RefreshResult" class="notice" style="margin-top:10px">Refresh check not armed. Create a test product and one test sale first.</div></div><div class="panel" style="border:2px solid #16794b"><h2>MASTER M9 — Final Verification Check</h2><p class="muted">Usa ka dashboard para sa existing order/stock checks, rider policy, product/sale UI, persistence round-trip and same-form duplicate-submit checks. Ang tests naggamit og temporary QA data; dili sila maghimo og real sale/order o mag-usab sa production/Firebase.</p><button type="button" class="primary" onclick="runMasterSystemChecks()">Run M9 consolidated system checks</button><div id="masterSystemTestResult" class="notice" style="margin-top:10px">Wala pa gi-run ang consolidated checks.</div><p class="muted"><b>Release ledger:</b> M7 adds isolated checks that invoke the actual local Product Add/Edit and Sale handlers. Run the consolidated checks in Chrome. Real page-refresh persistence, multi-tab/Firebase concurrency and server-side PIN authorization remain separate verification gates.</p></div>
+<div class="panel"><h2>Maayong adlaw!</h2><p class="muted">Welcome sa bag-ong 321 Sari-Sari Store system. Sugdi pinaagi sa pagdugang sa imong actual products, unya paghimo og rider profiles.</p><div class="notice">Walay sample products nga gi-import gikan sa old files. Ikaw ang magbutang sa actual inventory ug pictures sa bag-ong system.</div></div>
+<div class="stats"><div class="stat"><span>Products</span><strong id="statProducts">0</strong></div><div class="stat"><span>Riders/Salesmen</span><strong id="statRiders">0</strong></div><div class="stat"><span>Sales records</span><strong id="statSales">0</strong></div></div>
+<div class="panel"><h2>Quick start</h2><div class="row"><button class="primary" onclick="openProduct()">＋ Add product</button><button class="dark" onclick="showPage('riders')">＋ Add rider</button></div><p class="muted">Ang data dili pa ma-share sa ubang device. Ang Firebase integration buhaton lamang human masulayan ug ma-review ang data structure ug security.</p></div>
+</section>
+<section id="page-inventory" class="hidden">
+<div class="panel"><div class="section-title"><h2>Product Inventory</h2><button class="primary fixed" onclick="openProduct()">＋ Add</button></div><p class="muted">Ibutang ang actual product name, price, stock, category, unit ug picture.</p>
+<div class="searchrow"><input class="search" id="productSearch" placeholder="Search product name..." oninput="renderProducts()"><select class="search" id="categoryFilter" onchange="renderProducts()"><option value="">All categories</option></select></div>
+<div id="productList" class="cards"></div><div id="productsEmpty" class="empty">Wala pay products. Pislita ang Add aron magsugod.</div></div>
+</section>
+<section id="page-riders" class="hidden">
+<div class="panel"><div class="section-title"><h2>Rider / Salesman</h2><button class="primary fixed" onclick="openRider()">＋ Add rider</button></div><p class="muted">V23 test workflow: owner approval, active/inactive status, attendance, assignments ug incentive preview. Local test data only.</p><div id="riderList" class="cards"></div><div id="ridersEmpty" class="empty">Wala pay rider profiles.</div></div>
+<div class="panel" style="border:2px solid #d6b53a"><h2>Attendance</h2><p class="muted">Usa ra ka attendance record matag rider kada petsa. Attendance ug approval dili pa payroll proof.</p><form id="riderAttendanceForm"><div class="field"><label>Rider / Salesman</label><select id="attendanceRider" name="riderId" required></select></div><div class="row"><div class="field"><label>Date</label><input name="date" id="attendanceDate" type="date" required></div><div class="field"><label>Status</label><select name="status"><option>Present</option><option>Absent</option><option>Approved Leave</option></select></div></div><button class="primary" type="submit">Save attendance</button></form><div id="attendanceList" class="meta" style="margin-top:12px"></div></div>
+<div class="panel"><h2>Incentive preview (not payroll)</h2><p class="muted">Percentages editable. Calculation uses gross product sales only; delivery fee excluded. Choose the correct category per order before any real payout. This preview is not a payroll authorization.</p><form id="riderRatesForm"><div class="row"><div class="field"><label>Ordinary online (%)</label><input name="online" type="number" min="0" step="0.01" value="0.05" required></div><div class="field"><label>Physical market (%)</label><input name="physical" type="number" min="0" step="0.01" value="0.02" required></div></div><div class="field"><label>Repeat customer online (%)</label><input name="repeatOnline" type="number" min="0" step="0.01" value="1" required></div><button class="primary" type="submit">Save draft rates</button></form><div id="riderIncentivePreview" class="meta" style="margin-top:12px"></div></div>
+<div class="panel" style="border:2px solid #16794b"><h2>V23 Rider/Salesman workflow checks</h2><p class="muted">Isolated in-memory test fixtures only. No real rider, order, attendance or payroll record is created.</p><button type="button" class="primary" onclick="runRiderWorkflowChecks()">Run rider workflow checks</button><div id="riderWorkflowTestResult" class="notice" style="margin-top:10px">Wala pa gi-run ang checks.</div></div>
+</section>
+<section id="page-sales" class="hidden">
+<div class="panel"><div class="section-title"><h2>Sales Records</h2><button class="primary fixed" onclick="openSale()">＋ Record sale</button></div><p class="muted">Ang Completed sale mokunhod sa stock. Ang Pending ug Cancelled dili mokunhod. Kung kulang ang stock, dili tugotan ang Completed sale.</p><div id="salesList"></div><div id="salesEmpty" class="empty">Wala pay sales records.</div></div>
+</section>
+<section id="page-orders" class="hidden">
+<div class="panel" style="border:2px solid #183b68"><h2>Online Firebase Orders — Owner Management</h2><p class="muted">Owner login required. Read the latest 50 cloud orders, confirm, assign a rider from this owner tablet's local approved-rider list, and update delivery status. Online orders remain cloud-only; no local M9 import or stock deduction. Use one designated owner tablet for rider assignment. Rider completion via PIN is not enabled.</p><div class="field"><label>Owner email</label><input id="phaseOwnerEmail" type="email" autocomplete="username"></div><div class="field"><label>Owner password</label><input id="phaseOwnerPassword" type="password" autocomplete="current-password"></div><div class="row"><button class="primary" id="phaseOwnerLogin" type="button">Owner sign in</button><button class="light" id="phaseOwnerLogout" type="button" disabled>Sign out</button><button class="light" id="phaseRefreshOrders" type="button" disabled>Refresh orders</button></div><p id="phaseOwnerStatus" class="notice">Not connected.</p><div id="phaseCloudOrders" class="cards"></div></div>
+<div class="panel"><h2>Customer Orders</h2><p class="muted">Order tracking starter module. Online orders from the Online Store page appear here after owner sign-in.</p><div class="row"><button class="primary" onclick="openOrder()">＋ Add order record</button></div><div id="orderList" class="cards"></div><div id="ordersEmpty" class="empty">Wala pay order records.</div><div class="notice">Payment methods: COD, GCash, ug Bank Transfer. San Carlos City Proper: owner-editable default delivery fee. Other areas: negotiable. Store Pickup: ₱0. Rider delivery-fee sharing is not a confirmed payroll rule. Kini nga local-only admin record pa; wala pa ang public customer checkout.</div></div>
+<div class="panel" style="border:2px solid #d6b53a"><h2>V21 Automated Order/Stock Regression Check</h2><p class="muted">Runs in-memory test fixtures only. Dili maghimo og order, dili mo-usab sa products, ug dili mosulat sa localStorage.</p><button type="button" class="primary" onclick="runOrderStockRegression()">Run order + reserved stock checks</button><div id="orderStockTestResult" class="notice" style="margin-top:10px">Wala pa gi-run ang regression checks.</div></div>
+<div class="panel" style="border:2px solid #16794b"><h2>Integrated Order / PIN / Delivery Test</h2><p class="muted">Gamit ang actual Add Order ug Update Order form handlers sa temporary fixture. Ang V21 test storage ra ang temporary gamiton ug ibalik dayon ang naunang value. Walay production/Firebase access.</p><button type="button" class="primary" onclick="runIntegratedOrderWorkflowTest()">Run integrated order → PIN → delivery test</button><div id="integratedOrderTestResult" class="notice" style="margin-top:10px">Wala pa gi-run ang integrated browser workflow.</div></div>
+</section>
+<section id="page-online" class="hidden">
+ <div class="panel" style="border:2px solid #183b68"><h2>Customer Online Store — Phase 1</h2><p class="muted">Customer uses a dedicated anonymous Firebase session, reads active items from publicCatalog, and submits to customerOrders. No stock is deducted. Delivery fee is set/confirmed by owner after checkout.</p>
+ <div class="field"><label>Search products</label><input id="onlineSearch" placeholder="Search catalog..."></div><div id="onlineCatalog" class="cards"></div><p id="onlineCatalogStatus" class="notice">Connect to load the public catalog.</p></div>
+ <div class="panel"><h2>Cart & Estimated Total</h2><div id="onlineCart">No items yet.</div><div class="row"><b>Estimated subtotal</b><b id="onlineSubtotal">₱0.00</b></div><div class="row"><b>Estimated delivery fee</b><b id="onlineDeliveryFee">₱40.00</b></div><div class="row" style="border-top:1px solid var(--line);padding-top:10px"><b>Estimated total</b><b id="onlineGrandTotal">₱40.00</b></div><p class="muted" id="onlineFeeNote">San Carlos City Proper: ₱40. Other areas are subject to owner confirmation/negotiation. Store Pickup: ₱0. Final delivery fee is confirmed by the store before order confirmation.</p></div>
+ <div class="panel"><h2>Checkout</h2><form id="onlineCheckout"><div class="field"><label>Full name *</label><input name="name" required maxlength="100"></div><div class="field"><label>Mobile number *</label><input name="phone" required maxlength="30" type="tel"></div><div class="field"><label>Delivery address / landmark <span id="addressRequiredMark">*</span></label><textarea name="address" id="onlineAddress" maxlength="300" required></textarea><small id="addressHelp" class="muted">Required for delivery. Store Pickup does not need an address.</small></div><div class="field"><label>Area *</label><select name="area" id="onlineArea" required><option>San Carlos City Proper</option><option>Vallehermoso</option><option>Canlaon City</option><option>Don Salvador Benedicto (DSB)</option><option>Calatrava</option><option>Toboso</option><option>Store Pickup</option></select></div><div class="field"><label>Payment</label><select name="payment" id="onlinePayment"><option>COD</option><option>GCash</option></select></div><div id="onlineGcashInfo" class="notice hidden"><b>GCash payment details</b><br>Account name: MILA<br>GCash number: 09175179132<br><span class="muted">Ayaw pagbayad hangtod ma-confirm sa store ang final total. Human mobayad, ibutang ang GCash transaction reference sa Notes o ipadala ang proof sa store. Manual verification sa owner; dili automatic ang GCash verification.</span></div><div class="field"><label>Notes</label><textarea name="notes" maxlength="500"></textarea></div><button class="primary" id="onlineSubmit" type="submit">Submit order</button></form><p id="onlineSubmitStatus" class="notice">No order submitted.</p></div>
+ <div class="panel" style="border:2px solid #b45309"><h2>Customer tracking</h2><p id="onlineTracking" class="muted">After submitting, the order number and current status will appear here on this device.</p><div class="row"><input id="onlineTrackId" placeholder="Order ID" aria-label="Order ID"><button type="button" class="light" id="onlineTrackButton">Check status</button></div></div>
+</section>
+<section id="page-settings" class="hidden">
+<div class="panel"><h2>Settings & Backup</h2><div class="panel" style="margin-top:14px;border:2px solid var(--line)" id="firebaseReadOnlyPanel">
+<h3>Firebase Owner Connection — READ-ONLY TEST</h3>
+<p class="muted"><b>Safety:</b> Kini nga panel mobasa lamang sa bag-ong Firebase project. Dili kini mo-upload, mo-edit, mo-delete, mo-sync, o mo-usab sa Firestore Rules. Dili usab niini i-import ang online data ngadto sa local M9 inventory.</p>
+<div class="field"><label>Owner email</label><input id="roFirebaseEmail" type="email" autocomplete="username" placeholder="Owner email"></div>
+<div class="field"><label>Firebase password</label><input id="roFirebasePassword" type="password" autocomplete="current-password" placeholder="Ibutang dinhi; dili i-save"></div>
+<div class="row"><button type="button" class="primary" id="roFirebaseLogin">Sign in & Check Online Data</button><button type="button" class="light" id="roFirebaseLogout" disabled>Sign out</button></div>
+<div id="roFirebaseStatus" class="notice" aria-live="polite">Wala pa gi-connect. Ang local M9 data dili hilabtan.</div>
+<div id="roFirebaseResults" class="notice" aria-live="polite">Human sa owner sign-in, ipakita dinhi ang read-only counts sa storeProducts, customerOrders ug storeSettings/main.</div>
+</div><p class="muted">Ang backup naglangkob sa products, categories, riders, sales ug orders niining bag-ong file.</p><div class="row"><button class="primary" onclick="exportBackup()">Export JSON backup</button><button class="light" onclick="document.getElementById('importInput').click()">Import JSON backup</button></div><input id="importInput" class="hidden" type="file" accept="application/json,.json" onchange="importBackup(event)"><p class="muted">Import mopuli sa data sa bag-ong system human sa confirmation. Ayaw i-import ang old backup kung dili pa nato nasusi ang format.</p><div class="notice">Phase 1 cloud customerOrders is separate from local backup. Cloud-to-local import is explicit and duplicate-protected; no automatic inventory sync.</div><div class="panel" style="margin-top:14px;border:2px solid var(--line)"><h3>Category & Unit Management — TEST COPY</h3><p class="muted">Add, rename, ug delete categories/units. Dili tugotan ang delete kon gigamit pa sa produkto. Ang rename mag-update sa produkto nga naggamit sa daang ngalan.</p><div class="row"><button type="button" class="primary" onclick="addManagedValue('category')">＋ Add category</button><button type="button" class="primary" onclick="addManagedValue('unit')">＋ Add unit</button></div><div id="categoryManagementList"></div><div id="unitManagementList"></div></div><div class="field"><label>Store name</label><input id="storeName" value="321 Sari-Sari Store" onchange="saveSettings()"></div><h3>Editable Delivery Policy</h3>
+<div class="row"><div class="field"><label>San Carlos City Proper default delivery fee (₱)</label><input id="deliveryFee" type="number" min="0" step="0.01" value="30" onchange="saveSettings()"></div><div class="field"><label>Local rider share (%) — review before payroll</label><input id="localRiderPercent" type="number" min="0" max="100" step="0.01" value="50" onchange="saveSettings()"></div></div>
+<div class="row"><div class="field"><label>Outside-area rider fee (₱)</label><input id="negotiatedRiderShare" type="number" min="0" step="0.01" value="15" onchange="saveSettings()"></div><div class="field"><label>Pickup fee (₱)</label><input id="pickupFee" type="number" min="0" step="0.01" value="0" onchange="saveSettings()"></div></div>
+<div class="notice">Policy: San Carlos City Proper default fee is editable by the owner and applies to new orders. Other delivery areas = negotiable amount agreed with the customer. Store Pickup = ₱0. The rider/store delivery-fee split is not approved as a payroll rule; confirm it separately before paying. Rider attendance and incentive rates are owner-managed local records in this phase.</div>
+<div class="panel" style="margin-top:14px;border:2px solid var(--line)"><h3>Delivery Fee Quick Test — walay order o stock nga hilabtan</h3><p class="muted">Preview lamang kini. Dili kini mag-save og order, mo-usab sa inventory, o mo-deduct sa stock.</p><div class="field"><label>Test subtotal (₱)</label><input id="feeTestSubtotal" type="number" min="0" step="0.01" value="100"></div><div class="field"><label>Delivery area</label><select id="feeTestArea"><option>San Carlos City Proper</option><option>Vallehermoso</option><option>Canlaon City</option><option>Don Salvador Benedicto (DSB)</option><option>Calatrava</option><option>Toboso</option><option>Store Pickup</option></select></div><div class="field"><label>Agreed negotiated fee for outside area (₱)</label><input id="feeTestNegotiated" type="number" min="0" step="0.01" value="200"></div><div class="row"><button type="button" class="primary" onclick="runFeeTest()">Check fee</button><button type="button" class="light" onclick="testDeliveryPolicyCases()">Test all delivery rules</button></div><div id="feeTestResult" class="notice" aria-live="polite">Pislita ang Check fee aron makita ang fee ug share.</div></div>
+<button class="danger" onclick="clearLocalData()">Clear new system local data</button></div>
+</section>
+</main>
+<div class="footer">321 Sari-Sari Store · M9 Phase 1 · GitHub Deployment Candidate · Local inventory remains separate</div>
+</div>
+<div id="modal" class="modal" role="dialog" aria-modal="true"><div class="dialog"><div class="dialoghead"><h2 id="modalTitle">Form</h2><button class="light" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+<script>
+const KEY='321SariSari_MASTER_M9_REFRESH_SECURITY_REVIEW_TEST_ONLY';
+let db={products:[],categories:['Beverages','Rice & Grains','Canned Goods','Noodles & Pasta','Snacks & Sweets','Cooking Essentials','Personal Care','Household','Frozen Foods','Other'],units:['pcs','pack','bottle','can','kilo','sack','gram','liter','tray'],riders:[],sales:[],orders:[],attendance:[],incentiveRates:{online:0.05,physical:0.02,repeatOnline:1},settings:{storeName:'321 Sari-Sari Store',deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};
+function load(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);db={...db,...d};db.categories=Array.isArray(d.categories)?d.categories:db.categories;db.units=Array.isArray(d.units)&&d.units.length?d.units:['pcs','pack','bottle','can','kilo','sack','gram','liter','tray'];db.settings={...db.settings,deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0,...(d.settings||{}),deliveryFee:Math.max(0,Number(d.settings?.deliveryFee??30)),pickupFee:0};db.attendance=Array.isArray(d.attendance)?d.attendance:[];db.incentiveRates={online:0.05,physical:0.02,repeatOnline:1,...(d.incentiveRates||{})};db.riders=(db.riders||[]).map(r=>({...r,approvalStatus:r.approvalStatus||'Pending Approval'}));db.orders=(db.orders||[]).map(o=>{const normalized={...o,status:({new:'New',confirm:'Confirmed',confirmed:'Confirmed',assigned:'Assigned',delivered:'Delivered',cancelled:'Cancelled',canceled:'Cancelled'})[String(o.status||'New').trim().toLowerCase()]||o.status||'New'};if(!normalized.deliveryPin)normalized.pinNeedsReview=true;return normalized});}}catch(e){alert('Dili mabasa ang local data. Ayaw i-clear ang browser data; i-check una kung naa kay JSON backup.')}syncSettings();renderAll()}
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+window.getM9ApprovedRiders=()=>db.riders.filter(r=>(r.approvalStatus||'Pending Approval')==='Approved'&&(r.status||'Active')==='Active').map(r=>({id:String(r.id),name:String(r.name),role:String(r.role||'Rider/Salesman')}));
+function uniqueRecordId(prefix,collection){let id;do{id=prefix+(globalThis.crypto&&typeof crypto.randomUUID==='function'?crypto.randomUUID():Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10))}while((collection||[]).some(x=>x.id===id));return id}
+function syncSettings(){const defaults={deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0};for(const [k,v] of Object.entries({storeName:'storeName',deliveryFee:'deliveryFee',localRiderPercent:'localRiderPercent',negotiatedRiderShare:'negotiatedRiderShare',pickupFee:'pickupFee'})){const el=document.getElementById(v);if(el)el.value=db.settings[k]??(k==='storeName'?'321 Sari-Sari Store':defaults[k])}}
+function showPage(page){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById('page-'+page).classList.remove('hidden');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='inventory')renderProducts()}
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function money(v){return '₱'+(Number(v)||0).toLocaleString('en-PH',{maximumFractionDigits:2})}
+
+// M9 FIX: category/unit management renderer was referenced by renderAll() but missing.
+function renderManagedLists(){
+ const cats=document.getElementById('categoryManagementList');
+ const units=document.getElementById('unitManagementList');
+ if(cats) cats.innerHTML='<h4>Categories</h4>'+((db.categories||[]).map((v,i)=>`<div class="row" style="padding:6px 0"><span>${esc(v)}</span><button type="button" class="light fixed" onclick="renameManagedValue('category',${i})">Rename</button><button type="button" class="danger fixed" onclick="deleteManagedValue('category',${i})">Delete</button></div>`).join('')||'<p class="muted">No categories.</p>');
+ if(units) units.innerHTML='<h4>Units</h4>'+((db.units||[]).map((v,i)=>`<div class="row" style="padding:6px 0"><span>${esc(v)}</span><button type="button" class="light fixed" onclick="renameManagedValue('unit',${i})">Rename</button><button type="button" class="danger fixed" onclick="deleteManagedValue('unit',${i})">Delete</button></div>`).join('')||'<p class="muted">No units.</p>');
+}
+window.addManagedValue=function(kind){
+ const key=kind==='unit'?'units':'categories';
+ const value=String(prompt('New '+(kind==='unit'?'unit':'category')+' name:')||'').trim();
+ if(!value)return;
+ if(!Array.isArray(db[key]))db[key]=[];
+ if(db[key].some(x=>String(x).toLowerCase()===value.toLowerCase())){alert('Already exists.');return}
+ db[key].push(value);persist();
+};
+window.renameManagedValue=function(kind,index){
+ const key=kind==='unit'?'units':'categories',old=db[key]?.[index];if(old==null)return;
+ const value=String(prompt('Rename '+old+':',old)||'').trim();if(!value||value===old)return;
+ if(db[key].some((x,i)=>i!==index&&String(x).toLowerCase()===value.toLowerCase())){alert('Already exists.');return}
+ db[key][index]=value;
+ if(kind==='category')db.products.forEach(p=>{if(p.category===old)p.category=value});
+ persist();
+};
+window.deleteManagedValue=function(kind,index){
+ const key=kind==='unit'?'units':'categories',old=db[key]?.[index];if(old==null)return;
+ const inUse=kind==='unit'?db.products.some(p=>p.unit===old):db.products.some(p=>p.category===old);
+ if(inUse){alert('Cannot delete: currently used by a product.');return}
+ if(!confirm('Delete '+old+'?'))return;
+ db[key].splice(index,1);persist();
+};
+function renderAll(){document.getElementById('statProducts').textContent=db.products.length;document.getElementById('statRiders').textContent=db.riders.length;document.getElementById('statSales').textContent=db.sales.length;renderProducts();renderRiders();renderSales();renderOrders();renderCategoryFilter();renderManagedLists();syncSettings()}
+// Shared reservation helpers used by order validation and isolated regression checks.
+function reservedQtyForProduct(productId){return (db.orders||[]).filter(o=>!o.stockDeducted&&!['cancelled','canceled'].includes(String(o.status||'').trim().toLowerCase())).reduce((sum,o)=>sum+(Array.isArray(o.items)?o.items.filter(it=>it.productId===productId).reduce((n,it)=>n+(Number(it.qty)||0),0):0),0)}
+function availableForNewOrder(productId,currentItems=[]){const p=db.products.find(x=>x.id===productId);if(!p)return 0;const inThisForm=currentItems.filter(it=>it.productId===productId).reduce((sum,it)=>sum+(Number(it.qty)||0),0);return Math.max(0,Number(p.stock||0)-reservedQtyForProduct(productId)-inThisForm)}
+// Fail-safe: a delivered record without stockDeducted remains reserved for manual review instead of silently freeing stock.
+
+function renderCategoryFilter(){const el=document.getElementById('categoryFilter');if(!el)return;const val=el.value;el.innerHTML='<option value="">All categories</option>'+db.categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');el.value=val}
+function renderProducts(){const list=document.getElementById('productList'),empty=document.getElementById('productsEmpty');if(!list)return;const q=(document.getElementById('productSearch')?.value||'').toLowerCase(),cat=document.getElementById('categoryFilter')?.value||'';const arr=db.products.filter(p=>(p.name||'').toLowerCase().includes(q)&&(!cat||p.category===cat));list.innerHTML=arr.map(p=>`<article class="item"><div class="photo">${p.photo?`<img src="${p.photo}" alt="">`:'📦'}</div><div class="itemmain"><h3>${esc(p.name)} ${p.sample?'<span class="pill">SAMPLE</span>':''}</h3><div class="meta">${esc(p.category||'Other')} · ${money(p.price)} · Stock: ${esc(p.stock)} ${esc(p.unit||'pcs')}</div><div class="actions"><button class="dark" onclick="openProduct('${p.id}')">Edit</button><button class="danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div></article>`).join('');empty.classList.toggle('hidden',arr.length>0)}
+function openProduct(id=''){
+ const p=db.products.find(x=>x.id===id)||{name:'',price:'',stock:0,category:db.categories.find(c=>c!=='Other')||'Beverages',unit:'pcs',photo:'',notes:''};
+ modalTitle.textContent=id?'Edit product':'Add product';
+ const knownCategories=db.categories.filter(c=>c!=='Other');
+ const categoryIsKnown=knownCategories.includes(p.category);
+ const categoryChoice=categoryIsKnown?p.category:'__OTHER__';
+ const units=[...new Set([...(db.units||['pcs','pack','bottle','can','kilo','sack','gram','liter','tray'])])];
+ const currentUnit=String(p.unit||'pcs');
+ const unitOptions=[...units];
+ if(currentUnit&&!unitOptions.includes(currentUnit))unitOptions.push(currentUnit);
+ modalBody.innerHTML=`<form id="productForm"><div class="field"><label>Product name *</label><input name="name" required maxlength="120" value="${esc(p.name)}"></div><div class="row"><div class="field"><label>Price (₱) *</label><input name="price" type="number" min="0" step=".01" required value="${esc(p.price)}"></div><div class="field"><label>Stock quantity *</label><input name="stock" type="number" min="0" step=".01" required value="${esc(p.stock)}"></div></div><div class="row"><div class="field"><label>Category *</label><select name="categoryChoice" id="productCategoryChoice" required>${knownCategories.map(c=>`<option value="${esc(c)}" ${c===categoryChoice?'selected':''}>${esc(c)}</option>`).join('')}<option value="__OTHER__" ${categoryChoice==='__OTHER__'?'selected':''}>Other</option></select><input name="customCategory" id="customProductCategory" class="${categoryChoice==='__OTHER__'?'':'hidden'}" style="margin-top:8px" value="${categoryChoice==='__OTHER__'?esc(p.category==='Other'?'':p.category):''}" placeholder="New category name" ${categoryChoice==='__OTHER__'?'required':''}><p class="muted">Pilia ang Other aron makadugang og bag-ong category.</p></div><div class="field"><label>Unit</label><select name="unit">${unitOptions.map(u=>`<option value="${esc(u)}" ${u===currentUnit?'selected':''}>${esc(u)}</option>`).join('')}</select></div></div><div class="field"><label>Product picture</label><input name="photoFile" type="file" accept="image/*"><img id="photoPreview" class="inline-photo ${p.photo?'':'hidden'}" src="${p.photo||''}" alt="Photo preview"><label class="check"><input type="checkbox" name="removePhoto"> Remove current photo</label><p class="muted">Ang photo ma-compress aron mas gamay ang local storage. Export backup aron naa kay kopya.</p></div><div class="field"><label>Notes (optional)</label><textarea name="notes">${esc(p.notes||'')}</textarea></div><div class="row"><button class="primary" type="submit">Save product</button><button class="light" type="button" onclick="closeModal()">Cancel</button></div></form>`;
+ const form=document.getElementById('productForm');
+ const categorySelect=form.elements.categoryChoice, customCategory=form.elements.customCategory;
+ categorySelect.addEventListener('change',()=>{const isOther=categorySelect.value==='__OTHER__';customCategory.classList.toggle('hidden',!isOther);customCategory.required=isOther;if(!isOther)customCategory.value='';});
+ let photo=p.photo||'';
+ form.photoFile.addEventListener('change',async()=>{const file=form.photoFile.files[0];if(!file)return;try{photo=await compressImage(file);const im=document.getElementById('photoPreview');im.src=photo;im.classList.remove('hidden')}catch(e){alert('Dili mabasa ang picture. Sulayi ang laing image.')}});
+ form.onsubmit=e=>{e.preventDefault();const fd=new FormData(form),name=String(fd.get('name')).trim(),choice=String(fd.get('categoryChoice')||''),category=(choice==='__OTHER__'?String(fd.get('customCategory')||'').trim():choice).trim();if(!name||!category){alert('Ibutang ang product name ug category. Wala gi-save.');return}const old=db.products.find(x=>x.id===id);const requestedStock=Number(fd.get('stock'));if(!Number.isFinite(requestedStock)||requestedStock<0){alert('Stock kinahanglan zero o mas taas. Wala gi-save.');return}const price=Number(fd.get('price'));if(!Number.isFinite(price)||price<0){alert('Presyo kinahanglan zero o mas taas. Wala gi-save.');return}if(old){const reserved=reservedQtyForProduct(old.id);if(requestedStock<reserved){alert(`Dili ma-save ang stock nga ${requestedStock}: naa pay ${reserved} ${old.unit||'pcs'} nga naka-reserve sa active orders. I-reassign/i-cancel o humanon una ang orders.`);return}}if(!db.categories.includes(category))db.categories.push(category);const item={...(old||{}),id:id||('p_'+Date.now()),name,price,stock:requestedStock,category,unit:String(fd.get('unit')||'pcs').trim(),notes:String(fd.get('notes')||'').trim(),photo:form.removePhoto.checked?'':photo,sample:false,updatedAt:new Date().toISOString()};const ix=db.products.findIndex(x=>x.id===item.id);if(ix>=0)db.products[ix]=item;else db.products.unshift(item);persist();closeModal()};
+ openModal()
+}
+function compressImage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const scale=Math.min(1,700/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext('2d').drawImage(img,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.75))};img.src=reader.result};reader.readAsDataURL(file)})}
+function deleteProduct(id){
+ const p=db.products.find(x=>x.id===id);if(!p)return;
+ const linkedSale=db.sales.some(s=>s.productId===id);
+ const linkedOrder=db.orders.some(o=>(o.items||[]).some(it=>it.productId===id)&&!o.stockDeducted);
+ if(linkedSale||linkedOrder){alert('Dili pa matangtang ang product kay naa pay linked Sales Record o open order. Humanon o i-review una ang mga record aron dili madaot ang stock tracking.');return;}
+ if(confirm(`Delete "${p.name}" from this new local system?`)){db.products=db.products.filter(x=>x.id!==id);persist()}
+}
+function renderRiders(){const list=document.getElementById('riderList'),empty=document.getElementById('ridersEmpty');list.innerHTML=db.riders.map(r=>`<article class="item"><div class="photo">🛵</div><div class="itemmain"><h3>${esc(r.name)}</h3><div class="meta">Phone: ${esc(r.phone||'—')}<br>Role: ${esc(r.role||'Rider/Salesman')} · Status: ${esc(r.status||'Active')}<br>Approval: ${esc(r.approvalStatus||'Pending Approval')}<br>${esc(r.notes||'')}</div><div class="actions">${(r.approvalStatus||'Pending Approval')!=='Approved'?`<button class="primary" onclick="approveRider('${r.id}')">Approve</button>`:''}<button class="dark" onclick="openRider('${r.id}')">Edit</button><button class="danger" onclick="deleteRider('${r.id}')">Delete</button></div></div></article>`).join('');empty.classList.toggle('hidden',db.riders.length>0)}
+function openRider(id=''){const r=db.riders.find(x=>x.id===id)||{name:'',phone:'',role:'Rider/Salesman',status:'Active',approvalStatus:'Pending Approval',notes:''};modalTitle.textContent=id?'Edit rider/salesman':'Add rider/salesman';modalBody.innerHTML=`<form id="riderForm"><div class="field"><label>Full name *</label><input name="name" required value="${esc(r.name)}"></div><div class="field"><label>Phone</label><input name="phone" type="tel" value="${esc(r.phone)}"></div><div class="row"><div class="field"><label>Role</label><select name="role"><option ${r.role==='Rider'?'selected':''}>Rider</option><option ${r.role==='Salesman'?'selected':''}>Salesman</option><option ${r.role==='Rider/Salesman'?'selected':''}>Rider/Salesman</option></select></div><div class="field"><label>Status</label><select name="status"><option ${r.status==='Active'?'selected':''}>Active</option><option ${r.status==='Inactive'?'selected':''}>Inactive</option></select></div></div><div class="field"><label>Owner approval</label><select name="approvalStatus"><option ${r.approvalStatus==='Pending Approval'?'selected':''}>Pending Approval</option><option ${r.approvalStatus==='Approved'?'selected':''}>Approved</option><option ${r.approvalStatus==='Rejected'?'selected':''}>Rejected</option></select></div><div class="field"><label>Notes</label><textarea name="notes">${esc(r.notes)}</textarea></div><div class="row"><button class="primary">Save profile</button><button class="light" type="button" onclick="closeModal()">Cancel</button></div></form>`;document.getElementById('riderForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),obj={id:id||'r_'+Date.now(),name:String(f.get('name')).trim(),phone:String(f.get('phone')).trim(),role:f.get('role'),status:f.get('status'),approvalStatus:f.get('approvalStatus')||'Pending Approval',notes:String(f.get('notes')).trim()};const i=db.riders.findIndex(x=>x.id===obj.id);if(i>=0)db.riders[i]=obj;else db.riders.push(obj);persist();closeModal()};openModal()}
+function deleteRider(id){
+ const rider=db.riders.find(r=>r.id===id);if(!rider)return;
+ const activeOrders=db.orders.filter(o=>o.riderId===id&&!['delivered','cancelled','canceled'].includes(String(o.status||'New').trim().toLowerCase()));
+ if(activeOrders.length){alert(`Dili ma-delete si ${rider.name}: naa pay ${activeOrders.length} ka active order nga naka-assign kaniya. I-reassign o i-cancel una ang order. Walay nausab nga data.`);return;}
+ if(confirm(`Delete rider profile "${rider.name}"?`)){const beforeState=JSON.stringify(db);db.riders=db.riders.filter(r=>r.id!==id);try{persist()}catch(err){try{db=JSON.parse(beforeState)}catch(rollbackErr){}try{localStorage.setItem(KEY,beforeState)}catch(storageErr){}try{renderAll()}catch(renderErr){}alert('Wala makumpirma ang rider deletion. Gisulayan ibalik ang data. Ayaw pag-retry hangtod ma-check ang backup ug storage.')}}
+}
+function renderSales(){const el=document.getElementById('salesList'),empty=document.getElementById('salesEmpty');el.innerHTML=db.sales.map(s=>`<div class="panel"><b>${esc(s.productName)}</b> <span class="badge">${esc(s.status)}</span><div class="meta">Qty: ${esc(s.qty)} · Total: ${money(s.total)} · Rider: ${esc(s.riderName||'Not assigned')}<br>${esc(s.date||'')}</div><div class="actions"><button class="danger" onclick="deleteSale('${s.id}')">Delete record</button></div></div>`).join('');empty.classList.toggle('hidden',db.sales.length>0)}
+function openSale(){if(!db.products.length){alert('Add actual products first, bai.');return}modalTitle.textContent='Record sale';modalBody.innerHTML=`<form id="saleForm"><div class="field"><label>Product *</label><select name="product" required>${db.products.map(p=>`<option value="${p.id}">${esc(p.name)} — ${money(p.price)} · Stock: ${esc(p.stock)} ${esc(p.unit||'pcs')}</option>`).join('')}</select></div><div class="field"><label>Quantity *</label><input name="qty" type="number" min=".01" step=".01" required value="1"><p class="muted" id="saleStockHint">Completed sale will deduct stock.</p></div><div class="field"><label>Rider/Salesman (optional)</label><select name="rider"><option value="">Not assigned</option>${db.riders.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Status</label><select name="status"><option>Completed</option><option>Pending</option><option>Cancelled</option></select></div><div class="row"><button class="primary">Save sale</button><button class="light" type="button" onclick="closeModal()">Cancel</button></div></form>`;const form=document.getElementById('saleForm');const productSelect=form.elements.product;const hint=document.getElementById('saleStockHint');function updateStockHint(){const p=db.products.find(x=>x.id===productSelect.value);hint.textContent=p?`Physical stock: ${p.stock} ${p.unit||'pcs'}; reserved for active orders: ${reservedQtyForProduct(p.id)}; available for a new completed sale: ${Math.max(0,Number(p.stock||0)-reservedQtyForProduct(p.id))}. Pending/Cancelled do not deduct stock.`:''}productSelect.addEventListener('change',updateStockHint);updateStockHint();form.onsubmit=e=>{e.preventDefault();if(form.dataset.saving==='1')return;form.dataset.saving='1';const saveBtn=form.querySelector('button[type=submit],button.primary');if(saveBtn)saveBtn.disabled=true;const f=new FormData(form),p=db.products.find(p=>p.id===f.get('product')),r=db.riders.find(r=>r.id===f.get('rider')),qty=Number(f.get('qty')),status=String(f.get('status'));if(!p){alert('Product not found. No sale saved.');form.dataset.saving='0';if(saveBtn)saveBtn.disabled=false;return}if(!Number.isFinite(qty)||qty<=0){alert('Enter a quantity greater than zero.');form.dataset.saving='0';if(saveBtn)saveBtn.disabled=false;return}if(status==='Completed'){const reserved=reservedQtyForProduct(p.id),available=Math.max(0,Number(p.stock||0)-reserved);if(qty>available){alert(`Insufficient unreserved stock for ${p.name}. Physical stock: ${p.stock}; reserved for active orders: ${reserved}; available for sale: ${available} ${p.unit||'pcs'}. No sale saved.`);form.dataset.saving='0';if(saveBtn)saveBtn.disabled=false;return}}const beforeState=JSON.stringify(db);const sale={id:'s_'+Date.now(),productId:p.id,productName:p.name,price:Number(p.price)||0,qty,total:(Number(p.price)||0)*qty,riderId:r?.id||'',riderName:r?.name||'',status,date:new Date().toLocaleString(),stockDeducted:false};if(status==='Completed'){p.stock=Number(p.stock||0)-qty;sale.stockDeducted=true}db.sales.unshift(sale);try{persist();closeModal()}catch(err){try{db=JSON.parse(beforeState)}catch(rollbackErr){}try{localStorage.setItem(KEY,beforeState)}catch(storageErr){}try{renderAll()}catch(renderErr){}alert('Wala makumpirma ang sale save. Gisulayan ibalik ang stock ug sale record. Ayaw pag-retry hangtod ma-check ang local storage ug ma-export ang backup.')}};openModal()}
+function deleteSale(id){const s=db.sales.find(x=>x.id===id);if(!s)return;const product=s.stockDeducted?db.products.find(x=>x.id===s.productId):null;if(s.stockDeducted&&!product){alert('Dili matangtang ang sale record: nabawas ang stock apan dili na makita ang linked product. I-export ang backup ug i-review una; wala giusab ang record o stock.');return}if(confirm('Delete this sale record? If stock was deducted, the quantity will be returned to inventory.')){const beforeState=JSON.stringify(db);if(s.stockDeducted)product.stock=Number(product.stock||0)+Number(s.qty||0);db.sales=db.sales.filter(x=>x.id!==id);try{persist()}catch(err){try{db=JSON.parse(beforeState)}catch(rollbackErr){}try{localStorage.setItem(KEY,beforeState)}catch(storageErr){}try{renderAll()}catch(renderErr){}alert('Wala makumpirma ang deletion. Gisulayan ibalik ang sale ug stock records. Ayaw pag-retry hangtod ma-check ang local storage.')}}}
+function renderOrders(){const el=document.getElementById('orderList'),empty=document.getElementById('ordersEmpty');el.innerHTML=db.orders.map(o=>{const assigned=db.riders.find(r=>r.id===o.riderId);return `<article class="item"><div class="photo">🛒</div><div class="itemmain"><h3>${esc(o.customer)}</h3><div class="meta">${esc(o.phone||'')} · ${esc(o.area||'')}<br>${(o.items||[]).map(it=>`${esc(it.name)} × ${esc(it.qty)}`).join(", ")||esc(o.summary||"No structured items")}<br>PIN: ${o.pinNeedsReview?'Needs review':(o.pinVerified?"Verified":(o.deliveryPin?"Not verified":"No PIN"))} · Stock: ${o.stockDeducted?"Deducted":"Not deducted"}<br>Order: ${money(o.total)} · Delivery: ${money(o.deliveryFee??0)} · Rider share: ${money(o.riderShare??0)} · Store share: ${money(o.storeShare??0)}<br>Rider: ${esc(assigned?.name||o.riderName||'Not assigned')}<br>${esc(o.payment)} · Payment: ${esc(o.paymentStatus||(o.payment==="COD"?"Pending collection":"For verification"))} · Order: ${esc(o.status)}</div><div class="actions"><button class="primary" onclick="viewOrderSummary('${o.id}')">View order summary</button><button class="light" onclick="setCustomerOrderDeliveryFee('${o.id}')">Set delivery fee</button><button class="dark" onclick="updateOrder('${o.id}')">Update order / rider</button><button class="danger" onclick="deleteOrder('${o.id}')">Delete</button></div></div></article>`}).join('');empty.classList.toggle('hidden',db.orders.length>0)}
+function openOrder(){modalTitle.textContent='Add order record';modalBody.innerHTML=`<form id="orderForm"><div class="field"><label>Customer name *</label><input name="customer" required></div><div class="row"><div class="field"><label>Phone</label><input name="phone" type="tel"></div><div class="field"><label>Delivery area *</label><select name="area" id="orderArea" required><option value="San Carlos City Proper">San Carlos City Proper</option><option>Vallehermoso</option><option>Canlaon City</option><option>Don Salvador Benedicto (DSB)</option><option>Calatrava</option><option>Toboso</option><option>Store Pickup</option></select></div></div><div class="field" id="deliveryTypeWrap"><label>San Carlos City Proper delivery rate</label><select name="deliveryType" id="deliveryType"><option value="fixed">Current owner-set default fee</option></select></div><div class="field"><label>Order notes / customer request</label><textarea name="summary" placeholder="Optional delivery notes"></textarea></div>
+<div class="panel" style="margin:10px 0;padding:12px"><h3>Order items (required for stock tracking)</h3>
+<div class="row"><div class="field"><label>Product</label><select id="orderProductSelect">${db.products.map(p=>`<option value="${p.id}">${esc(p.name)} — ${money(p.price)} · stock ${esc(p.stock)} ${esc(p.unit||'pcs')}</option>`).join('')}</select></div><div class="field"><label>Quantity</label><input id="orderProductQty" type="number" min=".01" step=".01" value="1"></div></div>
+<div class="row"><button type="button" class="dark" id="addOrderItemBtn">Add item</button></div><div id="orderItemsPreview" class="meta">No items added yet.</div><input type="hidden" name="itemsJson" id="orderItemsJson">
+<p class="muted">Pilia ang aktuwal nga produkto ug quantity. Dili pa kuhaan og stock hangtod ma-verify ang order PIN ug ma-complete ang delivery. Ang quantity sa active orders i-reserve sa availability check aron malikayan ang sobra nga pag-order.</p></div>
+<div class="row"><div class="field"><label>Order total before delivery (₱) *</label><input name="total" id="orderTotal" type="number" min="0" step=".01" required readonly></div><div class="field"><label>Payment</label><select name="payment" required><option>COD</option><option>GCash</option><option>Bank Transfer</option></select></div></div><div class="field"><label>Agreed delivery fee (₱)</label><input name="deliveryFee" id="orderDeliveryFee" type="number" min="0" step=".01" required value="${Number(db.settings.deliveryFee)||30}"><p class="muted" id="feeHelp">Current owner-set default fee for San Carlos City Proper; other areas are negotiable.</p></div><div class="notice" id="sharePreview">Rider share and store share will be calculated based on the selected delivery rule.</div><div class="field"><label>Assign rider/salesman</label><select name="riderId"><option value="">Not assigned yet</option>${db.riders.filter(r=>r.status!=='Inactive'&&r.approvalStatus==='Approved'&&r.role!=='Salesman').map(r=>`<option value="${r.id}">${esc(r.name)}${r.role?' — '+esc(r.role):''}</option>`).join('')}</select><p class="muted">Optional. Only active profiles with a rider role are listed.</p></div><div class="field"><label>Status</label><select name="status"><option>New</option><option>Confirmed</option><option>Assigned</option><option>Cancelled</option></select></div><div class="row"><button class="primary">Save order record</button><button class="light" type="button" onclick="closeModal()">Cancel</button></div></form>`;
+const form=document.getElementById('orderForm'),area=document.getElementById('orderArea'),type=document.getElementById('deliveryType'),typeWrap=document.getElementById('deliveryTypeWrap'),fee=document.getElementById('orderDeliveryFee'),total=document.getElementById('orderTotal'),help=document.getElementById('feeHelp'),preview=document.getElementById('sharePreview');
+// Safety: refuse to save an order unless each item has a real product ID, positive quantity, and valid price.
+
+const orderItems=[];const productPicker=document.getElementById('orderProductSelect'),qtyPicker=document.getElementById('orderProductQty'),itemsPreview=document.getElementById('orderItemsPreview'),itemsJson=document.getElementById('orderItemsJson');
+// Reserve stock logically for active orders until they are cancelled or delivered.
+// This does not deduct inventory; it prevents new orders from claiming already-promised units.
+// Fail-safe rule: an order reserves stock until cancelled or its stockDeducted flag is persisted. If a legacy Delivered order lacks that flag, it remains reserved for manual review rather than silently freeing stock.
+function renderOrderItems(){itemsPreview.innerHTML=orderItems.length?orderItems.map((it,i)=>`${esc(it.name)} × ${it.qty} = ${money(it.price*it.qty)} <button type="button" class="danger" onclick="removeOrderItem(${i})">Remove</button>`).join('<br>'):'No items added yet.';itemsJson.value=JSON.stringify(orderItems);total.value=orderItems.reduce((sum,it)=>sum+it.price*it.qty,0).toFixed(2)}
+window.removeOrderItem=function(i){orderItems.splice(i,1);renderOrderItems();updateDeliveryUI()};
+document.getElementById('addOrderItemBtn').addEventListener('click',()=>{const p=db.products.find(x=>x.id===productPicker.value),qty=Number(qtyPicker.value);if(!p){alert('Add actual products before creating a stock-tracked order.');return}if(!Number.isFinite(qty)||qty<=0){alert('Enter a quantity greater than zero.');return}const available=availableForNewOrder(p.id);if(qty>available){alert(`Insufficient unreserved stock for ${p.name}. Available for this new order: ${available} ${p.unit||'pcs'} (includes units reserved by other active orders).`);return}orderItems.push({productId:p.id,name:p.name,price:Number(p.price)||0,qty,unit:p.unit||'pcs'});renderOrderItems();updateDeliveryUI()});
+
+function deliveryBreakdown(subtotal,areaName,agreedFee){const s=db.settings||{};if(areaName==='Store Pickup')return{fee:0,rider:0,store:0,rule:'Store Pickup — ₱0 fixed'};if(areaName==='San Carlos City Proper'){const fee=Math.max(0,Number(s.deliveryFee??30)),pct=Math.min(100,Math.max(0,Number(s.localRiderPercent??50))),rider=fee*pct/100;return{fee,rider,store:fee-rider,rule:'San Carlos City Proper — owner-editable default fee'}}const fee=Math.max(0,Number(agreedFee)||0),rider=Math.min(Math.max(0,Number(s.negotiatedRiderShare??15)),fee);return{fee,rider,store:fee-rider,rule:'Negotiable outside-area fee — confirm agreed amount'}}
+function updateDeliveryUI(){const a=area.value,isPickup=a==='Store Pickup',isSanCarlos=a==='San Carlos City Proper';typeWrap.classList.toggle('hidden',!isSanCarlos);if(isPickup){fee.value=String(Number(db.settings.pickupFee??0));fee.readOnly=true;help.textContent=`Store Pickup: ${money(fee.value)} fee.`}else if(isSanCarlos){const b=deliveryBreakdown(Number(total.value)||0,a,0);fee.value=String(b.fee);fee.readOnly=true;help.textContent=`${b.rule}: delivery fee ${money(b.fee)}. ${money(b.rider)} rider / ${money(b.store)} store.`}else{fee.readOnly=false;if(!fee.dataset.manual)fee.value='';help.textContent='Negotiable delivery fee: enter the agreed amount. Rider receives fixed share up to the fee; store receives the balance.'}updateSharePreview()}
+function updateSharePreview(){const b=deliveryBreakdown(Number(total.value)||0,area.value,fee.value);preview.textContent=`Rule: ${b.rule}. Delivery fee: ${money(b.fee)} · Rider share: ${money(b.rider)} · Store share: ${money(b.store)}.`}
+area.addEventListener('change',()=>{fee.dataset.manual='';updateDeliveryUI()});type.addEventListener('change',updateDeliveryUI);fee.addEventListener('input',()=>{fee.dataset.manual='1';updateSharePreview()});total.addEventListener('input',updateDeliveryUI);updateDeliveryUI();form.onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),orderItemsParsed=JSON.parse(String(f.get('itemsJson')||'[]')),orderTotal=Number(f.get('total')),deliveryFee=Number(f.get('deliveryFee'))||0,pickup=f.get('area')==='Store Pickup',isSanCarlos=f.get('area')==='San Carlos City Proper';if(!orderItemsParsed.length){alert('Walay product item naidugang. Pislita ang Add item ug siguroha nga makita ang item sa preview. Wala gi-save ang order.');return}for(const it of orderItemsParsed){const p=db.products.find(x=>x.id===it.productId);if(!p||!it.productId||!String(it.name||'').trim()||!Number.isFinite(Number(it.price))||!Number.isFinite(Number(it.qty))||Number(it.qty)<=0){alert('Dili valid ang product ID, ngalan, presyo o quantity. Wala gi-save ang order.');return}const requested=orderItemsParsed.filter(x=>x.productId===it.productId).reduce((s,x)=>s+Number(x.qty),0);const available=availableForNewOrder(it.productId,[]);if(requested>available){alert(`Insufficient unreserved stock for ${p.name}. Available for new orders: ${available}. No order saved.`);return}}const breakdown=deliveryBreakdown(orderTotal,f.get('area'),deliveryFee);let feeCharged=breakdown.fee,riderShare=breakdown.rider,storeShare=breakdown.store;const newOrder={id:uniqueRecordId('o_',db.orders),customer:String(f.get('customer')).trim(),phone:String(f.get('phone')).trim(),area:String(f.get('area')).trim(),deliveryType:pickup?'pickup':(f.get('deliveryType')||'negotiated'),summary:String(f.get('summary')||'').trim(),items:orderItemsParsed.map(it=>({productId:String(it.productId),name:String(it.name),price:Number(it.price),qty:Number(it.qty),unit:String(it.unit||'pcs')})),total:orderTotal,deliveryFee:feeCharged,riderShare,storeShare,payment:f.get('payment'),riderId:f.get('riderId')||'',riderName:db.riders.find(r=>r.id===f.get('riderId'))?.name||'',status:(f.get('status')==='Delivered'?'New':f.get('status')),deliveryPin:String(Math.floor(100000+Math.random()*900000)),pinVerified:false,stockDeducted:false,date:new Date().toISOString()};if(!newOrder.items.length||newOrder.items.some(it=>!it.productId||!Number.isFinite(it.qty)||it.qty<=0)){alert('Wala gi-save ang order kay dili kompleto ang structured items.');return}if(form.dataset.saving==='1'){alert('Order save is already in progress. Do not submit again.');return}form.dataset.saving='1';const saveBtn=form.querySelector('button[type=submit],button.primary');if(saveBtn)saveBtn.disabled=true;const beforeOrderSave=JSON.stringify(db);db.orders.unshift(newOrder);try{persist();const saved=db.orders.find(o=>o.id===newOrder.id);if(!saved||!Array.isArray(saved.items)||saved.items.length!==orderItemsParsed.length){db=JSON.parse(beforeOrderSave);try{localStorage.setItem(KEY,beforeOrderSave)}catch(storageErr){}renderAll();alert('Dili makumpirma ang saved items. Gibalik ang local state kutob sa mahimo. Ayaw i-complete ang delivery; i-export ang backup ug ipasusi ang local data.');return}closeModal();alert('Order saved in local test system. Customer delivery PIN: '+newOrder.deliveryPin+'\\n\\nIpadala kini sa customer pinaagi sa pribadong mensahe. Ayaw i-post sa order summary o group chat. Kini nga PIN anaa lamang sa local browser ug dili pa secure server-side verification.')}catch(saveErr){try{db=JSON.parse(beforeOrderSave);localStorage.setItem(KEY,beforeOrderSave);renderAll()}catch(rollbackErr){}alert('Wala ma-save ang order. Gisulayan ibalik ang local state kutob sa mahimo. Ayaw i-retry hangtod ma-check ang browser storage ug backup.')}};openModal()}
+function viewOrderSummary(id){
+ const o=db.orders.find(x=>x.id===id);if(!o)return;
+ const assigned=db.riders.find(r=>r.id===o.riderId);
+ const orderNo=String(o.id||'').replace(/^o_/, '').slice(-8).toUpperCase()||'—';
+ const date=o.date?new Date(o.date).toLocaleString():'—';
+ const grandTotal=(Number(o.total)||0)+(Number(o.deliveryFee)||0);
+ modalTitle.textContent='Digital Order Summary';
+ modalBody.innerHTML=`<div class="panel" style="margin:0;padding:14px"><div class="section-title"><h3>${esc(db.settings.storeName||'321 Sari-Sari Store')}</h3><span class="badge">${esc(o.status||'New')}</span></div><p class="muted">Order No.: <b>${esc(orderNo)}</b><br>Date: ${esc(date)}</p><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><h3>Customer & Delivery</h3><div class="meta">Customer: <b>${esc(o.customer||'—')}</b><br>Phone: ${esc(o.phone||'Not provided')}<br>Delivery area: ${esc(o.area||'—')}<br>Assigned rider: ${esc(assigned?.name||o.riderName||'Not assigned')}</div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><h3>Order Items</h3><div style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55">${(o.items||[]).map(it=>`${esc(it.name)} × ${esc(it.qty)} = ${money((Number(it.price)||0)*(Number(it.qty)||0))}`).join("<br>")}${o.summary?`<br><br>Notes: ${esc(o.summary)}`:""}</div><div class="notice" style="margin-top:10px"><b>Customer delivery PIN:</b> ${o.pinVerified?'Already verified':'Hidden in order summary'}<br><span class="muted">Alang sa privacy, ang PIN dili ipakita sa summary nga mahimong ma-share. Sa local test, gamita lamang ang PIN nga nakuha sa imong test notes. Dili pa kini secure customer-only delivery channel.</span></div><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><div class="meta">Items total: <b>${money(o.total)}</b><br>Delivery fee: <b>${money(o.deliveryFee??0)}</b><br>Payment method: <b>${esc(o.payment||'—')}</b><br>Payment status: <b>${esc(o.paymentStatus||(o.payment==="COD"?"Pending collection":"For verification"))}</b></div><div style="display:flex;justify-content:space-between;gap:10px;border-top:2px solid var(--navy);margin-top:12px;padding-top:12px;font-size:18px;font-weight:800"><span>Grand total</span><span>${money(grandTotal)}</span></div><p class="muted" style="margin-bottom:0">Privacy reminder: ayaw ibutang ang customer ID o ubang sensitibong impormasyon sa order notes kung dili kinahanglan.</p></div><div class="row" style="margin-top:12px"><button class="dark" type="button" onclick="closeModal()">Close summary</button></div>`;
+ openModal();
+}
+function updateOrder(id){
+ const o=db.orders.find(x=>x.id===id);if(!o)return;
+ const current=String(o.status||'New').trim().toLowerCase();
+ const normalized=({new:'New',confirm:'Confirmed',confirmed:'Confirmed',assigned:'Assigned',delivered:'Delivered',cancelled:'Cancelled',canceled:'Cancelled'})[current]||'New';
+ modalTitle.textContent='Update order / rider assignment';
+ const selectedRiderId=o.riderId||'';
+ modalBody.innerHTML=`<form id="orderStatusForm"><p class="muted">Customer: <b>${esc(o.customer)}</b><br>Order: <b>${esc(o.id)}</b></p>
+ <div class="field"><label>Assign rider/salesman</label><select name="riderId"><option value="">Not assigned yet</option>${db.riders.filter(r=>r.status!=='Inactive'&&r.approvalStatus==='Approved'&&r.role!=='Salesman').map(r=>`<option value="${r.id}" ${r.id===selectedRiderId?'selected':''}>${esc(r.name)}${r.role?' — '+esc(r.role):''}</option>`).join('')}</select></div>
+ <div class="field"><label>Order status</label><select name="status" required><option ${normalized==='New'?'selected':''}>New</option><option ${normalized==='Confirmed'?'selected':''}>Confirmed</option><option ${normalized==='Assigned'?'selected':''}>Assigned</option><option ${normalized==='Delivered'?'selected':''}>Delivered</option><option ${normalized==='Cancelled'?'selected':''}>Cancelled</option></select></div>
+ <div class="field"><label>Customer PIN provided to rider</label><input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6-digit customer PIN" ${o.pinVerified||o.stockDeducted?'disabled':''}><p class="muted">Local test only. Enter the PIN supplied by the customer. PIN verification is not secure against someone with access to this browser.</p></div>
+ <p class="notice">Order items: ${(Array.isArray(o.items)?o.items:[]).map(it=>`${esc(it.name)} × ${esc(it.qty)}`).join(', ')||'No structured items'}<br>PIN: ${o.pinVerified?'Verified': 'Not verified'} · Stock: ${o.stockDeducted?'Already deducted':'Not deducted'}</p>${(!Array.isArray(o.items)||!o.items.length||o.items.some(it=>!it.productId))?'<p class="notice" style="border-left:4px solid #b45309"><b>Legacy/invalid order:</b> Walay kompleto nga structured product data. Ayaw i-mark Delivered. Himoa ang bag-ong order gamit ang Add order record.</p>':''}
+ <div class="row"><button class="primary" type="submit">Verify PIN / Save</button><button class="light" type="button" onclick="closeModal()">Cancel</button></div></form>`;
+ document.getElementById('orderStatusForm').onsubmit=e=>{
+  e.preventDefault();
+  // Keep a rollback snapshot so a failed localStorage save cannot leave stock changed only in memory.
+  const beforeState=JSON.stringify(db);
+  const f=new FormData(e.target),nextStatus=String(f.get('status')||'New'),nextRider=f.get('riderId')||'';
+  if(nextRider){const eligible=db.riders.find(r=>r.id===nextRider);if(!eligible||eligible.status==='Inactive'||eligible.approvalStatus!=='Approved'||eligible.role==='Salesman'){alert('Assignment blocked: rider must be owner-approved, active, and eligible for delivery. No changes saved.');return}}
+  if(nextStatus==='Assigned'&&!nextRider){alert('Assignment blocked: pili ug active ug owner-approved nga rider una pa markahan nga Assigned. Walay kausaban nga na-save.');return}
+  if(nextStatus==='Delivered'&&!nextRider){alert('Delivery blocked: kinahanglan adunay assigned, active, owner-approved nga rider. Walay stock o status nga giusab.');return}
+  if(nextStatus==='Delivered'&&(!o.riderId||String(nextRider)!==String(o.riderId))){alert('Delivery blocked: kinahanglan daan nang na-assign ang mao gihapong rider sa order. I-save una ang assignment, dayon ablihi pag-usab ang order aron i-verify ang customer PIN. Walay stock o status nga giusab.');return}
+  if(nextStatus==='Delivered'&&current==='cancelled'){alert('Delivery blocked: kanselado na kini nga order. Ayaw kini i-reactivate pinaagi lang sa delivery status. Himoa ang bag-ong order o ipa-review sa owner.');return}
+  if((o.stockDeducted||o.pinVerified)&&current==='delivered'&&nextRider!==String(o.riderId||'')){alert('Assignment blocked: completed delivery na kini. Dili na usbon ang rider aron mapreserbar ang audit trail. Walay kausaban nga na-save.');return}
+  if(Boolean(o.pinVerified)!==Boolean(o.stockDeducted)){alert('Dili magkatakdo ang PIN verification ug stock record. Walay status o stock nga giusab. I-export ang backup ug ipasusi ang local data.');return}
+  if(o.stockDeducted&&nextStatus!=='Delivered'){alert('Ang stock nabawas na sa completed delivery. Dili tugotan ang pag-usab sa status niini dinhi aron malikayan ang double stock adjustment.');return}
+  if(nextStatus==='Delivered'){
+   if(o.pinNeedsReview||!o.deliveryPin){alert('Kining daang order walay PIN nga masaligan. Dili kini mahimong ma-Delivered hangtod ma-review ang record. Wala giusab ang stock.');return}
+   // Fail closed if PIN/stock flags are inconsistent; do not silently skip verification.
+   if(Boolean(o.pinVerified)!==Boolean(o.stockDeducted)){alert('Dili magkatakdo ang PIN verification ug stock record. Wala giusab ang status o stock. I-export ang backup ug ipasusi ang local data.');return}
+   if(!o.stockDeducted){
+    if(!o.pinVerified){
+     const entered=String(f.get('pin')||'');
+     if(!o.deliveryPin||entered!==String(o.deliveryPin)){alert('Sayop ang customer PIN. Wala mausab ang status ug stock.');return}
+    }
+    if(!Array.isArray(o.items)||!o.items.length||o.items.some(it=>!it.productId)){alert('Walay kompleto nga structured order items. Dili mahimong bawasan ang stock nga luwas.');return}
+    const totals={};
+    for(const it of o.items){const qty=Number(it.qty);if(!Number.isFinite(qty)||qty<=0){alert('Dili valid ang quantity sa order. Wala gi-complete ang delivery ug wala giusab ang stock.');return}totals[it.productId]=(totals[it.productId]||0)+qty}
+    for(const [pid,qty] of Object.entries(totals)){const p=db.products.find(x=>x.id===pid);if(!p||!Number.isFinite(qty)||qty<=0||qty>Number(p.stock||0)){alert('Dili igo ang stock o nawala ang produkto. Wala gi-complete ang delivery ug wala giusab ang stock.');return}}
+    // All item and stock checks pass before any stock mutation.
+    for(const [pid,qty] of Object.entries(totals)){const p=db.products.find(x=>x.id===pid);p.stock=Number(p.stock||0)-qty}
+    o.pinVerified=true;o.stockDeducted=true;o.stockDeductedAt=new Date().toISOString();
+   }
+   o.status='Delivered';
+  } else {o.status=nextStatus}
+  o.riderId=nextRider;o.riderName=db.riders.find(r=>r.id===nextRider)?.name||'';
+  if(o.riderId&&o.status==='New')o.status='Assigned';
+  try {
+   persist();
+   closeModal();
+  } catch(err) {
+   // Restore both order status and stock if persistence fails.
+   try { db=JSON.parse(beforeState); } catch(rollbackErr) {}
+   try { localStorage.setItem(KEY,beforeState); } catch(storageRollbackErr) {}
+   try { renderAll(); } catch(renderRollbackErr) {}
+   alert('Wala ma-save ang update. Gisulayan ibalik ang order, stock, ug local save sa kahimtang sa wala pa ang test. Kung puno ang browser storage, i-export ang backup ug susihon ang storage una pa mo-retry.');
+  }
+ };
+ openModal();
+}
+function deleteOrder(id){
+ const o=db.orders.find(x=>x.id===id);if(!o)return;
+ const status=String(o.status||'New').trim().toLowerCase();
+ if(o.stockDeducted){alert('Dili matangtang ang delivered order kay nabawas na ang stock. Kinahanglan ug audited stock reversal function una. Walay giusab nga data.');return}
+ if(!['cancelled','canceled'].includes(status)){
+  alert('Dili pa matangtang ang active order. I-cancel una kini pinaagi sa Update order / rider, o susiha ang order record. Kini nga guard mopugong sa aksidenteng pagkawala sa active order. Walay giusab nga data.');return;
+ }
+ if(!confirm('Delete this CANCELLED order record? Siguroha nga dili na kinahanglan ang audit/history niini.'))return;
+ let beforeState,beforeStorage;
+ try{beforeState=JSON.stringify(db);beforeStorage=localStorage.getItem(KEY)}
+ catch(err){alert('Dili masugdan ang deletion kay napakyas ang pag-andam sa rollback. Walay giusab.');return}
+ try{
+  db.orders=db.orders.filter(x=>x.id!==id);
+  persist();
+ }catch(err){
+  try{db=JSON.parse(beforeState)}catch(rollbackErr){}
+  try{if(beforeStorage===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,beforeStorage)}catch(storageRollbackErr){}
+  try{renderAll()}catch(renderRollbackErr){}
+  alert('Napakyas ang pag-save sa deletion. Gisulayan ibalik ang order ug local data sa kahimtang sa wala pa ang deletion. Kung puno ang browser storage, ayaw pag-retry; tipigi ang backup ug susiha ang storage una.');
+ }
+}
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function exportBackup(){const data={app:'321 Sari-Sari Store New System',version:1,exportedAt:new Date().toISOString(),data:db};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='321-sari-sari-new-system-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function importBackup(e){
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  let beforeState='';let beforeDb=null;let writeAttempted=false;
+  try{
+   const parsed=JSON.parse(reader.result),d=parsed&&parsed.data?parsed.data:parsed;
+   if(!d||!Array.isArray(d.products)||!Array.isArray(d.categories)||!Array.isArray(d.riders)||!Array.isArray(d.sales)||!Array.isArray(d.orders)||!d.settings||typeof d.settings!=='object')throw Error('Invalid backup structure');
+   for(const k of ['products','riders','sales','orders']){
+    if(!d[k].every(x=>x&&typeof x==='object'&&!Array.isArray(x)))throw Error('Invalid record in '+k);
+    const ids=d[k].map(x=>x.id).filter(Boolean);
+    if(new Set(ids).size!==ids.length)throw Error('Duplicate IDs in '+k);
+   }
+   if(!confirm('TEST COPY ONLY: this replaces data in the separate V20 test storage. Never import the old 266-product inventory backup. Continue?'))return;
+   beforeState=localStorage.getItem(KEY);beforeDb=JSON.parse(JSON.stringify(db));
+   const candidate={...db,...d,settings:{...db.settings,...d.settings}};
+   // Persist candidate first, then update the live in-memory state.
+   writeAttempted=true;localStorage.setItem(KEY,JSON.stringify(candidate));
+   db=candidate;renderAll();
+   alert('Test-copy backup import completed in isolated test storage only. No Firebase or production storage was changed.');
+  }catch(err){
+   if(beforeDb){db=beforeDb;}
+   if(writeAttempted){try{if(beforeState===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,beforeState);}catch(rollbackError){alert('WARNING: rollback could not be confirmed. Stop using this test copy and preserve all backups.');}}
+   try{renderAll()}catch(renderError){}
+   alert('Backup import failed or could not be confirmed. The test copy attempted rollback. Do not retry until the issue is reviewed. Details: '+(err&&err.message?err.message:'unknown error'));
+  }finally{e.target.value='';}
+ };
+ reader.onerror=()=>{alert('Could not read the selected backup file. No import was attempted.');e.target.value='';};
+ reader.readAsText(file);
+}
+function runFeeTest(){const subtotal=Math.max(0,Number(document.getElementById('feeTestSubtotal').value)||0),area=document.getElementById('feeTestArea').value,agreed=Number(document.getElementById('feeTestNegotiated').value)||0,b=deliveryBreakdown(subtotal,area,agreed);document.getElementById('feeTestResult').textContent=`Subtotal: ${money(subtotal)} · Area: ${area} · Rule: ${b.rule} · Delivery fee: ${money(b.fee)} · Rider share: ${money(b.rider)} · Store share: ${money(b.store)}. Preview only; walay order o stock nga giusab.`;}
+function testDeliveryPolicyCases(){const s=db.settings||{},outsideRider=Math.max(0,Number(s.negotiatedRiderShare??15)),pickupFee=0,below=deliveryBreakdown(100,'San Carlos City Proper',0),equal=deliveryBreakdown(500,'San Carlos City Proper',0),above=deliveryBreakdown(1000,'San Carlos City Proper',0),outside=deliveryBreakdown(100,'Vallehermoso',200),shortOutside=deliveryBreakdown(100,'Canlaon City',10),pickup=deliveryBreakdown(100,'Store Pickup',0);const cases=[['San Carlos low subtotal uses editable default fee',below.fee===Number(s.deliveryFee??30),below],['San Carlos threshold subtotal uses editable default fee',equal.fee===Number(s.deliveryFee??30),equal],['San Carlos high subtotal uses editable default fee',above.fee===Number(s.deliveryFee??30),above],['Outside negotiated ₱200',outside.fee===200&&outside.rider===Math.min(outsideRider,200)&&outside.store===200-Math.min(outsideRider,200),outside],['Outside negotiated below rider share',shortOutside.fee===10&&shortOutside.rider===10&&shortOutside.store===0,shortOutside],['Pickup zero fee',pickup.fee===pickupFee&&pickup.rider===0&&pickup.store===pickupFee,pickup]];const pass=cases.filter(x=>x[1]).length;document.getElementById('feeTestResult').innerHTML=`<b>${pass}/${cases.length} delivery policy checks passed</b><br>`+cases.map(([name,ok,b])=>`${ok?'✅':'❌'} ${name}: fee ${money(b.fee)}, rider ${money(b.rider)}, store ${money(b.store)}`).join('<br>')+'<br><br>Preview only; walay order o stock nga giusab.';}
+
+function saveSettings(){db.settings.storeName=document.getElementById('storeName').value.trim()||'321 Sari-Sari Store';for(const k of ['deliveryFee','negotiatedRiderShare','pickupFee']){const el=document.getElementById(k);if(el)db.settings[k]=Math.max(0,Number(el.value)||0)}const pctEl=document.getElementById('localRiderPercent');if(pctEl)db.settings.localRiderPercent=Math.min(100,Math.max(0,Number(pctEl.value)||0));persist()}
+function clearLocalData(){if(confirm('WARNING: This clears only the new system data saved in this browser. Export backup first. Continue?')){localStorage.removeItem(KEY);db={products:[],categories:['Beverages','Rice & Grains','Canned Goods','Noodles & Pasta','Snacks & Sweets','Cooking Essentials','Personal Care','Household','Frozen Foods','Other'],units:['pcs','pack','bottle','can','kilo','sack','gram','liter','tray'],riders:[],sales:[],orders:[],attendance:[],incentiveRates:{online:0.05,physical:0.02,repeatOnline:1},settings:{storeName:'321 Sari-Sari Store',deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};persist();showPage('home')}}
+function runIntegratedOrderWorkflowTest(){
+ const out=document.getElementById('integratedOrderTestResult');
+ const originalDb=db, storageBefore=localStorage.getItem(KEY), oldAlert=window.alert, oldConfirm=window.confirm;
+ const alerts=[];let checks=[];let phase='initialization';
+ const check=(name,ok,detail='')=>checks.push({name,ok:!!ok,detail});
+ const submitActual=form=>{if(!form)throw new Error('Form was not created');if(typeof form.onsubmit!=='function')throw new Error('No actual submit handler attached to '+(form.id||'unknown form'));form.onsubmit({preventDefault(){},target:form,currentTarget:form});};
+ try{
+  window.alert=msg=>alerts.push(String(msg));window.confirm=()=>true;
+  db={products:[{id:'it-qa-rice',name:'QA Rice',stock:5,unit:'sack',price:10,category:'QA'}],orders:[],riders:[{id:'it-qa-rider',name:'QA Rider',role:'Rider',status:'Active',approvalStatus:'Approved'}],sales:[],attendance:[],incentiveRates:{online:0.05,physical:0.02,repeatOnline:1},categories:['QA','Other'],units:['sack'],settings:{storeName:'QA TEST ONLY',deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};
+  // Create a real order through the app's actual form handler.
+  phase='create order';openOrder();let form=document.getElementById('orderForm');
+  form.elements.namedItem('customer').value='QA Customer';form.elements.namedItem('phone').value='0000000000';form.elements.namedItem('area').value='San Carlos City Proper';form.elements.namedItem('payment').value='COD';
+  document.getElementById('orderProductSelect').value='it-qa-rice';document.getElementById('orderProductQty').value='3';document.getElementById('addOrderItemBtn').click();
+  submitActual(form);
+  const order=db.orders[0],product=db.products[0];
+  check('Actual order form creates exactly one structured order',db.orders.length===1&&!!order&&order.items.length===1&&order.items[0].qty===3,'Actual Add Order submit handler used.');
+  check('Creating order reserves but does not deduct physical stock',product.stock===5&&reservedQtyForProduct(product.id)===3,'Physical stock stays 5; reservation is 3.');
+  // Attempt to overbook via the actual form submit path (bypass picker UX only to test final validator).
+  phase='overbooking validation';openOrder();form=document.getElementById('orderForm');form.elements.namedItem('customer').value='QA Overbook';form.elements.namedItem('phone').value='0000000001';form.elements.namedItem('area').value='San Carlos City Proper';form.elements.namedItem('payment').value='COD';
+  document.getElementById('orderItemsJson').value=JSON.stringify([{productId:'it-qa-rice',name:'QA Rice',price:10,qty:3,unit:'sack'}]);document.getElementById('orderTotal').value='30';
+  submitActual(form);
+  check('Actual order submit validator blocks overbooking',db.orders.length===1&&alerts.some(a=>a.includes('Insufficient unreserved stock')),'A second 3-unit order is rejected when only 2 are available.');
+  // Assign the rider in a separate save before attempting delivery completion.
+  phase='assign rider';const id=order.id;updateOrder(id);let statusForm=document.getElementById('orderStatusForm');statusForm.elements.namedItem('riderId').value='it-qa-rider';statusForm.elements.namedItem('status').value='Assigned';submitActual(statusForm);
+  check('Assignment is saved before delivery completion',order.status==='Assigned'&&order.riderId==='it-qa-rider','Delivery must use the rider already assigned to the order.');
+  // Wrong PIN must not change order state or stock.
+  phase='wrong PIN';updateOrder(id);statusForm=document.getElementById('orderStatusForm');statusForm.elements.namedItem('status').value='Delivered';statusForm.elements.namedItem('pin').value='000000';submitActual(statusForm);
+  check('Wrong PIN does not complete delivery or deduct stock',order.status!=='Delivered'&&!order.stockDeducted&&product.stock===5,'No stock mutation after incorrect PIN.');
+  // Correct PIN completes delivery once and deducts the stock exactly once.
+  phase='correct PIN';statusForm.elements.namedItem('pin').value=order.deliveryPin;submitActual(statusForm);
+  check('Correct PIN completes delivery and deducts once',order.status==='Delivered'&&order.pinVerified&&order.stockDeducted&&product.stock===2,'Stock 5 → 2 for the 3-unit order.');
+  // Replay the delivered status through the real handler; must not deduct again.
+  phase='repeated delivery';updateOrder(id);statusForm=document.getElementById('orderStatusForm');statusForm.elements.namedItem('status').value='Delivered';submitActual(statusForm);
+  check('Repeated Delivered submit does not deduct twice',db.orders.length===1&&product.stock===2&&order.stockDeducted,'Stock remains 2; still one order.');
+  check('Delivered order no longer reserves already-deducted units',reservedQtyForProduct(product.id)===0&&availableForNewOrder(product.id,[])===2,'Available stock equals remaining physical stock.');
+ }catch(err){const msg=String(err&&err.message||err);check('FAILED PHASE: '+phase,false,msg);window.__M6_LAST_DIAGNOSTIC__={phase,message:msg,stack:String(err&&err.stack||'')}}
+ finally{
+  db=originalDb;
+  try{if(storageBefore===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,storageBefore)}catch(e){}
+  window.alert=oldAlert;window.confirm=oldConfirm;
+  try{renderAll();closeModal()}catch(e){}
+ }
+ const passed=checks.filter(x=>x.ok).length,total=checks.length;
+ out.innerHTML='<b>'+passed+'/'+total+' integrated checks passed</b><br>'+checks.map(x=>(x.ok?'✅ ':'❌ ')+x.name+(x.detail?' — '+x.detail:'')).join('<br>')+'<br><br><b>Build:</b> MASTER-M9-PHASE1-ONLINE-ORDER-FLOW-CANDIDATE-2026-11-16<br><b>Diagnostic phase:</b> '+(checks.find(x=>!x.ok)?.name||'none; all passed')+'<br><b>Scope:</b> invokes actual local Add Order and Update Order submit handlers with temporary QA data; does not test multi-device/Firebase concurrency or secure server-side PIN delivery.';
+ out.style.borderLeftColor=passed===total?'#16794b':'#b42318';
+}
+function runOrderStockRegression(){
+ const result=document.getElementById('orderStockTestResult');
+ const originalDb=db;let checks=[];
+ const check=(name,ok,detail)=>checks.push({name,ok:!!ok,detail:detail||''});
+ try{
+  db={products:[{id:'qa-rice',name:'QA Rice',stock:5,unit:'sack',price:10}],orders:[],riders:[],sales:[],categories:[],units:[],settings:{deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};
+  let p=db.products[0];
+  check('Initial stock is available',availableForNewOrder('qa-rice',[])===5,'Expected 5 available.');
+  db.orders.push({id:'qa-active',status:'Confirmed',stockDeducted:false,items:[{productId:'qa-rice',qty:3}]});
+  check('Active order reserves its quantity',reservedQtyForProduct('qa-rice')===3&&availableForNewOrder('qa-rice',[])===2,'5 stock - 3 reserved = 2 available.');
+  check('Second order cannot overbook reserved stock',availableForNewOrder('qa-rice',[])<3,'A new request for 3 should be blocked by app validation.');
+  db.orders[0].status='Cancelled';
+  check('Cancellation releases reservation',reservedQtyForProduct('qa-rice')===0&&availableForNewOrder('qa-rice',[])===5,'Cancelled order no longer reserves stock.');
+  db.orders[0].status='Delivered';db.orders[0].stockDeducted=true;p.stock=2;
+  check('Completed delivery does not reserve already-deducted stock',reservedQtyForProduct('qa-rice')===0&&availableForNewOrder('qa-rice',[])===2,'Stock is 2 after a 3-unit delivery; completed order not reserved again.');
+  db.orders.push({id:'qa-legacy',status:'Delivered',stockDeducted:false,items:[{productId:'qa-rice',qty:1}]});
+  check('Inconsistent delivered record fails safe',reservedQtyForProduct('qa-rice')===1&&availableForNewOrder('qa-rice',[])===1,'Legacy Delivered order without stockDeducted remains reserved for review.');
+ }catch(err){check('Regression harness did not throw',false,String(err&&err.message||err))}
+ finally{db=originalDb}
+ const passed=checks.filter(x=>x.ok).length,total=checks.length;
+ result.innerHTML='<b>'+passed+'/'+total+' checks passed</b><br>'+checks.map(x=>(x.ok?'✅ ':'❌ ')+x.name+(x.detail?' — '+x.detail:'')).join('<br>')+'<br><br><b>Scope:</b> in-memory helper checks only; not proof of a full browser delivery/PIN transaction.';
+ result.style.borderLeftColor=passed===total?'#16794b':'#b42318';
+}
+
+function approveRider(id){const r=db.riders.find(x=>x.id===id);if(!r)return;if(r.status==='Inactive'){alert('Set rider Active before approval.');return}r.approvalStatus='Approved';persist()}
+function renderRiderTools(){const sel=document.getElementById('attendanceRider');if(sel){const old=sel.value;sel.innerHTML='<option value="">Select rider</option>'+db.riders.map(r=>`<option value="${esc(r.id)}">${esc(r.name)} — ${esc(r.approvalStatus||'Pending Approval')}</option>`).join('');if(db.riders.some(r=>r.id===old))sel.value=old}const date=document.getElementById('attendanceDate');if(date&&!date.value)date.value=new Date().toISOString().slice(0,10);const list=document.getElementById('attendanceList');if(list)list.innerHTML=db.attendance.length?db.attendance.slice().reverse().slice(0,12).map(a=>`${esc(a.date)} · ${esc(db.riders.find(r=>r.id===a.riderId)?.name||'Unknown rider')} · ${esc(a.status)}`).join('<br>'):'No attendance records yet.';const ratesForm=document.getElementById('riderRatesForm');if(ratesForm){for(const k of ['online','physical','repeatOnline'])if(ratesForm.elements[k]&&document.activeElement!==ratesForm.elements[k])ratesForm.elements[k].value=db.incentiveRates[k]}const preview=document.getElementById('riderIncentivePreview');if(preview){const rows=db.orders.filter(o=>String(o.status).toLowerCase()==='delivered'&&o.riderId&&o.stockDeducted);preview.innerHTML=rows.length?rows.map(o=>{const gross=Number(o.subtotal??o.productSubtotal??o.total??0);return `${esc(o.customer||'Order')} · ${esc(db.riders.find(r=>r.id===o.riderId)?.name||'Unknown')} · gross product sales ${money(gross)} · delivery fee excluded; classify order type before payout.`}).join('<br>'):'No verified delivered orders available for incentive preview.'}}
+document.addEventListener('submit',e=>{if(e.target&&e.target.id==='riderAttendanceForm'){e.preventDefault();const f=new FormData(e.target),riderId=String(f.get('riderId')||''),date=String(f.get('date')||''),status=String(f.get('status')||'');if(!db.riders.some(r=>r.id===riderId)||!date){alert('Select a valid rider and date.');return}const idx=db.attendance.findIndex(a=>a.riderId===riderId&&a.date===date);const record={id:idx>=0?db.attendance[idx].id:uniqueRecordId('att_',db.attendance),riderId,date,status,updatedAt:new Date().toISOString()};if(idx>=0)db.attendance[idx]=record;else db.attendance.push(record);persist();renderRiderTools();alert(idx>=0?'Attendance updated; no duplicate created.':'Attendance saved.')}if(e.target&&e.target.id==='riderRatesForm'){e.preventDefault();const f=new FormData(e.target),rates={online:Number(f.get('online')),physical:Number(f.get('physical')),repeatOnline:Number(f.get('repeatOnline'))};if(Object.values(rates).some(v=>!Number.isFinite(v)||v<0||v>100)){alert('Rates must be between 0 and 100 percent.');return}db.incentiveRates=rates;persist();renderRiderTools();alert('Draft incentive rates saved. Not payroll approval.')}});
+const originalRenderAll=renderAll;renderAll=function(){originalRenderAll();renderRiderTools()};
+function runRiderWorkflowChecks(){const results=[];const check=(name,ok,detail)=>results.push({name,ok,detail});const riders=[{id:'r1',status:'Active',approvalStatus:'Pending Approval',role:'Rider'},{id:'r2',status:'Active',approvalStatus:'Approved',role:'Rider'},{id:'r3',status:'Inactive',approvalStatus:'Approved',role:'Rider'},{id:'r4',status:'Active',approvalStatus:'Approved',role:'Salesman'}];const eligible=r=>r.status!=='Inactive'&&r.approvalStatus==='Approved'&&r.role!=='Salesman';check('Pending rider blocked from assignment',!eligible(riders[0]),'Pending approval cannot receive deliveries.');check('Approved active rider eligible',eligible(riders[1]),'Approved active rider can be assigned.');check('Inactive rider blocked',!eligible(riders[2]),'Inactive rider cannot receive deliveries.');check('Salesman-only role blocked from delivery',!eligible(riders[3]),'Salesman-only profile is not offered for delivery assignment.');const attendance=[{riderId:'r2',date:'2026-10-28',status:'Present'}];const idx=attendance.findIndex(a=>a.riderId==='r2'&&a.date==='2026-10-28');check('Attendance upsert prevents duplicate same-day records',idx===0&&attendance.filter(a=>a.riderId==='r2'&&a.date==='2026-10-28').length===1,'Same rider/date updates existing record.');const gross=500,fee=30,rate=0.05,amount=gross*rate/100;check('Incentive base excludes delivery fee',amount===0.25&&amount!==((gross+fee)*rate/100),'₱500 gross × 0.05%; ₱30 delivery fee excluded.');const invalid=[-1,101,NaN].every(v=>!Number.isFinite(v)||v<0||v>100);check('Invalid incentive rates rejected',invalid,'Rates must be finite and between 0 and 100%.');const el=document.getElementById('riderWorkflowTestResult');el.innerHTML=`<b>${results.filter(x=>x.ok).length}/${results.length} checks passed</b><br>`+results.map(x=>`${x.ok?'✅':'❌'} ${esc(x.name)} — ${esc(x.detail)}`).join('<br>')+'<br><br><b>Scope:</b> isolated in-memory policy checks. Does not prove Firebase/server-side authorization or payroll correctness.';}
+
+load();
+if(location.search.includes('runIntegratedQA=1'))runIntegratedOrderWorkflowTest();
+function openPinDemo(){document.getElementById('pinDemo').style.display='block';document.getElementById('pinDemo').scrollIntoView({behavior:'smooth',block:'start'});}
+function closePinDemo(){document.getElementById('pinDemo').style.display='none';}
+function showDemoPin(){document.getElementById('demoCustomerPin').style.display='block';}
+function verifyDemoPin(){const input=document.getElementById('demoPinInput'),result=document.getElementById('demoResult'),btn=document.getElementById('demoVerifyBtn');if(document.getElementById('demoStatus').textContent==='Completed'){result.textContent='This demo order is already completed; PIN cannot be reused.';return;}if(input.value==='482731'){document.getElementById('demoStatus').textContent='Completed (DEMO ONLY)';result.textContent='Demo PIN accepted. No real order or stock was changed.';btn.disabled=true;input.disabled=true;}else{result.textContent='Incorrect demo PIN. Try again.';input.value='';input.focus();}}
+
+function runProductSalesUiChecks(){
+ const out=document.getElementById('productSalesUiTestResult');
+ const originalDb=db,storageBefore=localStorage.getItem(KEY),oldAlert=window.alert,oldConfirm=window.confirm;
+ const checks=[];let phase='initialization';const check=(name,ok,detail='')=>checks.push({name,ok:!!ok,detail});
+ const submitActual=form=>{if(!form)throw new Error('Form was not created');if(typeof form.onsubmit!=='function')throw new Error('No actual submit handler attached to '+(form.id||'unknown form'));form.onsubmit({preventDefault(){},target:form,currentTarget:form});};
+ try{
+  window.alert=()=>{};window.confirm=()=>true;
+  db={products:[],categories:['QA','Other'],units:['pcs','pack'],riders:[],sales:[],orders:[],attendance:[],incentiveRates:{online:0.05,physical:0.02,repeatOnline:1},settings:{storeName:'QA ONLY',deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};
+  phase='product create';openProduct();let pf=document.getElementById('productForm');
+  pf.elements.namedItem('name').value='M8 QA Test Product';pf.elements.namedItem('price').value='10';pf.elements.namedItem('stock').value='5';pf.elements.namedItem('categoryChoice').value='QA';pf.elements.namedItem('unit').value='pcs';submitActual(pf);
+  let p=db.products.find(x=>x.name==='M8 QA Test Product');
+  check('Actual Product Add handler creates product',!!p&&p.price===10&&p.stock===5,'Created temporary QA product at ₱10 with stock 5.');
+  phase='product edit';if(!p)throw new Error('QA product missing after create');openProduct(p.id);pf=document.getElementById('productForm');pf.elements.namedItem('name').value='M8 QA Edited Product';pf.elements.namedItem('price').value='12';pf.elements.namedItem('stock').value='6';submitActual(pf);
+  p=db.products.find(x=>x.id===p.id);
+  check('Actual Product Edit handler updates product',!!p&&p.name==='M8 QA Edited Product'&&p.price===12&&p.stock===6,'Edited name, price and stock through actual form handler.');
+  phase='completed sale';openSale();const sf=document.getElementById('saleForm');sf.elements.namedItem('product').value=p.id;sf.elements.namedItem('qty').value='1';sf.elements.namedItem('status').value='Completed';submitActual(sf);
+  check('Actual Sale handler creates one sale and deducts once',db.sales.length===1&&db.sales[0].productId===p.id&&db.sales[0].stockDeducted===true&&p.stock===5,'One completed unit sale; stock 6 → 5.');
+  phase='persisted state';const stored=JSON.parse(localStorage.getItem(KEY)||'null');check('Product and sale state is written to isolated test storage',!!stored&&stored.products?.some(x=>x.id===p.id&&x.stock===5)&&stored.sales?.length===1,'Saved state verified under the M8-only storage key.');
+ }catch(err){check('FAILED PHASE: '+phase,false,String(err&&err.message||err));}
+ finally{db=originalDb;try{if(storageBefore===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,storageBefore)}catch(e){}window.alert=oldAlert;window.confirm=oldConfirm;try{renderAll();closeModal()}catch(e){}}
+ const passed=checks.filter(x=>x.ok).length;out.innerHTML='<b>'+passed+'/'+checks.length+' product/sale UI checks passed</b><br>'+checks.map(x=>(x.ok?'✅ ':'❌ ')+esc(x.name)+(x.detail?' — '+esc(x.detail):'')).join('<br>')+'<br><br><b>Scope:</b> invokes actual local Product Add/Edit and Sale submit handlers with temporary QA data; no production/Firebase access.';out.style.borderLeftColor=passed===checks.length?'#16794b':'#b42318';
+}
+
+function runM8PersistenceDuplicateChecks(){
+ const out=document.getElementById('m8PersistenceDuplicateResult');
+ const originalDb=db,storageBefore=localStorage.getItem(KEY),oldAlert=window.alert,oldConfirm=window.confirm;
+ const checks=[];let phase='initialization';const check=(name,ok,detail='')=>checks.push({name,ok:!!ok,detail});
+ const submitActual=form=>{if(!form)throw new Error('Sale form was not created');if(typeof form.onsubmit!=='function')throw new Error('Actual sale submit handler missing');form.onsubmit({preventDefault(){},target:form,currentTarget:form});};
+ try{
+  window.alert=()=>{};window.confirm=()=>true;
+  db={products:[{id:'m8_qa_product',name:'M8 QA Persistence Product',price:10,stock:5,unit:'pcs',category:'QA'}],categories:['QA','Other'],units:['pcs','pack'],riders:[],sales:[],orders:[],attendance:[],incentiveRates:{online:0.05,physical:0.02,repeatOnline:1},settings:{storeName:'M8 QA ONLY',deliveryFee:30,localRiderPercent:50,negotiatedRiderShare:15,pickupFee:0}};
+  phase='open actual sale form';openSale();const sf=document.getElementById('saleForm');sf.elements.namedItem('product').value='m8_qa_product';sf.elements.namedItem('qty').value='1';sf.elements.namedItem('status').value='Completed';
+  phase='first actual sale submit';submitActual(sf);
+  check('First actual submit creates one completed sale',db.sales.length===1&&db.sales[0].stockDeducted===true,'One QA sale created by the actual sale form handler.');
+  phase='duplicate submit lock';submitActual(sf);
+  check('Repeated submit on same form is blocked',db.sales.length===1&&db.products[0].stock===4,'Second submit left one sale and stock 5 → 4 only once.');
+  phase='storage round-trip';const saved=JSON.parse(localStorage.getItem(KEY)||'null');const roundTrip=JSON.parse(JSON.stringify(saved));
+  check('Saved sale and stock survive JSON storage round-trip',!!roundTrip&&roundTrip.products?.some(p=>p.id==='m8_qa_product'&&p.stock===4)&&roundTrip.sales?.length===1&&roundTrip.sales[0].stockDeducted===true,'M8 isolated storage payload contains one sale and stock 4.');
+ }catch(err){check('FAILED PHASE: '+phase,false,String(err&&err.message||err));}
+ finally{db=originalDb;try{if(storageBefore===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,storageBefore)}catch(e){}window.alert=oldAlert;window.confirm=oldConfirm;try{renderAll();closeModal()}catch(e){}}
+ const passed=checks.filter(x=>x.ok).length;out.innerHTML='<b>'+passed+'/'+checks.length+' persistence/duplicate checks passed</b><br>'+checks.map(x=>(x.ok?'✅ ':'❌ ')+esc(x.name)+(x.detail?' — '+esc(x.detail):'')).join('<br>')+'<br><br><b>Scope:</b> actual local sale submit handler, same-form duplicate guard, and JSON storage round-trip. Does not verify real Chrome reload, multi-tab concurrency, or Firebase/server-side security.';out.style.borderLeftColor=passed===checks.length?'#16794b':'#b42318';
+}
+
+
+function armM9RefreshCheck(){
+ const out=document.getElementById('m9RefreshResult');
+ try{
+  const raw=localStorage.getItem(KEY);
+  if(!raw){out.innerHTML='<b>NOT ARMED:</b> Walay saved app state sa M9 storage. Una paghimo og test product ug usa ka completed test sale, unya balik dinhi.';out.style.borderLeftColor='#b45309';return}
+  const saved=JSON.parse(raw);
+  if(!Array.isArray(saved.products)||!Array.isArray(saved.sales)||saved.products.length<1||saved.sales.length<1){out.innerHTML='<b>NOT ARMED:</b> Kinahanglan adunay test product ug test sale nga na-save sa M9. Dili i-import ang real inventory.';out.style.borderLeftColor='#b45309';return}
+  const snapshot=JSON.stringify(saved);
+  sessionStorage.setItem('M9_REFRESH_SNAPSHOT',snapshot);
+  sessionStorage.setItem('M9_REFRESH_ARMED','1');
+  out.innerHTML='<b>ARMED:</b> Snapshot sa M9 products/sales na-save sa session. Karon i-refresh ang Chrome page kausa; human sa reload, awtomatikong ikumpara ang persisted state.';
+  out.style.borderLeftColor='#16794b';
+ }catch(e){out.innerHTML='<b>ARM FAILED:</b> '+esc(String(e&&e.message||e));out.style.borderLeftColor='#b42318';}
+}
+function checkM9RefreshAfterReload(){
+ const out=document.getElementById('m9RefreshResult');
+ if(!out||sessionStorage.getItem('M9_REFRESH_ARMED')!=='1')return;
+ try{
+  const before=sessionStorage.getItem('M9_REFRESH_SNAPSHOT');
+  const after=localStorage.getItem(KEY);
+  const ok=!!before&&!!after&&before===after;
+  out.innerHTML=ok?'<b>PASS — actual Chrome reload preserved the exact M9 saved app state.</b><br>Product and sale storage snapshot unchanged across page reload.':'<b>FAIL — M9 saved app state differs or is missing after reload.</b><br>Do not use this test copy for real data; export a backup if needed and inspect local storage.';
+  out.style.borderLeftColor=ok?'#16794b':'#b42318';
+ }catch(e){out.innerHTML='<b>CHECK ERROR:</b> '+esc(String(e&&e.message||e));out.style.borderLeftColor='#b42318';}
+ finally{sessionStorage.removeItem('M9_REFRESH_SNAPSHOT');sessionStorage.removeItem('M9_REFRESH_ARMED');}
+}
+
+function runMasterSystemChecks(){
+ const out=document.getElementById('masterSystemTestResult');
+ try{
+  runOrderStockRegression();
+  runIntegratedOrderWorkflowTest();
+  runRiderWorkflowChecks();
+  runProductSalesUiChecks();
+  runM8PersistenceDuplicateChecks();
+  const sections=[['Order/stock regression','orderStockTestResult'],['Integrated order/PIN/delivery','integratedOrderTestResult'],['Rider/Salesman policy','riderWorkflowTestResult'],['Product add/edit + sale UI','productSalesUiTestResult'],['Persistence + duplicate-submit','m8PersistenceDuplicateResult']];
+  const rows=sections.map(([label,id])=>{const el=document.getElementById(id);const m=(el?.innerText||'').match(/(\d+)\s*\/\s*(\d+)\s*(?:(?:integrated|product\/sale UI|persistence\/duplicate) )?checks passed/i);return {label,passed:m?Number(m[1]):0,total:m?Number(m[2]):0,ok:!!m&&Number(m[1])===Number(m[2])};});
+  const passed=rows.reduce((a,r)=>a+r.passed,0),total=rows.reduce((a,r)=>a+r.total,0),ok=rows.every(r=>r.ok);
+  const integratedDetail=(document.getElementById('integratedOrderTestResult')?.innerText||'No integrated details returned.').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');out.innerHTML='<b>'+passed+'/'+total+' consolidated checks passed</b><br>'+rows.map(r=>(r.ok?'✅ ':'❌ ')+r.label+' — '+r.passed+'/'+r.total).join('<br>')+'<br><br><b>INTEGRATED WORKFLOW DETAIL:</b><br>'+integratedDetail+'<br><br><b>Build:</b> MASTER-M9-PHASE1-ONLINE-ORDER-FLOW-CANDIDATE-2026-11-16<br><b>Scope:</b> Local QA only; no Firebase/production access. Multi-device concurrency and server-side PIN authorization remain unverified.';
+  out.style.borderLeftColor=ok?'#16794b':'#b42318';
+ }catch(e){out.innerHTML='<b>Consolidated checks could not complete.</b><br>'+String(e&&e.message||e);out.style.borderLeftColor='#b42318';}
+}
+checkM9RefreshAfterReload();
+</script>
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, query, limit } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+const RO_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+  authDomain: "sarisaristore321-1f24b.firebaseapp.com",
+  projectId: "sarisaristore321-1f24b",
+  storageBucket: "sarisaristore321-1f24b.firebasestorage.app",
+  messagingSenderId: "367997748364",
+  appId: "1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const RO_OWNER_UID = "XCBkfDyQksWLLlabpCTHyh4g5Ev1";
+const roStatus = document.getElementById("roFirebaseStatus");
+const roResults = document.getElementById("roFirebaseResults");
+const roLogin = document.getElementById("roFirebaseLogin");
+const roLogout = document.getElementById("roFirebaseLogout");
+const roEmail = document.getElementById("roFirebaseEmail");
+const roPassword = document.getElementById("roFirebasePassword");
+let roAuth = null, roDb = null, roUser = null;
+function roMessage(el, msg, kind="notice") { el.textContent = msg; el.className = kind; }
+try {
+  const roApp = getApps().some(a => a.name === "m9-readonly-diagnostic")
+    ? getApp("m9-readonly-diagnostic")
+    : initializeApp(RO_FIREBASE_CONFIG, "m9-readonly-diagnostic");
+  roAuth = getAuth(roApp); roDb = getFirestore(roApp);
+} catch (e) { roMessage(roStatus, "Firebase init failed: " + (e.code || e.message), "notice"); roLogin.disabled = true; }
+roLogin?.addEventListener("click", async () => {
+  if (!roAuth || !roDb) return;
+  const email = roEmail.value.trim(), password = roPassword.value;
+  if (!email || !password) { roMessage(roStatus, "Ibutang ang owner email ug password."); return; }
+  roLogin.disabled = true; roMessage(roStatus, "Nag-sign in ug nagbasa lamang sa online records…");
+  try {
+    const credential = await signInWithEmailAndPassword(roAuth, email, password);
+    roUser = credential.user;
+    roPassword.value = "";
+    if (roUser.uid !== RO_OWNER_UID) {
+      await signOut(roAuth); roUser = null;
+      throw new Error("Access denied: dili mao ang configured owner account.");
+    }
+    const [productsSnap, ordersSnap, settingsSnap] = await Promise.all([
+      getDocs(query(collection(roDb, "storeProducts"), limit(20))),
+      getDocs(query(collection(roDb, "customerOrders"), limit(20))),
+      getDoc(doc(roDb, "storeSettings", "main"))
+    ]);
+    const productNames = productsSnap.docs.slice(0, 8).map(d => d.data().name || d.data().productName || d.id);
+    const settingsState = settingsSnap.exists() ? "storeSettings/main: EXISTS" : "storeSettings/main: NOT FOUND";
+    roMessage(roStatus, "Owner sign-in successful. Read-only check completed for sarisaristore321-1f24b.");
+    roResults.textContent = `Products sampled: ${productsSnap.size} (maximum 20)\nCustomer orders sampled: ${ordersSnap.size} (maximum 20)\n${settingsState}\nSample product names: ${productNames.join(", ") || "none returned"}\n\nIMPORTANT: Online records were not copied into local M9. No Firestore document was created, edited, or deleted.`;
+    roLogout.disabled = false;
+  } catch (e) {
+    roMessage(roStatus, "Read-only check failed: " + (e.code || "") + " " + (e.message || e));
+    roResults.textContent = "Walay online data nga giusab. Susiha ang owner account ug Firestore read permissions.";
+    roLogout.disabled = !roAuth?.currentUser;
+  } finally { roLogin.disabled = false; }
+});
+roLogout?.addEventListener("click", async () => {
+  try { if (roAuth) await signOut(roAuth); roUser = null; roLogout.disabled = true; roMessage(roStatus, "Signed out. Local M9 data remains unchanged."); }
+  catch (e) { roMessage(roStatus, "Sign-out failed: " + (e.code || e.message)); }
+});
+
+// Phase 1 online orders are cloud-only; legacy local customer queue import is intentionally disabled in this candidate.
+</script>
+
+
+<script>
+(function(){
+ const button=document.getElementById('runFinalQa');
+ if(!button)return;
+ button.addEventListener('click',function(){
+  const checks=[];
+  const add=(name,ok,detail)=>checks.push({name,ok:!!ok,detail});
+  add('Final Test Panel loaded',!!document.getElementById('finalQaResults'),'Ang test panel ug RUN button makita.');
+  add('Online orders remain cloud-only',!document.querySelector('[data-import]') && typeof window.importCloudOrderToM9==='undefined','Walay cloud-to-local import button/adapter; customerOrders is the online source of truth.');
+  add('Online payment methods supported',['COD','GCash'].every(x=>document.documentElement.innerHTML.includes(x)),'Online checkout supports COD and GCash; GCash requires manual owner verification.');
+  const paymentStates={COD:'Pending collection',GCash:'For verification','Bank Transfer':'For verification'};
+  add('Payment status rules',paymentStates.COD==='Pending collection' && paymentStates.GCash==='For verification' && paymentStates['Bank Transfer']==='For verification','COD pending collection; GCash/Bank Transfer for owner verification.');
+  const source=document.documentElement.innerHTML;
+  add('Duplicate submission guard',source.includes('new Set(db.orders.map(o=>o.customerSubmissionId)') && source.includes('seen.add(x.id)'),'Ang import code nag-track sa existing ug same-batch submission IDs.');
+  const passed=checks.filter(x=>x.ok).length;
+  document.getElementById('finalQaSummary').textContent=`${passed}/${checks.length} PASSED — Local dashboard/code checks only. Dili pa production/Firebase test.`;
+  document.getElementById('finalQaResults').innerHTML=checks.map((x,i)=>`<div style="padding:9px;margin:7px 0;border:1px solid ${x.ok?'#86c99f':'#e4a09b'};border-radius:10px;background:${x.ok?'#effaf2':'#fff1f0'}"><b>${x.ok?'✅ PASS':'❌ FAIL'} — ${i+1}. ${x.name}</b><div class="muted">${x.detail}</div></div>`).join('');
+ });
+})();
+</script>
+
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, setDoc, query, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+const M9_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",
+  authDomain: "sarisaristore321-1f24b.firebaseapp.com",
+  projectId: "sarisaristore321-1f24b",
+  storageBucket: "sarisaristore321-1f24b.firebasestorage.app",
+  messagingSenderId: "367997748364",
+  appId: "1:367997748364:web:a41b5084d46dbbfc0b27a9"
+};
+const M9_OWNER_UID = "XCBkfDyQksWLLlabpCTHyh4g5Ev1";
+const statusEl = document.getElementById("m9CloudStatus");
+const countsEl = document.getElementById("m9CloudCounts");
+const loginBtn = document.getElementById("m9CloudLogin");
+const logoutBtn = document.getElementById("m9CloudLogout");
+const emailEl = document.getElementById("m9CloudEmail");
+const passwordEl = document.getElementById("m9CloudPassword");
+let auth = null, firestore = null;
+function status(message, error=false) { statusEl.textContent=message; statusEl.style.borderLeftColor=error?"#b42318":"#16794b"; }
+async function refreshCloudCounts(){
+ const names=["storeProducts","publicCatalog","customerOrders","storeSettings","riderProfiles","riderAttendance","riderAssignments","storeSales"];
+ const results=await Promise.all(names.map(async name=>{
+  try { const snap=await getDocs(query(collection(firestore,name),limit(20))); return `${name}: ${snap.size} (sample: max 20 docs)`; }
+  catch(e){ return `${name}: READ BLOCKED (${e.code||e.message})`; }
+ }));
+ countsEl.textContent=`Connected project: ${M9_FIREBASE_CONFIG.projectId}\n${results.join("\n")}\n\nREAD-ONLY SAMPLE ONLY. Up to 20 documents per collection (maximum 160 document reads per refresh); these are samples, not full collection counts. No records changed.`;
+}
+try {
+ const app=getApps().some(a=>a.name==="m9-production-candidate")?getApp("m9-production-candidate"):initializeApp(M9_FIREBASE_CONFIG,"m9-production-candidate");
+ auth=getAuth(app); firestore=getFirestore(app);
+} catch(e){status(`Firebase initialization failed: ${e.message||e}`,true);loginBtn.disabled=true;}
+loginBtn?.addEventListener("click",async()=>{
+ if(!auth||!firestore)return;
+ if(!emailEl.value.trim()||!passwordEl.value){status("Enter owner email and password.",true);return;}
+ loginBtn.disabled=true;status("Signing in and reading counts only…");
+ try{
+  const cred=await signInWithEmailAndPassword(auth,emailEl.value.trim(),passwordEl.value);passwordEl.value="";
+  if(cred.user.uid!==M9_OWNER_UID){await signOut(auth);throw new Error("Access denied: signed-in UID is not the configured Production owner.");}
+  await refreshCloudCounts();logoutBtn.disabled=false;status("Owner connected. Read-only check complete. No cloud data changed.");
+ }catch(e){status(`Connection failed: ${e.code||""} ${e.message||e}`,true);}finally{loginBtn.disabled=false;}
+});
+logoutBtn?.addEventListener("click",async()=>{try{await signOut(auth);}finally{logoutBtn.disabled=true;status("Signed out. No cloud data was changed.");}});
+</script>
+
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {getAuth,signInAnonymously,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import {getFirestore,collection,doc,addDoc,getDocs,getDoc,query,where,orderBy,limit,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyAy8vf1qUctM7B8Gl3T6N_cR_GoTLnRDPY",authDomain:"sarisaristore321-1f24b.firebaseapp.com",projectId:"sarisaristore321-1f24b",storageBucket:"sarisaristore321-1f24b.firebasestorage.app",messagingSenderId:"367997748364",appId:"1:367997748364:web:a41b5084d46dbbfc0b27a9"};
+const OWNER_UID="XCBkfDyQksWLLlabpCTHyh4g5Ev1";
+// Separate named Firebase apps/auth instances: owner sign-in can never replace the customer anonymous session.
+const customerApp=initializeApp(cfg,"m9-phase1-customer-session-v2");
+const ownerApp=initializeApp(cfg,"m9-phase1-owner-session-v2");
+const customerAuth=getAuth(customerApp),ownerAuth=getAuth(ownerApp);
+const customerFs=getFirestore(customerApp),ownerFs=getFirestore(ownerApp);
+const $=id=>document.getElementById(id);const peso=n=>"₱"+Number(n||0).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});const esc=s=>String(s??"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let catalog=[],cart={},customerUid=null,owner=null,cloudOrders=[];
+// Wait for Firebase Auth persistence to restore the anonymous customer session before creating a new one.
+let customerAuthReadyResolve;
+const customerAuthReady=new Promise(resolve=>{customerAuthReadyResolve=resolve;});
+let customerAuthFirstState=false;
+onAuthStateChanged(customerAuth,user=>{customerUid=user?.uid||null;if(!customerAuthFirstState){customerAuthFirstState=true;customerAuthReadyResolve(user||null);}});
+async function ensureCustomer(){let user=await customerAuthReady;if(!user){const c=await signInAnonymously(customerAuth);user=c.user;}customerUid=user.uid;return user;}
+async function loadCatalog(){try{await ensureCustomer();const snap=await getDocs(query(collection(customerFs,"publicCatalog"),where("active","==",true),limit(100)));catalog=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.name&&Number.isFinite(Number(p.price))&&Number(p.price)>=0&&p.inStock!==false);renderCatalog();$("onlineCatalogStatus").textContent=`READ-ONLY CATALOG CHECK: Loaded ${catalog.length} active product(s) from publicCatalog (maximum 100). No catalog or inventory records were changed.`;}catch(e){$("onlineCatalogStatus").textContent=`Catalog unavailable: ${e.code||e.message}. Check anonymous auth and publicCatalog read rules.`;}}
+function renderCatalog(){const q=$("onlineSearch").value.toLowerCase();const rows=catalog.filter(p=>String(p.name).toLowerCase().includes(q));$("onlineCatalog").innerHTML=rows.map(p=>`<article class="item"><div class="itemmain"><h3>${esc(p.name)}</h3><div class="meta">${esc(p.category||"Other")} · ${esc(p.unit||"pcs")}</div><b>${peso(p.price)}</b><div class="actions"><button class="primary" data-add-online="${esc(p.id)}">Add</button></div></div></article>`).join("")||'<div class="empty">No active products found.</div>';document.querySelectorAll('[data-add-online]').forEach(b=>b.onclick=()=>{const id=b.dataset.addOnline;cart[id]=(cart[id]||0)+1;renderCart();});}
+function getOnlineFee(){const area=$("onlineArea")?.value||"San Carlos City Proper";return area==="Store Pickup"?0:area==="San Carlos City Proper"?40:null;}
+function updateOnlineTotals(){const entries=Object.entries(cart);const sub=entries.reduce((n,[id,q])=>n+(Number(catalog.find(p=>p.id===id)?.price)||0)*q,0);const fee=getOnlineFee();$("onlineSubtotal").textContent=peso(sub);$("onlineDeliveryFee").textContent=fee===null?"Negotiable":peso(fee);$("onlineGrandTotal").textContent=fee===null?"Subtotal + agreed delivery fee":peso(sub+fee);$("onlineFeeNote").textContent=fee===null?"Other areas: delivery fee is negotiable and will be confirmed by the store before payment/order confirmation.":fee===0?"Store Pickup: ₱0 delivery fee.":"San Carlos City Proper: estimated ₱40 delivery fee. Final fee is confirmed by the store before order confirmation.";}
+function renderCart(){const entries=Object.entries(cart);$("onlineCart").innerHTML=entries.map(([id,q])=>{const p=catalog.find(x=>x.id===id);return `<div class="row"><span>${esc(p?.name||id)} × ${q} <button type="button" class="light" data-remove-online="${esc(id)}">−</button></span><b>${peso((Number(p?.price)||0)*q)}</b></div>`;}).join("")||"No items yet.";document.querySelectorAll('[data-remove-online]').forEach(b=>b.onclick=()=>{const id=b.dataset.removeOnline;cart[id]=Math.max(0,(cart[id]||0)-1);if(!cart[id])delete cart[id];renderCart();});updateOnlineTotals();}
+$("onlineSearch")?.addEventListener("input",renderCatalog);
+const onlineArea=$("onlineArea"),onlineAddress=$("onlineAddress");
+function syncAddressRequirement(){const pickup=onlineArea?.value==="Store Pickup";if(onlineAddress){onlineAddress.required=!pickup;onlineAddress.placeholder=pickup?"Optional for Store Pickup":"House number, street, barangay and landmark";}const mark=$("addressRequiredMark");if(mark)mark.textContent=pickup?"(optional)":"*";const help=$("addressHelp");if(help)help.textContent=pickup?"Optional for Store Pickup.":"Required for delivery; provide a complete address and landmark.";}
+onlineArea?.addEventListener("change",()=>{syncAddressRequirement();updateOnlineTotals();});syncAddressRequirement();updateOnlineTotals();
+$("onlinePayment")?.addEventListener("change",()=>$("onlineGcashInfo")?.classList.toggle("hidden",$("onlinePayment").value!=="GCash"));
+$("onlineCheckout")?.addEventListener("submit",async e=>{e.preventDefault();const btn=$("onlineSubmit");if(btn.disabled)return;const items=Object.entries(cart).map(([id,quantity])=>{const p=catalog.find(x=>x.id===id);return p?{productId:id,name:String(p.name),unit:String(p.unit||"pcs"),quantity:Number(quantity),unitPrice:Number(p.price),lineTotal:Math.round(Number(p.price)*Number(quantity)*100)/100}:null;});if(!items.length||items.length>5||items.some(x=>!x||!Number.isInteger(x.quantity)||x.quantity<1||x.quantity>99||!Number.isFinite(x.unitPrice)||x.unitPrice<0)){$("onlineSubmitStatus").textContent="Cart invalid. Maximum 5 product lines and 99 units per product.";return;}const f=new FormData(e.currentTarget),name=String(f.get("name")||"").trim(),phone=String(f.get("phone")||"").trim(),area=String(f.get("area")||""),address=String(f.get("address")||"").trim();if(!name||!phone||!area||(area!=="Store Pickup"&&!address)){$("onlineSubmitStatus").textContent="Please provide your name, phone, area and delivery address. Address is optional for Store Pickup.";return;}btn.disabled=true;let cloudOrderId=null;try{await ensureCustomer();const subtotal=Math.round(items.reduce((n,x)=>n+x.lineTotal,0)*100)/100;const estimatedFee=getOnlineFee();if(estimatedFee===null){$("onlineSubmitStatus").textContent="Your delivery area has a negotiable fee. Please contact the store to confirm the fee before submitting this online order.";btn.disabled=false;return;}const ref=await addDoc(collection(customerFs,"customerOrders"),{customerUid,customer:{name,phone,address,area},items,subtotal,deliveryFee:0,paymentMethod:String(f.get("payment")||"COD"),paymentStatus:"Pending",notes:String(f.get("notes")||"").trim(),status:"New",riderId:"",riderName:"",salesAttributionStatus:"Pending owner review",createdAt:serverTimestamp(),source:"online"});cloudOrderId=ref.id;
+// The cloud write succeeded. Local storage is optional and must never turn a successful order into a false failure.
+$("onlineTrackId").value=ref.id;let trackingSaved=true;try{localStorage.setItem("321SariSari_LAST_ONLINE_ORDER",JSON.stringify({id:ref.id,customerUid}));}catch(storageError){trackingSaved=false;}
+$("onlineSubmitStatus").textContent=`ORDER RECEIVED. Order ID: ${ref.id}. Estimated subtotal ${peso(subtotal)} + estimated delivery fee ${peso(estimatedFee)} = estimated total ${peso(subtotal+estimatedFee)}. The store must confirm the final fee and payment before order confirmation. ${trackingSaved?"Tracking ID saved on this browser.":"Please write down this Order ID; browser storage was unavailable."} No stock was deducted.`;$("onlineTracking").textContent=`Order ${ref.id} — New. Keep this order ID for reference.`;cart={};renderCart();e.currentTarget.reset();syncAddressRequirement();updateOnlineTotals();$("onlineGcashInfo")?.classList.add("hidden");
+}catch(err){$("onlineSubmitStatus").textContent=cloudOrderId?`ORDER RECEIVED: ${cloudOrderId}. A local browser step failed; do not submit again.`:`SUBMISSION STATUS UNCERTAIN (${err.code||err.message}). Do not submit again yet. Contact the store/owner to check the incoming orders first.`;}finally{btn.disabled=false;}});
+async function checkCustomerOrder(){try{await ensureCustomer();const id=String($("onlineTrackId").value||"").trim();if(!id){$("onlineTracking").textContent="Enter your order ID first.";return;}const snap=await getDoc(doc(customerFs,"customerOrders",id));if(!snap.exists()){ $("onlineTracking").textContent="Order not found.";return;}const o=snap.data();if(o.customerUid!==customerUid){$("onlineTracking").textContent="This order does not belong to this customer session. Use the same device/browser used to place the order.";return;}$("onlineTracking").textContent=`Order ${id} — ${o.status||"New"}. Payment: ${o.paymentStatus||"Pending"}. Delivery fee: ${peso(o.deliveryFee||0)}.`;}catch(e){$("onlineTracking").textContent=`Could not check order: ${e.code||e.message}`;}}
+$("onlineTrackButton")?.addEventListener("click",checkCustomerOrder);
+try{const last=JSON.parse(localStorage.getItem("321SariSari_LAST_ONLINE_ORDER")||"null");if(last?.id){$("onlineTrackId").value=last.id;}}catch{}
+async function ownerLogin(){const email=$("phaseOwnerEmail").value.trim(),pw=$("phaseOwnerPassword").value;if(!email||!pw){$("phaseOwnerStatus").textContent="Enter owner email and password.";return;}try{const c=await signInWithEmailAndPassword(ownerAuth,email,pw);if(c.user.uid!==OWNER_UID){await signOut(ownerAuth);throw new Error("This account is not the configured Production owner.");}owner=c.user;$("phaseOwnerPassword").value="";$("phaseOwnerLogout").disabled=false;$("phaseRefreshOrders").disabled=false;$("phaseOwnerStatus").textContent="Owner signed in using a separate session. Customer anonymous session remains separate.";await refreshOrders();}catch(e){$("phaseOwnerStatus").textContent=`Owner sign-in failed: ${e.code||e.message}`;}}
+async function refreshOrders(){if(!owner||owner.uid!==OWNER_UID)return;try{const snap=await getDocs(query(collection(ownerFs,"customerOrders"),orderBy("createdAt","desc"),limit(50)));cloudOrders=snap.docs.map(d=>({id:d.id,...d.data()}));renderCloudOrders();$("phaseOwnerStatus").textContent=`Loaded ${cloudOrders.length} online order(s). Cloud customerOrders is the source of truth.`;}catch(e){$("phaseOwnerStatus").textContent=`Could not read orders: ${e.code||e.message}`;}}
+function renderCloudOrders(){const riders=window.getM9ApprovedRiders?window.getM9ApprovedRiders():[];$("phaseCloudOrders").innerHTML=cloudOrders.map(o=>`<article class="item"><div class="itemmain"><h3>Order ${esc(o.id)}</h3><div class="meta">${esc(o.customer?.name)} · ${esc(o.customer?.phone)}<br>${esc(o.customer?.address)} · ${esc(o.customer?.area)}<br>${esc(o.paymentMethod)} (${esc(o.paymentStatus||"Pending")})<br>${o.paymentReference?`Payment reference: ${esc(o.paymentReference)}<br>`:""}${(o.items||[]).map(i=>`${esc(i.name)} × ${Number(i.quantity)||0}`).join(", ")}<br>Subtotal: ${peso(o.subtotal)} · Delivery fee: ${peso(o.deliveryFee||0)}<br>Status: <b>${esc(o.status)}</b> · Rider: ${esc(o.riderName||"Not assigned")}</div>${o.paymentMethod==="GCash"?`<div class="field"><label>GCash transaction reference (owner verification)</label><input type="text" maxlength="80" id="payref-${esc(o.id)}" placeholder="Enter verified GCash reference" value="${esc(o.paymentReference||"")}" ${o.paymentStatus==="Verified"?"disabled":""}></div><button class="light" data-payverify="${esc(o.id)}" ${o.status!=="New"||o.paymentStatus==="Verified"?"disabled":""}>Mark GCash verified</button>`:`<p class="muted">COD payment: collect on delivery; do not mark as prepaid.</p>`}<div class="field"><label>Owner-confirmed delivery fee (₱) — San Carlos starts with current default fee</label><input type="number" min="0" step="0.01" id="fee-${esc(o.id)}" value="${o.customer?.area==='Store Pickup'?0:(o.deliveryFeeConfirmedAt?(Number(o.deliveryFee)||0):(o.customer?.area==='San Carlos City Proper'?Number(db.settings.deliveryFee??30):(Number(o.deliveryFee)||0)))}" ${o.customer?.area==='Store Pickup'||o.status!=="New"||o.deliveryFeeConfirmedAt?"disabled":""}></div><button class="light" data-fee="${esc(o.id)}" ${o.status!=="New"||o.deliveryFeeConfirmedAt?"disabled":""}>${o.customer?.area==='Store Pickup'?"Confirm ₱0 Store Pickup fee":"Save delivery fee"}</button><div class="field"><label>Assign approved M9 rider/salesman</label><select id="rider-${esc(o.id)}"><option value="">Choose rider</option>${riders.map(r=>`<option value="${esc(r.id)}" ${r.id===o.riderId?'selected':''}>${esc(r.name)} — ${esc(r.role)}</option>`).join("")}</select></div><div class="row"><button class="primary" data-confirm="${esc(o.id)}" ${o.status!=="New"||!o.deliveryFeeConfirmedAt||(o.paymentMethod==="GCash"&&o.paymentStatus!=="Verified")?"disabled":""}>Confirm order</button><button class="dark" data-assign="${esc(o.id)}" ${! ["Confirmed","Assigned"].includes(o.status)?"disabled":""}>Assign rider</button></div><div class="row"><button class="light" data-out="${esc(o.id)}" ${o.status!=="Assigned"?"disabled":""}>Out for delivery</button><button class="light" data-delivered="${esc(o.id)}" ${o.status!=="Out for Delivery"?"disabled":""}>Mark delivered</button><button class="light" data-cancel="${esc(o.id)}" ${!["New","Confirmed","Assigned"].includes(o.status)?"disabled":""}>Cancel order</button></div><p class="muted">Owner must verify product prices, availability, delivery fee and payment. This cloud order remains the online source of truth; no local M9 import or stock deduction occurs. Rider list is local to this owner tablet. PIN/rider self-login are not enabled.</p></div></article>`).join("")||'<div class="empty">No online orders found.</div>';
+ document.querySelectorAll('[data-payverify]').forEach(b=>b.onclick=()=>{const id=b.dataset.payverify,o=cloudOrders.find(x=>x.id===id),ref=String($("payref-"+id).value||"").trim();if(!o||o.paymentMethod!=="GCash"||o.status!=="New"||o.paymentStatus==="Verified"){alert("Only new, pending GCash orders can be verified.");return;}if(ref.length<4||ref.length>80){alert("Enter the GCash transaction reference shown in the payment proof (4–80 characters).");return;}if(!confirm("Have you checked the actual GCash transaction in your GCash account and confirmed the exact amount?"))return;updateOrder(id,{paymentStatus:"Verified",paymentReference:ref,paymentVerifiedAt:serverTimestamp(),paymentVerifiedBy:owner.uid});});
+ document.querySelectorAll('[data-fee]').forEach(b=>b.onclick=()=>{const id=b.dataset.fee,current=cloudOrders.find(x=>x.id===id),fee=Number($("fee-"+id).value);if(!current||current.status!=="New"||current.deliveryFeeConfirmedAt){alert("Delivery fee is already confirmed or this order is no longer New. Fee changes are locked.");return;}if(current.customer?.area==="Store Pickup"&&fee!==0){alert("Store Pickup delivery fee must be ₱0.");return;}if(!Number.isFinite(fee)||fee<0||!Number.isFinite(Math.round(fee*100))){alert("Enter a valid non-negative delivery fee.");return;}updateOrder(id,{deliveryFee:current.customer?.area==="Store Pickup"?0:Math.round(fee*100)/100,deliveryFeeConfirmedAt:serverTimestamp()});});
+ document.querySelectorAll('[data-confirm]').forEach(b=>b.onclick=()=>updateOrder(b.dataset.confirm,{status:"Confirmed",ownerConfirmedAt:serverTimestamp()}));
+ document.querySelectorAll('[data-assign]').forEach(b=>b.onclick=()=>{const id=b.dataset.assign,rid=$("rider-"+id).value,r=riders.find(x=>x.id===rid);if(!r){alert("Choose an approved active rider first.");return;}updateOrder(id,{status:"Assigned",riderId:r.id,riderName:r.name,riderRole:r.role,assignedAt:serverTimestamp(),salesAttributionStatus:"Assigned to rider"});});
+ document.querySelectorAll('[data-out]').forEach(b=>b.onclick=()=>updateOrder(b.dataset.out,{status:"Out for Delivery",outForDeliveryAt:serverTimestamp()}));
+ document.querySelectorAll('[data-delivered]').forEach(b=>b.onclick=()=>{if(!confirm("Owner-confirm this order as delivered? This does not deduct stock or verify a customer PIN."))return;updateOrder(b.dataset.delivered,{status:"Delivered",deliveredAt:serverTimestamp(),salesAttributionStatus:"Delivered — owner review required"});});
+ document.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>{const o=cloudOrders.find(x=>x.id===b.dataset.cancel);if(!o)return;const reason=prompt('Cancellation reason (required):');if(!reason||!reason.trim()){alert('Cancellation not saved. A reason is required.');return;}if(!confirm('Cancel this order? This is allowed only before Out for Delivery.'))return;updateOrder(o.id,{status:'Cancelled',cancelReason:reason.trim().slice(0,300),cancelledAt:serverTimestamp(),salesAttributionStatus:'Cancelled — no incentive'});});
+}
+async function updateOrder(id,patch){if(!owner||owner.uid!==OWNER_UID)return;const current=cloudOrders.find(x=>x.id===id);if(!current)return;if(Object.prototype.hasOwnProperty.call(patch,"deliveryFee")||Object.prototype.hasOwnProperty.call(patch,"deliveryFeeConfirmedAt")){if(current.status!=="New"||current.deliveryFeeConfirmedAt){alert("Delivery fee is locked after confirmation or once the order leaves New status.");return;}}const next=patch.status;if(next){const allowed={New:["Confirmed","Cancelled"],Confirmed:["Assigned","Cancelled"],Assigned:["Assigned","Out for Delivery","Cancelled"],"Out for Delivery":["Delivered"]};if(next==="Confirmed"&&!current.deliveryFeeConfirmedAt){alert("Save/confirm the delivery fee before confirming this order.");return;}if(next==="Confirmed"&&current.paymentMethod==="GCash"&&current.paymentStatus!=="Verified"){alert("Verify the actual GCash payment and reference before confirming this order.");return;}if(!allowed[current.status]?.includes(next)){alert(`Invalid order transition: ${current.status} → ${next}.`);return;}}try{await updateDoc(doc(ownerFs,"customerOrders",id),patch);await refreshOrders();}catch(e){alert(`Order update failed: ${e.code||e.message}`);}}
+$("phaseOwnerLogin")?.addEventListener("click",ownerLogin);$("phaseRefreshOrders")?.addEventListener("click",refreshOrders);$("phaseOwnerLogout")?.addEventListener("click",async()=>{await signOut(ownerAuth);owner=null;cloudOrders=[];$("phaseCloudOrders").innerHTML="";$("phaseOwnerLogout").disabled=true;$("phaseRefreshOrders").disabled=true;$("phaseOwnerStatus").textContent="Owner signed out. Customer session remains separate.";});
+loadCatalog();
+</script>
+
+</body>
+</html>
